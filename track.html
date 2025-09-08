@@ -1,0 +1,588 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Track Order — PHARMA DIRECT</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body class="min-h-screen bg-gray-50">
+    <header class="bg-white border-b">
+        <div class="mx-auto container-max px-4 py-3 flex items-center justify-between">
+            <a href="./" class="flex items-center gap-2">
+                <img src="img/icon.png" alt="logo" class="w-6 h-6" />
+                <span class="font-semibold text-lg">PHARMA DIRECT</span>
+            </a>
+            <div class="relative">
+                <button id="account-btn"
+                    class="hidden md:inline-flex items-center gap-2 rounded-lg border px-3 py-2 hover:bg-gray-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                    <span id="account-name" class="text-sm font-medium truncate max-w-24"></span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 flex-shrink-0" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+                <div id="account-menu" class="dropdown-panel hidden">
+                    <div class="user-info">
+                        <p class="user-email" id="account-email"></p>
+                        <p class="user-role" id="account-role"></p>
+                    </div>
+                    <a id="dashboard-link" href="#" class="dropdown-item">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M8 5a2 2 0 012-2h4a2 2 0 012 2v2H8V5z"></path>
+                        </svg>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="track.html" class="dropdown-item">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
+                            </path>
+                        </svg>
+                        <span>My Orders</span>
+                    </a>
+                    <button id="logout-btn" class="dropdown-item w-full text-left">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
+                            </path>
+                        </svg>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="mx-auto container-max px-4 py-8">
+        <!-- Back Button -->
+        <div class="mb-6">
+            <a href="categories.html"
+                class="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-700 font-medium">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+                Back to Categories
+            </a>
+        </div>
+
+        <h1 class="text-2xl font-semibold mb-6">Track Your Orders</h1>
+
+        <!-- Pending Orders Banner -->
+        <div id="pending-banner" class="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mb-6 hidden">
+            <div class="flex items-center gap-3">
+                <div class="flex-shrink-0">
+                    <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z">
+                        </path>
+                    </svg>
+                </div>
+                <div class="flex-1">
+                    <h3 class="text-sm font-medium text-yellow-800">Pending Orders</h3>
+                    <p class="text-sm text-yellow-700 mt-1">You have orders waiting for confirmation. We'll notify you
+                        once they're processed.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order Status Tabs -->
+        <div class="bg-white rounded-xl border mb-6">
+            <div class="border-b">
+                <nav class="flex">
+                    <button id="tab-all"
+                        class="tab-button active flex-1 py-4 px-6 text-center border-b-2 border-emerald-500 text-emerald-600 font-medium relative">
+                        All Orders
+                        <span
+                            class="user-order-count-badge absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"
+                            style="display: none;">0</span>
+                    </button>
+                    <button id="tab-pending"
+                        class="tab-button flex-1 py-4 px-6 text-center border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium relative">
+                        Pending
+                        <span
+                            class="user-order-count-badge absolute -top-2 -right-2 bg-yellow-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"
+                            style="display: none;">0</span>
+                    </button>
+                    <button id="tab-confirmed"
+                        class="tab-button flex-1 py-4 px-6 text-center border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium relative">
+                        Confirmed
+                        <span
+                            class="user-order-count-badge absolute -top-2 -right-2 bg-blue-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"
+                            style="display: none;">0</span>
+                    </button>
+                    <button id="tab-to-be-received"
+                        class="tab-button flex-1 py-4 px-6 text-center border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium relative">
+                        To Be Received
+                        <span
+                            class="user-order-count-badge absolute -top-2 -right-2 bg-purple-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"
+                            style="display: none;">0</span>
+                    </button>
+                    <button id="tab-delivered"
+                        class="tab-button flex-1 py-4 px-6 text-center border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium relative">
+                        Delivered
+                        <span
+                            class="user-order-count-badge absolute -top-2 -right-2 bg-green-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"
+                            style="display: none;">0</span>
+                    </button>
+                    <button id="tab-declined"
+                        class="tab-button flex-1 py-4 px-6 text-center border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium relative">
+                        Declined
+                        <span
+                            class="user-order-count-badge absolute -top-2 -right-2 bg-gray-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"
+                            style="display: none;">0</span>
+                    </button>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Orders Container -->
+        <div id="orders-container" class="space-y-4">
+            <div id="orders" class="space-y-3"></div>
+        </div>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+        import { getFirestore, collection, query, where, onSnapshot, orderBy, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+        import { firebaseConfig, COLLECTIONS, formatCurrency } from './js/firebase.js';
+        import { fetchUserRole, logout } from './js/auth.js';
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        const ordersEl = document.getElementById('orders');
+        const ordersContainer = document.getElementById('orders-container');
+        const pendingBanner = document.getElementById('pending-banner');
+
+        let allOrders = [];
+        let currentFilter = 'all';
+        let userOrderCounts = { all: 0, pending: 0, confirmed: 0, 'to-be-received': 0, delivered: 0, declined: 0 };
+
+        function updateUserOrderCounts() {
+            // Reset counts
+            userOrderCounts = { all: 0, pending: 0, confirmed: 0, 'to-be-received': 0, delivered: 0, declined: 0 };
+
+            // Count orders by status
+            allOrders.forEach(({ order }) => {
+                const status = order.stage.toLowerCase().replace(/\s+/g, '-');
+                if (status in userOrderCounts) {
+                    userOrderCounts[status]++;
+                }
+                userOrderCounts.all++;
+            });
+
+            // Update tab badges
+            document.querySelectorAll('.tab-button').forEach(tab => {
+                const tabId = tab.id.replace('tab-', '');
+                const badge = tab.querySelector('.user-order-count-badge');
+
+                if (badge) {
+                    const count = userOrderCounts[tabId] || 0;
+                    badge.textContent = count;
+                    badge.style.display = count > 0 ? 'inline-flex' : 'none';
+                }
+            });
+        }
+
+        // Tab switching functionality
+        const tabButtons = document.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Update active tab styling
+                tabButtons.forEach(btn => {
+                    btn.classList.remove('active', 'border-emerald-500', 'text-emerald-600');
+                    btn.classList.add('border-transparent', 'text-gray-500');
+                });
+                button.classList.add('active', 'border-emerald-500', 'text-emerald-600');
+                button.classList.remove('border-transparent', 'text-gray-500');
+
+                // Update filter and render orders
+                currentFilter = button.id.replace('tab-', '');
+                renderFilteredOrders();
+            });
+        });
+
+        function stageBadge(stage) {
+            const cls = `badge stage-${stage.replaceAll(' ', '\\ ')}`;
+            return `<span class='${cls}'>${stage}</span>`;
+        }
+
+        function canCancelOrder(order) {
+            // Allow cancellation only for Pending orders within 1 minute
+            if (order.stage !== 'Pending') {
+                return false;
+            }
+
+            const now = new Date();
+            const orderDate = new Date(order.createdAt.seconds * 1000);
+            const diffInMinutes = Math.abs(now - orderDate) / (1000 * 60);
+
+            return diffInMinutes <= 1; // Within 1 minute
+        }
+
+        window.cancelOrder = async (orderId) => {
+            if (!confirm('Are you sure you want to cancel this order? This action cannot be undone.')) {
+                return;
+            }
+
+            try {
+                const orderRef = doc(db, COLLECTIONS.orders, orderId);
+                await updateDoc(orderRef, {
+                    stage: 'Cancelled',
+                    cancelledAt: new Date(),
+                    cancelledBy: 'user',
+                    updatedAt: Date.now()
+                });
+
+                alert('Order has been cancelled successfully.');
+                // Refresh the orders display
+                loadOrders();
+                updateUserOrderCounts();
+            } catch (error) {
+                console.error('Error cancelling order:', error);
+                alert('Failed to cancel order. Please try again.');
+            }
+        };
+
+        function formatOrderDate(date) {
+            const now = new Date();
+            const orderDate = new Date(date);
+            const diffInHours = Math.abs(now - orderDate) / 36e5;
+
+            if (diffInHours < 24) {
+                return `${Math.floor(diffInHours)}h ago`;
+            } else if (diffInHours < 24 * 7) {
+                return `${Math.floor(diffInHours / 24)}d ago`;
+            } else {
+                return orderDate.toLocaleDateString();
+            }
+        }
+
+        function renderOrderCard(doc, order) {
+            const items = order.items.map(i => `${i.name} x${i.quantity}`).join(', ');
+            const orderDate = formatOrderDate(order.createdAt);
+            const card = document.createElement('div');
+            card.className = 'bg-white rounded-xl p-6 border hover:shadow-md transition-shadow';
+
+            card.innerHTML = `
+                <div class='flex items-start justify-between mb-4'>
+                    <div class='flex-1'>
+                        <div class='flex items-center gap-3 mb-2'>
+                            <h3 class='font-semibold text-lg'>Order #${doc.id.slice(-6)}</h3>
+                            ${stageBadge(order.stage)}
+                        </div>
+                        <p class='text-sm text-gray-600 mb-3'>Placed ${orderDate}</p>
+                        <div class='space-y-2'>
+                            <div class='text-sm'>
+                                <span class='font-medium text-gray-900'>Customer:</span>
+                                <span class='text-gray-600'>${order.customerInfo ? order.customerInfo.name : 'N/A'}</span>
+                            </div>
+                            <div class='text-sm'>
+                                <span class='font-medium text-gray-900'>Items:</span>
+                                <span class='text-gray-600'>${items}</span>
+                            </div>
+                            <div class='text-sm'>
+                                <span class='font-medium text-gray-900'>Total:</span>
+                                <span class='text-gray-600'>${formatCurrency(order.total)}</span>
+                            </div>
+                            <div class='text-sm'>
+                                <span class='font-medium text-gray-900'>Payment:</span>
+                                <span class='text-gray-600'>${order.paymentMethod} (${order.paymentStatus})</span>
+                            </div>
+                            <div class='text-sm'>
+                                <span class='font-medium text-gray-900'>Delivery:</span>
+                                <span class='text-gray-600'>${order.deliveryAddress || 'Address not specified'}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='ml-4 flex flex-col gap-2'>
+                        <button onclick="viewOrderDetails('${doc.id}')" class='bg-emerald-50 text-emerald-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-emerald-100 transition-colors'>
+                            View Details
+                        </button>
+                        ${canCancelOrder(order) ? `
+                        <button onclick="cancelOrder('${doc.id}')" class='bg-red-50 text-red-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-100 transition-colors border border-red-200'>
+                            Cancel Order
+                        </button>` : ''}
+                    </div>
+                </div>
+                ${order.stage === 'Pending' ? `
+                    <div class='bg-yellow-50 border border-yellow-200 rounded-lg p-3 mt-4'>
+                        <div class='flex items-center gap-2'>
+                            <svg class='w-4 h-4 text-yellow-600' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                                <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z'></path>
+                            </svg>
+                            <span class='text-sm font-medium text-yellow-800'>Processing your order</span>
+                        </div>
+                        <p class='text-sm text-yellow-700 mt-1'>We'll send you an update once your order is confirmed.</p>
+                    </div>
+                ` : ''}
+            `;
+            return card;
+        }
+
+        function renderFilteredOrders() {
+            const filteredOrders = currentFilter === 'all'
+                ? allOrders
+                : allOrders.filter(({ order }) => {
+                    const stage = order.stage.toLowerCase().replace(/\s+/g, '-');
+                    // Handle special case for declined tab (matches both 'declined' and 'cancelled')
+                    if (currentFilter === 'declined') {
+                        return stage === 'declined' || stage === 'cancelled';
+                    }
+                    return stage === currentFilter;
+                });
+
+            ordersEl.innerHTML = '';
+
+            if (filteredOrders.length === 0) {
+                const emptyMessage = getEmptyStateMessage(currentFilter);
+                ordersEl.innerHTML = `
+                    <div class='bg-white rounded-xl p-8 border text-center'>
+                        <div class='w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center'>
+                            <svg class='w-8 h-8 text-gray-400' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                                <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2'></path>
+                            </svg>
+                        </div>
+                        <h3 class='text-lg font-medium text-gray-900 mb-2'>${emptyMessage.title}</h3>
+                        <p class='text-gray-500'>${emptyMessage.description}</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filteredOrders.forEach(({ doc, order }) => {
+                const card = renderOrderCard(doc, order);
+                ordersEl.appendChild(card);
+            });
+        }
+
+        function getEmptyStateMessage(filter) {
+            const messages = {
+                'all': {
+                    title: 'No orders yet',
+                    description: 'When you place your first order, it will appear here.'
+                },
+                'pending': {
+                    title: 'No pending orders',
+                    description: 'All your orders have been processed. Check other tabs for updates.'
+                },
+                'confirmed': {
+                    title: 'No confirmed orders',
+                    description: 'Your confirmed orders will appear here once processed.'
+                },
+                'to-be-received': {
+                    title: 'No orders to be received',
+                    description: 'Orders ready for pickup or delivery will be shown here.'
+                },
+                'delivered': {
+                    title: 'No delivered orders',
+                    description: 'Your completed orders will appear here.'
+                }
+            };
+            return messages[filter] || messages.all;
+        }
+
+        function renderOrders(uid) {
+            const qRef = query(
+                collection(db, COLLECTIONS.orders),
+                where('userId', '==', uid),
+                orderBy('createdAt', 'desc')
+            );
+            onSnapshot(qRef, (snap) => {
+                allOrders = [];
+                let hasPendingOrders = false;
+                let totalSpent = 0;
+                let successfulOrders = 0;
+
+                snap.forEach(doc => {
+                    const order = doc.data();
+                    allOrders.push({ doc, order });
+
+                    // Track pending orders for banner
+                    if (order.stage === 'Pending') {
+                        hasPendingOrders = true;
+                    }
+
+                    // Calculate total spent from delivered orders
+                    if (order.stage === 'Delivered') {
+                        totalSpent += order.total;
+                        successfulOrders++;
+                    }
+                });
+
+                // Show/hide pending banner
+                if (hasPendingOrders) {
+                    pendingBanner.classList.remove('hidden');
+                } else {
+                    pendingBanner.classList.add('hidden');
+                }
+
+                updateUserOrderCounts();
+                renderFilteredOrders();
+            });
+        }
+
+        // Global function for viewing order details
+        window.viewOrderDetails = async (orderId) => {
+            try {
+                const orderRef = doc(db, COLLECTIONS.orders, orderId);
+                const orderSnap = await getDoc(orderRef);
+
+                if (!orderSnap.exists()) {
+                    alert('Order not found');
+                    return;
+                }
+
+                const order = orderSnap.data();
+                const orderDate = new Date(order.createdAt).toLocaleString();
+
+                showOrderModal(order, orderId, orderDate);
+            } catch (error) {
+                console.error('Error fetching order details:', error);
+                alert('Error loading order details. Please try again.');
+            }
+        };
+
+        function showOrderModal(order, orderId, orderDate) {
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+            modal.id = 'order-detail-modal';
+
+            modal.innerHTML = `
+                <div class='bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto'>
+                    <div class='p-6 border-b'>
+            <div class='flex items-center justify-between'>
+                            <h3 class='text-lg font-semibold'>Order Details</h3>
+                            <button onclick="closeOrderModal()" class='text-gray-400 hover:text-gray-600'>
+                                <svg class='w-6 h-6' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                                    <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12'></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class='p-6'>
+                        <div class='space-y-6'>
+                            <div class='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                                <div class='bg-gray-50 p-4 rounded-lg'>
+                                    <h4 class='font-medium text-gray-900 mb-3'>Order Information</h4>
+                                    <div class='space-y-2'>
+                                        <p class='text-sm'><span class='font-medium'>Order #:</span> ${orderId.slice(-6)}</p>
+                                        <p class='text-sm'><span class='font-medium'>Date:</span> ${orderDate}</p>
+                                        <p class='text-sm'><span class='font-medium'>Status:</span> <span class='${`badge stage-${order.stage.replaceAll(' ', '\\ ')}`}'>${order.stage}</span></p>
+                                        <p class='text-sm'><span class='font-medium'>Total:</span> ${formatCurrency(order.total)}</p>
+                                    </div>
+                                </div>
+                                <div class='bg-gray-50 p-4 rounded-lg'>
+                                    <h4 class='font-medium text-gray-900 mb-3'>Customer Information</h4>
+                                    <div class='space-y-2'>
+                                        <p class='text-sm'><span class='font-medium'>Name:</span> ${order.customerInfo ? order.customerInfo.name : 'Not provided'}</p>
+                                        <p class='text-sm'><span class='font-medium'>Phone:</span> ${order.customerInfo ? order.customerInfo.phone : 'Not provided'}</p>
+                                        <p class='text-sm'><span class='font-medium'>Email:</span> ${order.customerInfo ? order.customerInfo.email : 'Not provided'}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                                <div class='bg-gray-50 p-4 rounded-lg'>
+                                    <h4 class='font-medium text-gray-900 mb-3'>Payment Details</h4>
+                                    <div class='space-y-2'>
+                                        <p class='text-sm'><span class='font-medium'>Payment Method:</span> ${order.paymentMethod}</p>
+                                        <p class='text-sm'><span class='font-medium'>Payment Status:</span> ${order.paymentStatus}</p>
+                                    </div>
+                                </div>
+                                <div class='bg-gray-50 p-4 rounded-lg'>
+                                    <h4 class='font-medium text-gray-900 mb-3'>Delivery Address</h4>
+                                    <div class='space-y-2'>
+                                        <p class='text-sm'>${order.deliveryAddress || 'Address not specified'}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 class='font-medium text-gray-900 mb-4'>Items Ordered</h4>
+                                <div class='space-y-3'>
+                                    ${order.items.map(item => `
+                                        <div class='flex items-center justify-between p-3 bg-gray-50 rounded-lg'>
+                                            <div class='flex-1'>
+                                                <h5 class='font-medium text-gray-900'>${item.name}</h5>
+                                                <p class='text-sm text-gray-600'>₱${item.price} each</p>
+                                            </div>
+                                            <div class='text-right'>
+                                                <p class='font-medium'>Qty: ${item.quantity}</p>
+                                                <p class='text-sm text-gray-600'>₱${(item.price * item.quantity).toFixed(2)}</p>
+                                            </div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            `;
+
+            document.body.appendChild(modal);
+
+            // Close modal when clicking outside
+            modal.addEventListener('click', (e) => {
+                if (e.target.id === 'order-detail-modal') {
+                    closeOrderModal();
+                }
+            });
+        }
+
+        // Global function to close order modal
+        window.closeOrderModal = () => {
+            const modal = document.getElementById('order-detail-modal');
+            if (modal) {
+                modal.remove();
+            }
+        };
+
+        onAuthStateChanged(auth, async (user) => {
+            const uid = user?.uid || localStorage.getItem('uid');
+            if (!uid) { window.location.href = 'login.html'; return; }
+            const role = localStorage.getItem('role') || await fetchUserRole(uid);
+            const nameEl = document.getElementById('account-name');
+            const emailEl = document.getElementById('account-email');
+            const roleEl = document.getElementById('account-role');
+            const btn = document.getElementById('account-btn');
+            const menu = document.getElementById('account-menu');
+            const dash = document.getElementById('dashboard-link');
+            const out = document.getElementById('logout-btn');
+            if (btn && nameEl) {
+                btn.classList.remove('hidden');
+                nameEl.textContent = user?.displayName || 'Account';
+                emailEl.textContent = user?.email || '';
+                roleEl.textContent = role.charAt(0).toUpperCase() + role.slice(1);
+                dash.href = role === 'admin' ? 'admin.html' : role === 'pharmacy' ? 'pharmacy.html' : 'user-dashboard.html';
+                btn.onclick = (e) => {
+                    e.stopPropagation();
+                    menu.classList.toggle('hidden');
+                };
+                out.onclick = async () => { await logout(); window.location.href = 'index.html'; };
+                // Close dropdown when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (!btn.closest('.relative').contains(e.target)) {
+                        menu.classList.add('hidden');
+                    }
+                });
+            }
+            renderOrders(uid);
+        });
+    </script>
+</body>
+
+</html>

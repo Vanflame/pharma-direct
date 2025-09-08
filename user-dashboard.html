@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Dashboard — PHARMA DIRECT</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body class="min-h-screen bg-gray-50">
+    <header class="bg-white border-b">
+        <div class="mx-auto container-max px-4 py-3 flex items-center justify-between">
+            <a href="./" class="flex items-center gap-2">
+                <img src="img/icon.png" alt="logo" class="w-6 h-6" />
+                <span class="font-semibold text-lg">PHARMA DIRECT</span>
+            </a>
+            <div class="relative">
+                <button id="account-btn"
+                    class="inline-flex items-center gap-2 rounded-lg border px-3 py-2 hover:bg-gray-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                    <span id="account-name" class="text-sm font-medium truncate max-w-24"></span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 flex-shrink-0" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+                <div id="account-menu" class="dropdown-panel hidden">
+                    <div class="user-info">
+                        <p class="user-email" id="account-email"></p>
+                        <p class="user-role" id="account-role"></p>
+                    </div>
+                    <a href="user-dashboard.html" class="dropdown-item">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M8 5a2 2 0 012-2h4a2 2 0 012 2v2H8V5z"></path>
+                        </svg>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="track.html" class="dropdown-item">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
+                            </path>
+                        </svg>
+                        <span>My Orders</span>
+                    </a>
+                    <button id="logout-btn" class="dropdown-item w-full text-left">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
+                            </path>
+                        </svg>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="mx-auto container-max px-4 py-8">
+        <!-- Back Button -->
+        <div class="mb-6">
+            <a href="categories.html"
+                class="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-700 font-medium">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+                Back to Categories
+            </a>
+        </div>
+
+        <h1 class="text-2xl font-semibold mb-6">Dashboard</h1>
+
+        <!-- Stats Cards -->
+        <div class="grid md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white rounded-xl p-6 border">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-emerald-100">
+                        <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                            </path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Total Orders</p>
+                        <p class="text-2xl font-semibold text-gray-900" id="total-orders">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl p-6 border">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-blue-100">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1">
+                            </path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Total Spent</p>
+                        <p class="text-2xl font-semibold text-gray-900" id="total-spent">₱0</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl p-6 border">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-yellow-100">
+                        <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
+                            </path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">COD Status</p>
+                        <p class="text-2xl font-semibold text-gray-900" id="cod-status">Disabled</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="grid md:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white rounded-xl border p-6">
+                <h3 class="text-lg font-semibold mb-4">Quick Actions</h3>
+                <div class="space-y-3">
+                    <a href="index.html" class="flex items-center gap-3 p-3 rounded-lg border hover:bg-gray-50">
+                        <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                        </svg>
+                        <span class="text-sm font-medium">Browse Products</span>
+                    </a>
+                    <a href="track.html" class="flex items-center gap-3 p-3 rounded-lg border hover:bg-gray-50">
+                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
+                            </path>
+                        </svg>
+                        <span class="text-sm font-medium">Track Orders</span>
+                    </a>
+                    <a href="cart.html" class="flex items-center gap-3 p-3 rounded-lg border hover:bg-gray-50">
+                        <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m6-5v6a2 2 0 11-4 0v-6m4 0V9a2 2 0 00-2-2H9a2 2 0 00-2 2v4.01">
+                            </path>
+                        </svg>
+                        <span class="text-sm font-medium">View Cart</span>
+                    </a>
+                    <a href="addresses.html" class="flex items-center gap-3 p-3 rounded-lg border hover:bg-gray-50">
+                        <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                            </path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        <span class="text-sm font-medium">Manage Addresses</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl border p-6">
+                <h3 class="text-lg font-semibold mb-4">Account Info</h3>
+                <div class="space-y-3">
+                    <div class="flex justify-between">
+                        <span class="text-sm text-gray-600">Member Since</span>
+                        <span class="text-sm font-medium" id="member-since">-</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-sm text-gray-600">Last Order</span>
+                        <span class="text-sm font-medium" id="last-order">-</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-sm text-gray-600">COD Eligible</span>
+                        <span class="text-sm font-medium" id="cod-eligible">-</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Orders -->
+        <div class="bg-white rounded-xl border">
+            <div class="p-6 border-b">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-lg font-semibold">Recent Orders</h2>
+                    <a href="track.html" class="text-sm text-emerald-600 hover:text-emerald-700">View All</a>
+                </div>
+            </div>
+            <div id="recent-orders" class="p-6">
+                <div class="text-gray-500">Loading...</div>
+            </div>
+        </div>
+
+        <!-- Order Details Modal -->
+        <div id="order-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+            <div class="flex items-center justify-center min-h-screen p-4">
+                <div class="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                    <div class="p-6 border-b">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-semibold">Order Details</h3>
+                            <button id="close-modal" class="text-gray-400 hover:text-gray-600">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="order-details-content" class="p-6">
+                        <!-- Order details will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+        import { getFirestore, collection, query, where, getDocs, orderBy, limit, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+        import { firebaseConfig, COLLECTIONS, formatCurrency } from './js/firebase.js';
+        import { fetchUserRole, logout } from './js/auth.js';
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        const accountBtn = document.getElementById('account-btn');
+        const accountMenu = document.getElementById('account-menu');
+        const accountName = document.getElementById('account-name');
+        const accountEmail = document.getElementById('account-email');
+        const accountRole = document.getElementById('account-role');
+        const logoutBtn = document.getElementById('logout-btn');
+
+        function stageBadge(stage) {
+            const cls = `badge stage-${stage.replaceAll(' ', '\\ ')}`;
+            return `<span class='${cls}'>${stage}</span>`;
+        }
+
+        async function loadUserData(uid) {
+            // Load user stats
+            const userDoc = await getDoc(doc(db, COLLECTIONS.users, uid));
+            let userData = {};
+            if (userDoc.exists()) {
+                userData = userDoc.data();
+                document.getElementById('cod-status').textContent = userData.codUnlocked ? 'Enabled' : 'Disabled';
+
+                // Load account info
+                const memberSince = new Date(userData.createdAt || Date.now());
+                document.getElementById('member-since').textContent = memberSince.toLocaleDateString();
+                document.getElementById('cod-eligible').textContent = userData.codUnlocked ? 'Yes' : 'No';
+            }
+
+            // Load all orders to calculate accurate stats
+            const allOrdersRef = query(
+                collection(db, COLLECTIONS.orders),
+                where('userId', '==', uid),
+                orderBy('createdAt', 'desc')
+            );
+            const allOrdersSnap = await getDocs(allOrdersRef);
+
+            // Calculate total spent and order count from actual orders
+            let totalSpent = 0;
+            let successfulOrders = 0;
+            let lastOrderDate = null;
+
+            allOrdersSnap.forEach(doc => {
+                const order = doc.data();
+                // Only count completed/delivered orders for total spent
+                if (order.stage === 'Delivered') {
+                    totalSpent += order.total;
+                    successfulOrders++;
+                }
+                // Track the most recent order date
+                if (!lastOrderDate || order.createdAt > lastOrderDate) {
+                    lastOrderDate = order.createdAt;
+                }
+            });
+
+            // Update stats
+            document.getElementById('total-orders').textContent = successfulOrders;
+            document.getElementById('total-spent').textContent = formatCurrency(totalSpent);
+
+            // Update last order date
+            if (lastOrderDate) {
+                const lastOrderDateObj = new Date(lastOrderDate);
+                document.getElementById('last-order').textContent = lastOrderDateObj.toLocaleDateString();
+            } else {
+                document.getElementById('last-order').textContent = 'No orders yet';
+            }
+
+            // Load recent orders (limit to 5 for display)
+            const ordersRef = query(
+                collection(db, COLLECTIONS.orders),
+                where('userId', '==', uid),
+                orderBy('createdAt', 'desc'),
+                limit(5)
+            );
+            const ordersSnap = await getDocs(ordersRef);
+            const ordersEl = document.getElementById('recent-orders');
+
+            if (ordersSnap.empty) {
+                ordersEl.innerHTML = '<div class="text-gray-500">No orders yet.</div>';
+                return;
+            }
+
+            ordersEl.innerHTML = ordersSnap.docs.map(doc => {
+                const order = doc.data();
+                const items = order.items.map(i => `${i.name} x${i.quantity}`).join(', ');
+                const orderDate = new Date(order.createdAt).toLocaleDateString();
+                const orderTime = new Date(order.createdAt).toLocaleTimeString();
+                return `
+                    <div class="flex items-center justify-between py-4 border-b last:border-0 hover:bg-gray-50 rounded-lg px-2 -mx-2">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-3">
+                                <div class="font-medium">Order #${doc.id.slice(-6)}</div>
+                                ${stageBadge(order.stage)}
+                            </div>
+                            <div class="text-sm text-gray-600 mt-1">${items}</div>
+                            <div class="text-sm text-gray-500 mt-1">${formatCurrency(order.total)} • ${order.paymentMethod} • ${orderDate} ${orderTime}</div>
+                            <div class="text-sm text-gray-500 mt-1">Delivery: ${order.deliveryAddress || 'Address not specified'}</div>
+                        </div>
+                        <div class="text-right">
+                            <button onclick="showOrderDetails('${doc.id}')" class="text-sm text-emerald-600 hover:text-emerald-700 mr-3">View Details</button>
+                            <a href="track.html" class="text-sm text-blue-600 hover:text-blue-700">Track</a>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Global function for order details modal
+        window.showOrderDetails = async (orderId) => {
+            const orderRef = doc(db, COLLECTIONS.orders, orderId);
+            const orderSnap = await getDoc(orderRef);
+
+            if (!orderSnap.exists()) {
+                alert('Order not found');
+                return;
+            }
+
+            const order = orderSnap.data();
+            const orderDate = new Date(order.createdAt).toLocaleString();
+
+            const orderDetailsHTML = `
+                <div class="space-y-6">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <h4 class="font-medium text-gray-900">Order Information</h4>
+                            <p class="text-sm text-gray-600">Order #${orderId.slice(-6)}</p>
+                            <p class="text-sm text-gray-600">Date: ${orderDate}</p>
+                            <p class="text-sm text-gray-600">Status: ${order.stage}</p>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-gray-900">Payment</h4>
+                            <p class="text-sm text-gray-600">Method: ${order.paymentMethod}</p>
+                            <p class="text-sm text-gray-600">Total: ${formatCurrency(order.total)}</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="font-medium text-gray-900 mb-3">Customer Information</h4>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <p class="text-sm text-gray-700"><strong>Name:</strong> ${order.customerInfo ? order.customerInfo.name : 'Not provided'}</p>
+                            <p class="text-sm text-gray-700"><strong>Phone:</strong> ${order.customerInfo ? order.customerInfo.phone : 'Not provided'}</p>
+                            <p class="text-sm text-gray-700"><strong>Email:</strong> ${order.customerInfo ? order.customerInfo.email : 'Not provided'}</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="font-medium text-gray-900 mb-3">Items Ordered</h4>
+                        <div class="space-y-2">
+                            ${order.items.map(item => `
+                                <div class="flex justify-between items-center py-2 border-b">
+                                    <div>
+                                        <p class="font-medium">${item.name}</p>
+                                        <p class="text-sm text-gray-600">₱${item.price} each</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="font-medium">Qty: ${item.quantity}</p>
+                                        <p class="text-sm text-gray-600">₱${(item.price * item.quantity).toFixed(2)}</p>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="font-medium text-gray-900 mb-3">Delivery Address</h4>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <p class="text-sm text-gray-700">${order.deliveryAddress || 'Address not specified'}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('order-details-content').innerHTML = orderDetailsHTML;
+            document.getElementById('order-modal').classList.remove('hidden');
+        };
+
+        // Modal close functionality
+        document.getElementById('close-modal').onclick = () => {
+            document.getElementById('order-modal').classList.add('hidden');
+        };
+
+        // Close modal when clicking outside
+        document.getElementById('order-modal').onclick = (e) => {
+            if (e.target.id === 'order-modal') {
+                document.getElementById('order-modal').classList.add('hidden');
+            }
+        };
+
+        onAuthStateChanged(auth, async (user) => {
+            const uid = user?.uid || localStorage.getItem('uid');
+            if (!uid) { window.location.href = 'login.html'; return; }
+
+            const role = localStorage.getItem('role') || await fetchUserRole(uid);
+            if (role !== 'user') {
+                window.location.href = role === 'admin' ? 'admin.html' : 'pharmacy.html';
+                return;
+            }
+
+            // Update account info
+            accountName.textContent = user?.displayName || 'Account';
+            accountEmail.textContent = user?.email || '';
+            accountRole.textContent = 'User';
+
+            // Setup dropdown
+            accountBtn.onclick = (e) => {
+                e.stopPropagation();
+                accountMenu.classList.toggle('hidden');
+            };
+            logoutBtn.onclick = async () => { await logout(); window.location.href = 'index.html'; };
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!accountBtn.closest('.relative').contains(e.target)) {
+                    accountMenu.classList.add('hidden');
+                }
+            });
+
+            // Load user data
+            await loadUserData(uid);
+        });
+    </script>
+</body>
+
+</html>

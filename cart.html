@@ -1,0 +1,1042 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cart & Checkout — PHARMA DIRECT</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body class="min-h-screen bg-gray-50">
+    <header class="bg-white border-b">
+        <div class="mx-auto container-max px-4 py-3 flex items-center justify-between">
+            <a href="./" class="flex items-center gap-2">
+                <img src="img/icon.png" alt="logo" class="w-6 h-6" />
+                <span class="font-semibold text-lg">PHARMA DIRECT</span>
+            </a>
+        </div>
+    </header>
+
+    <main class="mx-auto container-max px-4 py-8">
+        <!-- Back Button -->
+        <div class="mb-6">
+            <a href="categories.html"
+                class="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-700 font-medium">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+                Back to Categories
+            </a>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-6">
+            <section class="md:col-span-2 bg-white rounded-xl p-4 shadow">
+                <h1 class="text-xl font-semibold">Your Cart</h1>
+                <div id="cart-items" class="mt-4 divide-y"></div>
+            </section>
+            <aside class="bg-white rounded-xl p-4 shadow h-fit">
+                <h2 class="text-lg font-semibold mb-6">Checkout</h2>
+
+                <!-- Customer Information -->
+                <div class="mb-6">
+                    <h3 class="text-md font-semibold mb-3">Customer Information</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                            <input type="text" id="customer-name"
+                                class="w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                                placeholder="Enter your full name" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                            <input type="tel" id="customer-phone"
+                                class="w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                                placeholder="09XX XXX XXXX" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                            <input type="email" id="customer-email"
+                                class="w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                                placeholder="your@email.com" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Delivery Address -->
+                <div class="mb-6">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-md font-semibold">Delivery Address</h3>
+                        <a href="addresses.html" class="text-sm text-emerald-600 hover:text-emerald-700">Manage
+                            Addresses</a>
+                    </div>
+                    <div id="address-selection" class="space-y-3">
+                        <div class="text-sm text-gray-500">Loading addresses...</div>
+                    </div>
+                    <button id="add-new-address-btn"
+                        class="mt-3 w-full rounded-lg border-2 border-dashed border-gray-300 px-3 py-2 text-sm text-gray-600 hover:border-emerald-500 hover:text-emerald-600 transition-colors">
+                        + Add New Address
+                    </button>
+                </div>
+
+                <!-- Payment Method -->
+                <div class="mb-6">
+                    <h3 class="text-md font-semibold mb-3">Payment Method</h3>
+                    <select id="payment-method"
+                        class="w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        <option id="cod-option" style="display: none;">COD</option>
+                        <option>Card</option>
+                        <option>GCash</option>
+                        <option>PayMaya</option>
+                    </select>
+                    <div id="cod-disabled-notice" class="mt-2 text-sm text-amber-600 hidden">
+                        ⚠️ COD (Cash on Delivery) is not available for your account. Please use Card, GCash, or PayMaya.
+                    </div>
+                </div>
+
+                <div id="payment-ui" class="mb-6 text-sm"></div>
+
+                <div class="border-t pt-4">
+                    <div class="space-y-2 mb-4">
+                        <div class="flex items-center justify-between">
+                            <div class="text-gray-600">Subtotal</div>
+                            <div id="total" class="font-medium">₱0.00</div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="text-gray-600">Delivery Fee</div>
+                            <div id="delivery-fee" class="font-medium">₱0.00</div>
+                        </div>
+                        <div class="flex items-center justify-between border-t pt-2">
+                            <div class="text-gray-900 font-semibold">Total</div>
+                            <div id="grand-total" class="font-semibold text-emerald-600">₱0.00</div>
+                        </div>
+                    </div>
+                    <button id="place-order"
+                        class="w-full rounded-lg bg-emerald-600 text-white px-4 py-2 hover:bg-emerald-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed">Place
+                        Order</button>
+                    <div id="feedback" class="mt-3 text-sm text-emerald-700 hidden"></div>
+                    <div id="error-message" class="mt-3 text-sm text-red-600 hidden"></div>
+                </div>
+            </aside>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+        import { firebaseConfig, COLLECTIONS, PAYMENT_METHODS, formatCurrency } from './js/firebase.js';
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        const itemsEl = document.getElementById('cart-items');
+        const totalEl = document.getElementById('total');
+        const paymentMethodEl = document.getElementById('payment-method');
+        const paymentUIEl = document.getElementById('payment-ui');
+        const feedbackEl = document.getElementById('feedback');
+        const errorMessageEl = document.getElementById('error-message');
+        const customerNameEl = document.getElementById('customer-name');
+        const customerPhoneEl = document.getElementById('customer-phone');
+        const customerEmailEl = document.getElementById('customer-email');
+        const addressSelectionEl = document.getElementById('address-selection');
+        const addNewAddressBtn = document.getElementById('add-new-address-btn');
+        const placeOrderBtn = document.getElementById('place-order');
+        const codOption = document.getElementById('cod-option');
+        const codDisabledNotice = document.getElementById('cod-disabled-notice');
+
+        let selectedAddressId = null;
+        let currentUserId = null;
+        let userCodEnabled = false;
+
+        // Validate stock availability for cart items
+        async function validateCartStock(cart) {
+            try {
+                const outOfStockItems = [];
+                const insufficientStockItems = [];
+
+                for (const item of cart) {
+                    // Skip items without product ID (fallback items)
+                    if (!item.id) continue;
+
+                    try {
+                        const productRef = doc(db, COLLECTIONS.products, item.id);
+                        const productSnap = await getDoc(productRef);
+
+                        if (!productSnap.exists()) {
+                            outOfStockItems.push(item.name);
+                            continue;
+                        }
+
+                        const product = productSnap.data();
+                        const availableStock = product.stock || 0;
+
+                        if (availableStock === 0) {
+                            outOfStockItems.push(item.name);
+                        } else if (availableStock < item.quantity) {
+                            insufficientStockItems.push(`${item.name} (available: ${availableStock}, requested: ${item.quantity})`);
+                        }
+                    } catch (error) {
+                        console.error(`Error checking stock for ${item.name}:`, error);
+                        // Assume item is unavailable if we can't check
+                        outOfStockItems.push(item.name);
+                    }
+                }
+
+                if (outOfStockItems.length > 0 || insufficientStockItems.length > 0) {
+                    let message = 'Some items in your cart are no longer available:\n\n';
+
+                    if (outOfStockItems.length > 0) {
+                        message += `Out of stock: ${outOfStockItems.join(', ')}\n`;
+                    }
+
+                    if (insufficientStockItems.length > 0) {
+                        message += `Insufficient stock: ${insufficientStockItems.join(', ')}\n`;
+                    }
+
+                    message += '\nPlease update your cart and try again.';
+
+                    return {
+                        valid: false,
+                        message: message,
+                        outOfStock: outOfStockItems,
+                        insufficientStock: insufficientStockItems
+                    };
+                }
+
+                return { valid: true };
+
+            } catch (error) {
+                console.error('Error validating cart stock:', error);
+                return {
+                    valid: false,
+                    message: 'Unable to verify stock availability. Please try again later.'
+                };
+            }
+        }
+
+        // Load user data and check COD eligibility
+        async function loadUserData(uid) {
+            try {
+                const userDoc = await getDoc(doc(db, COLLECTIONS.users, uid));
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    userCodEnabled = userData.codUnlocked || false;
+
+                    // Update COD option visibility
+                    if (userCodEnabled) {
+                        codOption.style.display = 'block';
+                        codDisabledNotice.classList.add('hidden');
+                        // If COD is enabled and currently selected, make sure UI shows correct state
+                        if (paymentMethodEl.value === 'COD') {
+                            renderPaymentUI();
+                        }
+                    } else {
+                        codOption.style.display = 'none';
+                        codDisabledNotice.classList.remove('hidden');
+                        // If COD was selected but now disabled, switch to Card
+                        if (paymentMethodEl.value === 'COD') {
+                            paymentMethodEl.value = 'Card';
+                        }
+                    }
+
+                    // Always render payment UI after loading user data
+                    renderPaymentUI();
+
+                    // Auto-populate customer info from user profile
+                    const user = auth.currentUser;
+                    if (user && !customerNameEl.value) {
+                        customerNameEl.value = user.displayName || '';
+                    }
+                    if (user && !customerEmailEl.value) {
+                        customerEmailEl.value = user.email || '';
+                    }
+
+                    console.log('User COD enabled:', userCodEnabled);
+                }
+            } catch (error) {
+                console.error('Error loading user data:', error);
+            }
+        }
+
+        async function loadAddresses() {
+            if (!currentUserId) return;
+
+            const addressesRef = query(collection(db, COLLECTIONS.addresses), where('userId', '==', currentUserId));
+            const addressesSnap = await getDocs(addressesRef);
+
+            if (addressesSnap.empty) {
+                addressSelectionEl.innerHTML = `
+                    <div class="text-center py-4">
+                        <p class="text-sm text-gray-500">No addresses found</p>
+                        <p class="text-xs text-gray-400">Add an address to continue</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            let defaultAddressId = null;
+            let defaultAddressesCount = 0;
+
+            addressesSnap.forEach(docSnap => {
+                const address = docSnap.data();
+                const addressId = docSnap.id;
+                const isDefault = address.isDefault;
+                const isSelected = selectedAddressId === addressId;
+
+                // Count default addresses and handle selection
+                if (isDefault) {
+                    defaultAddressesCount++;
+                    // Only set as selected if it's the first default address encountered
+                    if (!selectedAddressId) {
+                        selectedAddressId = addressId;
+                        defaultAddressId = addressId;
+                    }
+                }
+
+                html += `
+                    <div class="border rounded-lg p-3 cursor-pointer transition-colors ${isSelected ? 'border-emerald-500 bg-emerald-50' : 'border-gray-200 hover:border-emerald-300'}" onclick="selectAddress('${addressId}')">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <input type="radio" name="address" value="${addressId}" ${isSelected ? 'checked' : ''} class="text-emerald-600 focus:ring-emerald-500">
+                                    <span class="font-medium text-sm">${address.houseNumber} ${address.street}</span>
+                                    ${isDefault && defaultAddressesCount <= 1 ? '<span class="bg-emerald-100 text-emerald-800 text-xs px-2 py-0.5 rounded-full">Default</span>' : ''}
+                                    ${isDefault && defaultAddressesCount > 1 ? '<span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-0.5 rounded-full">Multiple Default</span>' : ''}
+                                </div>
+                                <p class="text-xs text-gray-600 ml-5">${address.barangay}, ${address.city}, ${address.province} ${address.postalCode}</p>
+                                ${address.landmark ? `<p class="text-xs text-gray-500 ml-5">Note: ${address.landmark}</p>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            addressSelectionEl.innerHTML = html;
+
+            // Warn about multiple default addresses
+            if (defaultAddressesCount > 1) {
+                console.warn(`⚠️ User has ${defaultAddressesCount} default addresses. This should be fixed by the address saving logic.`);
+                // You could also show a user warning here if needed
+            }
+
+            // Auto-select default address if none selected
+            if (!selectedAddressId && defaultAddressId) {
+                selectedAddressId = defaultAddressId;
+                updateAddressSelection();
+            }
+        }
+
+        function selectAddress(addressId) {
+            selectedAddressId = addressId;
+            updateAddressSelection();
+            updateDeliveryFee(); // Update delivery fee when address changes
+        }
+
+        function updateAddressSelection() {
+            const radios = document.querySelectorAll('input[name="address"]');
+            radios.forEach(radio => {
+                const container = radio.closest('.border');
+                if (radio.value === selectedAddressId) {
+                    radio.checked = true;
+                    container.classList.add('border-emerald-500', 'bg-emerald-50');
+                    container.classList.remove('border-gray-200');
+                } else {
+                    radio.checked = false;
+                    container.classList.remove('border-emerald-500', 'bg-emerald-50');
+                    container.classList.add('border-gray-200');
+                }
+            });
+        }
+
+        async function loadCart() {
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            let html = '';
+            let total = 0;
+            let hasStockIssues = false;
+
+            // Check stock for each item
+            for (const [idx, item] of cart.entries()) {
+                let stockInfo = '';
+                let itemClass = '';
+
+                if (item.id) {
+                    try {
+                        const productRef = doc(db, COLLECTIONS.products, item.id);
+                        const productSnap = await getDoc(productRef);
+
+                        if (productSnap.exists()) {
+                            const product = productSnap.data();
+                            const availableStock = product.stock || 0;
+                            const isDisabled = product.disabled === true;
+
+                            if (isDisabled) {
+                                stockInfo = '<span class="text-red-500 text-xs">Currently unavailable</span>';
+                                itemClass = 'opacity-60 bg-red-50 border-l-4 border-red-400';
+                                hasStockIssues = true;
+                            } else if (availableStock === 0) {
+                                stockInfo = '<span class="text-red-500 text-xs">Out of stock</span>';
+                                itemClass = 'opacity-60 bg-red-50 border-l-4 border-red-400';
+                                hasStockIssues = true;
+                            } else if (availableStock < item.quantity) {
+                                stockInfo = `<span class="text-yellow-600 text-xs">Only ${availableStock} available</span>`;
+                                itemClass = 'border-l-4 border-yellow-400 bg-yellow-50';
+                                hasStockIssues = true;
+                            } else {
+                                stockInfo = `<span class="text-green-600 text-xs">${availableStock} in stock</span>`;
+                            }
+                        } else {
+                            stockInfo = '<span class="text-red-500 text-xs">Product not found</span>';
+                            itemClass = 'opacity-60';
+                            hasStockIssues = true;
+                        }
+                    } catch (error) {
+                        console.error(`Error checking stock for ${item.name}:`, error);
+                        stockInfo = '<span class="text-gray-500 text-xs">Stock info unavailable</span>';
+                    }
+                } else {
+                    stockInfo = '<span class="text-gray-500 text-xs">Stock info unavailable</span>';
+                }
+
+                total += item.price * item.quantity;
+                html += `
+          <div class='py-3 flex gap-3 items-center ${itemClass}'>
+            <img src='${item.imageURL}' class='w-16 h-16 rounded object-cover border' />
+            <div class='flex-1'>
+              <div class='font-medium'>${item.name}</div>
+              <div class='text-sm text-gray-500'>Qty: ${item.quantity}</div>
+              <div class='mt-1'>${stockInfo}</div>
+            </div>
+            <div class='font-medium'>
+                ${item.discount > 0 ? `
+                    <div class="text-right">
+                        <div class="text-sm text-gray-500 line-through">${formatCurrency((item.originalPrice || item.price) * item.quantity)}</div>
+                        <div>${formatCurrency(item.price * item.quantity)}</div>
+                        <div class="text-xs text-red-600">${item.discount}% OFF</div>
+                    </div>
+                ` : `
+                    ${formatCurrency(item.price * item.quantity)}
+                `}
+            </div>
+            <button data-idx='${idx}' class='text-sm text-red-600 hover:text-red-700'>Remove</button>
+          </div>`;
+            }
+
+            itemsEl.innerHTML = html || "<div class='py-6 text-gray-500'>Your cart is empty.</div>";
+            totalEl.textContent = formatCurrency(total);
+            updateDeliveryFee(); // Update delivery fee when cart changes
+
+            // Show warning if there are stock issues
+            if (hasStockIssues) {
+                const warningDiv = document.createElement('div');
+                warningDiv.className = 'mt-4 p-3 bg-red-50 border border-red-200 rounded-lg';
+                warningDiv.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <span class="text-red-600">🚫</span>
+                        <span class="text-sm text-red-800">Some items in your cart are currently out of stock or unavailable. You cannot place this order until these items are restocked or removed from your cart.</span>
+                    </div>
+                `;
+                itemsEl.appendChild(warningDiv);
+            }
+        }
+
+        itemsEl.addEventListener('click', async (e) => {
+            const btn = e.target.closest('button[data-idx]');
+            if (!btn) return;
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            cart.splice(Number(btn.dataset.idx), 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            await loadCart();
+        });
+
+        function renderPaymentUI() {
+            const method = paymentMethodEl.value;
+            if (method === 'COD') {
+                if (userCodEnabled) {
+                    paymentUIEl.innerHTML = `<div class='p-3 rounded-lg bg-emerald-50 text-emerald-800'>Cash on Delivery selected. Pay to rider upon delivery.</div>`;
+                } else {
+                    paymentUIEl.innerHTML = `<div class='p-3 rounded-lg bg-red-50 text-red-800'>COD is not available for your account. Please select a different payment method.</div>`;
+                }
+            } else if (method === 'Card') {
+                paymentUIEl.innerHTML = `
+          <div class='p-3 rounded-lg border'>
+            <div class='text-sm text-gray-600'>Card payment will be processed securely after order placement.</div>
+            <div class='mt-2 text-xs text-blue-600'>You will be redirected to a secure payment page.</div>
+          </div>`;
+            } else if (method === 'GCash' || method === 'PayMaya') {
+                paymentUIEl.innerHTML = `
+          <div class='p-3 rounded-lg border'>
+            <div class='text-sm text-gray-600'>${method} payment will be processed after order placement.</div>
+            <div class='mt-2 text-xs text-blue-600'>You will be redirected to a secure payment page with QR code.</div>
+          </div>`;
+            }
+        }
+
+        paymentMethodEl.addEventListener('change', renderPaymentUI);
+
+        function showError(message) {
+            errorMessageEl.textContent = message;
+            errorMessageEl.classList.remove('hidden');
+            feedbackEl.classList.add('hidden');
+        }
+
+        function showSuccess(message) {
+            feedbackEl.textContent = message;
+            feedbackEl.classList.remove('hidden');
+            errorMessageEl.classList.add('hidden');
+        }
+
+        function hideMessages() {
+            feedbackEl.classList.add('hidden');
+            errorMessageEl.classList.add('hidden');
+        }
+
+        // Delivery validation for Rizal province and Antipolo city only
+        function validateDeliveryArea(address) {
+            const supportedAreas = [
+                'Rizal',
+                'Antipolo'
+            ];
+
+            const city = address.city || '';
+            const province = address.province || '';
+
+            // Check if city is Antipolo or province is Rizal
+            const isSupported = supportedAreas.some(area =>
+                city.toLowerCase().includes(area.toLowerCase()) ||
+                province.toLowerCase().includes(area.toLowerCase())
+            );
+
+            return {
+                valid: isSupported,
+                message: isSupported ? '' : 'Sorry, delivery is not available in your area. We currently deliver to Rizal province and Antipolo city only.'
+            };
+        }
+
+        // Calculate delivery fee based on location
+        function calculateDeliveryFee(address, orderTotal) {
+            if (!address) return 0;
+
+            const city = address.city || '';
+            const barangay = address.barangay || '';
+
+            // Free delivery for orders >= ₱500
+            if (orderTotal >= 500) {
+                return 0;
+            }
+
+            // Base delivery fee
+            let deliveryFee = 50;
+
+            // Adjust fee based on location
+            if (city.toLowerCase().includes('antipolo')) {
+                deliveryFee = 50;
+            } else if (city.toLowerCase().includes('rizal')) {
+                deliveryFee = 60;
+            } else {
+                deliveryFee = 70; // Default for other Rizal areas
+            }
+
+            return deliveryFee;
+        }
+
+        // Calculate cart total
+        function calculateTotal() {
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            return cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        }
+
+        // Update delivery fee display
+        function updateDeliveryFee() {
+            if (!selectedAddressId) {
+                document.getElementById('delivery-fee').textContent = '₱0.00';
+                document.getElementById('grand-total').textContent = formatCurrency(calculateTotal());
+                return;
+            }
+
+            // Get address details
+            const addressRef = doc(db, COLLECTIONS.addresses, selectedAddressId);
+            getDoc(addressRef).then(addressSnap => {
+                if (addressSnap.exists()) {
+                    const address = addressSnap.data();
+                    const orderTotal = calculateTotal();
+                    const deliveryFee = calculateDeliveryFee(address, orderTotal);
+                    const grandTotal = orderTotal + deliveryFee;
+
+                    document.getElementById('delivery-fee').textContent = formatCurrency(deliveryFee);
+                    document.getElementById('grand-total').textContent = formatCurrency(grandTotal);
+                }
+            });
+        }
+
+        async function placeOrder() {
+            hideMessages();
+
+            // Get cart data early for validation
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+
+            // Validate customer information
+            const customerName = customerNameEl.value.trim();
+            const customerPhone = customerPhoneEl.value.trim();
+            const customerEmail = customerEmailEl.value.trim();
+
+            if (!customerName) {
+                showError('Please enter your full name');
+                customerNameEl.focus();
+                return;
+            }
+
+            if (!customerPhone) {
+                showError('Please enter your phone number');
+                customerPhoneEl.focus();
+                return;
+            }
+
+            if (!customerEmail) {
+                showError('Please enter your email address');
+                customerEmailEl.focus();
+                return;
+            }
+
+            if (!selectedAddressId) {
+                showError('Please select a delivery address');
+                return;
+            }
+
+            // Validate COD eligibility
+            const paymentMethod = paymentMethodEl.value;
+            if (paymentMethod === 'COD' && !userCodEnabled) {
+                showError('COD (Cash on Delivery) is not available for your account. Please select a different payment method.');
+                paymentMethodEl.focus();
+                return;
+            }
+
+            // Validate stock availability for all cart items (block orders with out-of-stock items)
+            const stockValidationResult = await validateCartStock(cart);
+            if (!stockValidationResult.valid) {
+                showError(stockValidationResult.message + '\n\nPlease remove out-of-stock items from your cart or wait for them to be restocked.');
+                // Refresh cart to show updated stock info
+                await loadCart();
+                return;
+            }
+
+            const user = auth.currentUser;
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            if (!cart.length) {
+                showError('Your cart is empty');
+                return;
+            }
+
+            try {
+                placeOrderBtn.disabled = true;
+                placeOrderBtn.textContent = 'Placing Order...';
+
+                // Get selected address details
+                const addressRef = doc(db, COLLECTIONS.addresses, selectedAddressId);
+                const addressSnap = await getDoc(addressRef);
+
+                if (!addressSnap.exists()) {
+                    showError('Selected address not found. Please select another address.');
+                    return;
+                }
+
+                const address = addressSnap.data();
+
+                // Validate delivery area
+                const deliveryValidation = validateDeliveryArea(address);
+                if (!deliveryValidation.valid) {
+                    showError(deliveryValidation.message);
+                    return;
+                }
+
+                const deliveryAddress = `${address.houseNumber} ${address.street}, ${address.barangay}, ${address.city}, ${address.province} ${address.postalCode}${address.landmark ? ` (Note: ${address.landmark})` : ''}`;
+
+                const total = cart.reduce((s, i) => s + i.price * i.quantity, 0);
+                const deliveryFee = calculateDeliveryFee(address, total);
+                const grandTotal = total + deliveryFee;
+                const paymentMethod = paymentMethodEl.value;
+                const paymentInfo = paymentMethod === 'COD' ? 'Pay upon delivery' : 'Pending confirmation';
+
+                // Ensure cart items have productId field for proper stock management
+                const orderItems = cart.map(item => ({
+                    ...item,
+                    productId: item.id // Add productId field for pharmacy order processing
+                }));
+
+                const order = {
+                    userId: user.uid,
+                    customerInfo: {
+                        name: customerName,
+                        phone: customerPhone,
+                        email: customerEmail
+                    },
+                    deliveryAddress: deliveryAddress,
+                    deliveryFee: deliveryFee,
+                    grandTotal: grandTotal,
+                    items: orderItems,
+                    total,
+                    paymentStatus: paymentMethod === 'COD' ? 'Pending' : 'Pending',
+                    cod: paymentMethod === 'COD',
+                    paymentMethod,
+                    paymentInfo,
+                    stage: 'Pending',
+                    createdAt: serverTimestamp()
+                };
+
+                const orderRef = await addDoc(collection(db, COLLECTIONS.orders), order);
+                const orderId = orderRef.id;
+
+                // Clear cart for all payment methods
+                localStorage.removeItem('cart');
+                await loadCart();
+
+                // Handle different payment methods
+                if (paymentMethod === 'COD') {
+                    showSuccess('Order placed successfully! You can track it in Track Order.');
+                } else {
+                    // For Card/GCash/PayMaya, redirect to payment page
+                    const paymentUrl = `pay.html?orderId=${orderId}`;
+                    showSuccess('Order created! Redirecting to payment...');
+                    setTimeout(() => {
+                        window.location.href = paymentUrl;
+                    }, 1500);
+                }
+
+                // Clear form
+                customerNameEl.value = '';
+                customerPhoneEl.value = '';
+                customerEmailEl.value = '';
+
+            } catch (error) {
+                console.error('=== ORDER PLACEMENT ERROR ===');
+                console.error('Error details:', error);
+                console.error('Error code:', error.code);
+                console.error('Error message:', error.message);
+                console.error('User authenticated:', auth.currentUser ? 'YES' : 'NO');
+                console.error('User UID:', auth.currentUser?.uid);
+                console.error('Order data userId:', user.uid);
+                console.error('========================');
+
+                let errorMessage = 'Failed to place order. ';
+                if (error.code === 'permission-denied') {
+                    errorMessage += 'Firebase permission denied. Please check your Firebase security rules for the orders collection.';
+                } else if (error.code === 'unavailable') {
+                    errorMessage += 'Network connection issue. Please try again.';
+                } else {
+                    errorMessage += `Error: ${error.code || 'Unknown'}`;
+                }
+
+                showError(errorMessage);
+            } finally {
+                placeOrderBtn.disabled = false;
+                placeOrderBtn.textContent = 'Place Order';
+            }
+        }
+
+        // Add address modal functionality
+        const citiesByProvince = {
+            'Metro Manila': ['Manila', 'Quezon City', 'Caloocan', 'Las Piñas', 'Makati', 'Malabon', 'Mandaluyong', 'Marikina', 'Muntinlupa', 'Navotas', 'Parañaque', 'Pasay', 'Pasig', 'Pateros', 'San Juan', 'Taguig', 'Valenzuela'],
+            'Cavite': ['Bacoor', 'Cavite City', 'Dasmariñas', 'Imus', 'Kawit', 'Noveleta', 'Rosario', 'Silang', 'Tanza', 'Trece Martires City'],
+            'Laguna': ['Biñan', 'Cabuyao', 'Calamba', 'San Pablo', 'Santa Rosa', 'Alaminos', 'Bay', 'Calauan', 'Cavinti', 'Famy', 'Kalayaan', 'Liliw', 'Los Baños', 'Luisiana', 'Lumban', 'Mabitac', 'Magdalena', 'Majayjay', 'Nagcarlan', 'Paete', 'Pagsanjan', 'Pakil', 'Pangil', 'Pila', 'Rizal', 'San Pedro', 'Siniloan', 'Victoria'],
+            'Batangas': ['Batangas City', 'Lipa', 'Tanauan', 'Bauan', 'Calaca', 'Calatagan', 'Cuenca', 'Ibaan', 'Laurel', 'Lemery', 'Lian', 'Lobo', 'Mabini', 'Malvar', 'Mataasnakahoy', 'Nasugbu', 'Padre Garcia', 'Rosario', 'San Jose', 'San Juan', 'San Luis', 'San Nicolas', 'Santo Tomas', 'Taal', 'Talisay', 'Taysan', 'Tingloy', 'Tuy'],
+            'Rizal': ['Antipolo', 'Angono', 'Baras', 'Binangonan', 'Cainta', 'Cardona', 'Jalajala', 'Morong', 'Pililla', 'Rodriguez', 'San Mateo', 'Tanay', 'Taytay', 'Teresa'],
+            'Quezon': ['Lucena', 'Tayabas', 'Alabat', 'Atimonan', 'Buenavista', 'Burdeos', 'Calauag', 'Candelaria', 'Catanauan', 'Dolores', 'General Luna', 'General Nakar', 'Guinayangan', 'Gumaca', 'Infanta', 'Jomalig', 'Lopez', 'Lucban', 'Macalelon', 'Mauban', 'Mulanay', 'Padre Burgos', 'Pagbilao', 'Panukulan', 'Patnanungan', 'Perez', 'Pitogo', 'Plaridel', 'Polillo', 'Quezon', 'Real', 'Sampaloc', 'San Andres', 'San Antonio', 'San Francisco', 'San Narciso', 'Sariaya', 'Tagkawayan', 'Tiaong', 'Unisan'],
+            'Bulacan': ['Malolos', 'Meycauayan', 'San Jose del Monte', 'Baliuag', 'Bocaue', 'Calumpit', 'Doña Remedios Trinidad', 'Guiguinto', 'Hagonoy', 'Marilao', 'Norzagaray', 'Obando', 'Pandi', 'Paombong', 'Plaridel', 'Pulilan', 'San Ildefonso', 'San Miguel', 'San Rafael', 'Santa Maria'],
+            'Pampanga': ['Angeles', 'San Fernando', 'Apalit', 'Arayat', 'Bacolor', 'Candaba', 'Floridablanca', 'Guagua', 'Lubao', 'Mabalacat', 'Macabebe', 'Magalang', 'Masantol', 'Mexico', 'Minalin', 'Porac', 'San Luis', 'San Simon', 'Santa Ana', 'Santa Rita', 'Santo Tomas', 'Sasmuan'],
+            'Tarlac': ['Tarlac City', 'Anao', 'Bamban', 'Camiling', 'Capas', 'Concepcion', 'Gerona', 'La Paz', 'Mayantoc', 'Moncada', 'Paniqui', 'Pura', 'Ramos', 'San Clemente', 'San Jose', 'San Manuel', 'Santa Ignacia', 'Victoria'],
+            'Nueva Ecija': ['Cabanatuan', 'Gapan', 'San Jose', 'Aliaga', 'Bongabon', 'Cabiao', 'Carranglan', 'Cuyapo', 'Gabaldon', 'General Mamerto Natividad', 'General Tinio', 'Guimba', 'Jaen', 'Laur', 'Llanera', 'Lupao', 'Muñoz', 'Nampicuan', 'Palayan', 'Pantabangan', 'Peñaranda', 'Quezon', 'Rizal', 'San Antonio', 'San Isidro', 'San Leonardo', 'Santa Rosa', 'Santo Domingo', 'Talavera', 'Talugtug', 'Zaragoza']
+        };
+
+        // Address modal functionality
+        let addressModal = null;
+
+        function showAddressModal() {
+            if (addressModal) return;
+
+            addressModal = document.createElement('div');
+            addressModal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+            addressModal.innerHTML = `
+                <div class="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                    <div class="p-6 border-b">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-semibold">Add New Address</h3>
+                            <button onclick="closeAddressModal()" class="text-gray-400 hover:text-gray-600">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <form id="quick-address-form" class="p-6">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Province</label>
+                                <select id="modal-province" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
+                                    <option value="">Select Province</option>
+                                    <option value="Metro Manila">Metro Manila</option>
+                                    <option value="Cavite">Cavite</option>
+                                    <option value="Laguna">Laguna</option>
+                                    <option value="Batangas">Batangas</option>
+                                    <option value="Rizal">Rizal</option>
+                                    <option value="Quezon">Quezon</option>
+                                    <option value="Bulacan">Bulacan</option>
+                                    <option value="Pampanga">Pampanga</option>
+                                    <option value="Tarlac">Tarlac</option>
+                                    <option value="Nueva Ecija">Nueva Ecija</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">City/Municipality</label>
+                                <select id="modal-city" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
+                                    <option value="">Select City/Municipality</option>
+                                </select>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Barangay</label>
+                                    <input type="text" id="modal-barangay" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Enter barangay" required>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Postal Code</label>
+                                    <input type="text" id="modal-postal-code" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="1234" required>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">House/Unit No. & Street</label>
+                                <input type="text" id="modal-street" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="123 Main Street" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Landmark/Notes (Optional)</label>
+                                <textarea id="modal-landmark" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500" rows="2" placeholder="Near the church, beside the school, etc."></textarea>
+                            </div>
+                        </div>
+                        <div class="flex justify-end space-x-3 mt-6">
+                            <button type="button" onclick="closeAddressModal()" class="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">Cancel</button>
+                            <button type="submit" class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700">Save Address</button>
+                        </div>
+                    </form>
+                </div>
+            `;
+
+            document.body.appendChild(addressModal);
+
+            // Province change handler
+            const provinceSelect = addressModal.querySelector('#modal-province');
+            const citySelect = addressModal.querySelector('#modal-city');
+
+            provinceSelect.addEventListener('change', (e) => {
+                const selectedProvince = e.target.value;
+                citySelect.innerHTML = '<option value="">Select City/Municipality</option>';
+
+                if (citiesByProvince[selectedProvince]) {
+                    citiesByProvince[selectedProvince].forEach(city => {
+                        const option = document.createElement('option');
+                        option.value = city;
+                        option.textContent = city;
+                        citySelect.appendChild(option);
+                    });
+                }
+            });
+
+            // Form submission
+            const form = addressModal.querySelector('#quick-address-form');
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                // Validate user authentication
+                if (!currentUserId) {
+                    alert('Please log in to save addresses.');
+                    closeAddressModal();
+                    return;
+                }
+
+                const formData = {
+                    userId: currentUserId,
+                    province: provinceSelect.value,
+                    city: citySelect.value,
+                    barangay: addressModal.querySelector('#modal-barangay').value,
+                    postalCode: addressModal.querySelector('#modal-postal-code').value,
+                    houseNumber: addressModal.querySelector('#modal-street').value.split(' ')[0] || '',
+                    street: addressModal.querySelector('#modal-street').value,
+                    landmark: addressModal.querySelector('#modal-landmark').value,
+                    isDefault: false,
+                    createdAt: Date.now()
+                };
+
+                try {
+                    // Try addDoc first, fallback to manual ID if needed
+                    try {
+                        await addDoc(collection(db, COLLECTIONS.addresses), formData);
+                    } catch (permError) {
+                        // If addDoc fails due to permissions, try with a manual document ID
+                        if (permError.code === 'permission-denied') {
+                            const manualId = `${currentUserId}_${Date.now()}`;
+                            await setDoc(doc(db, COLLECTIONS.addresses, manualId), formData);
+                        } else {
+                            throw permError;
+                        }
+                    }
+
+                    closeAddressModal();
+                    await loadAddresses();
+
+                    // Show success message
+                    showSuccessMessage('Address added successfully!');
+
+                } catch (error) {
+                    console.error('Error saving address:', error);
+
+                    // Provide helpful error messages
+                    let errorMessage = 'Error saving address. ';
+                    if (error.code === 'permission-denied') {
+                        errorMessage += 'Please check your account permissions or contact support.';
+                    } else if (error.code === 'unavailable') {
+                        errorMessage += 'Network connection issue. Please try again.';
+                    } else {
+                        errorMessage += 'Please try again or contact support if the problem persists.';
+                    }
+
+                    alert(errorMessage);
+                }
+            });
+        }
+
+        function closeAddressModal() {
+            if (addressModal) {
+                addressModal.remove();
+                addressModal = null;
+            }
+        }
+
+        // Helper function to show success messages
+        function showSuccessMessage(message) {
+            const successDiv = document.createElement('div');
+            successDiv.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+            successDiv.textContent = message;
+            document.body.appendChild(successDiv);
+
+            setTimeout(() => {
+                successDiv.remove();
+            }, 3000);
+        }
+
+        // Quick test for order permissions
+        window.quickOrderTest = async () => {
+            console.log('🚀 QUICK ORDER TEST');
+            try {
+                const user = auth.currentUser;
+                if (!user) {
+                    console.log('❌ Not logged in');
+                    return;
+                }
+
+                const testOrder = {
+                    userId: user.uid,
+                    test: 'quick test',
+                    createdAt: Date.now()
+                };
+
+                console.log('📝 Creating test order...');
+                const testRef = doc(db, COLLECTIONS.orders, `quick_test_${Date.now()}`);
+                await setDoc(testRef, testOrder);
+
+                console.log('✅ Test order created successfully!');
+                await deleteDoc(testRef);
+                console.log('🧹 Test cleaned up');
+
+            } catch (error) {
+                console.error('❌ Quick test failed:', error.code);
+                if (error.code === 'permission-denied') {
+                    console.log('🔧 Deploy firestore.rules to Firebase Console');
+                }
+            }
+        };
+
+        // Test function for debugging order permissions
+        window.testOrderPermissions = async () => {
+            console.log('=== ORDER PERMISSIONS TEST ===');
+            try {
+                const user = auth.currentUser;
+                console.log('User authenticated:', user ? 'YES' : 'NO');
+
+                if (!user) {
+                    console.log('❌ No user authenticated');
+                    return;
+                }
+
+                // Test data for order
+                const testOrder = {
+                    userId: user.uid,
+                    customerInfo: {
+                        name: 'Test User',
+                        phone: '09123456789',
+                        email: 'test@example.com'
+                    },
+                    deliveryAddress: 'Test Address',
+                    items: [{ name: 'Test Item', price: 100, quantity: 1 }],
+                    total: 100,
+                    paymentMethod: 'COD',
+                    paymentStatus: 'Pending',
+                    stage: 'Pending',
+                    createdAt: Date.now()
+                };
+
+                console.log('Testing order creation...');
+                const testDocRef = doc(db, COLLECTIONS.orders, `test_order_${Date.now()}`);
+                await setDoc(testDocRef, testOrder);
+                console.log('✅ Order creation test successful!');
+
+                // Clean up test order
+                await deleteDoc(testDocRef);
+                console.log('✅ Test cleanup successful');
+
+                console.log('🎉 ORDER PERMISSIONS WORKING!');
+
+            } catch (error) {
+                console.error('❌ ORDER TEST FAILED:', error);
+                console.error('Error code:', error.code);
+                console.error('Error message:', error.message);
+
+                if (error.code === 'permission-denied') {
+                    console.log('🔧 SOLUTION: Update Firebase security rules for orders collection');
+                    console.log('   Copy the rules from firestore.rules to Firebase Console');
+                }
+            }
+            console.log('================================');
+        };
+
+        // Global functions
+        window.selectAddress = selectAddress;
+        window.showAddressModal = showAddressModal;
+        window.closeAddressModal = closeAddressModal;
+        window.testOrderPermissions = testOrderPermissions;
+        window.quickOrderTest = quickOrderTest;
+
+        // Event listeners
+        addNewAddressBtn.addEventListener('click', showAddressModal);
+        document.getElementById('place-order').addEventListener('click', placeOrder);
+
+
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            currentUserId = user.uid;
+            await loadUserData(user.uid);  // Load user data including COD status
+            await loadAddresses();
+            await loadCart(); // Load cart with stock validation
+        });
+
+        renderPaymentUI();
+    </script>
+</body>
+
+</html>

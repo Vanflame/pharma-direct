@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product — PHARMA DIRECT</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body class="min-h-screen bg-white text-gray-900"
+    style="font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Arial, sans-serif;">
+    <header class="sticky top-0 z-40 bg-white/80 backdrop-blur border-b">
+        <div class="mx-auto container-max px-4 py-3 flex items-center justify-between">
+            <a href="./" class="flex items-center gap-2">
+                <img src="https://cdn.jsdelivr.net/gh/tabler/tabler-icons/icons-png/pill.png" alt="logo"
+                    class="w-6 h-6" />
+                <span class="font-semibold text-lg">PHARMA DIRECT</span>
+            </a>
+            <nav class="hidden md:flex items-center gap-6">
+                <a href="categories.html" class="text-gray-600 hover:text-gray-900">Categories</a>
+                <a href="track.html" class="text-gray-600 hover:text-gray-900">Track Order</a>
+                <a href="cart.html"
+                    class="inline-flex items-center gap-2 rounded-lg bg-emerald-600 text-white px-4 py-2 shadow hover:bg-emerald-700">Cart
+                    <span id="cart-count"
+                        class="ml-1 inline-flex items-center justify-center w-5 h-5 rounded-full bg-white text-emerald-700 text-xs">0</span>
+                </a>
+                <a id="login-link" href="login.html" class="text-gray-600 hover:text-gray-900">Login</a>
+                <div id="account-area" class="relative hidden">
+                    <button id="account-btn"
+                        class="inline-flex items-center gap-2 rounded-lg border px-3 py-2 hover:bg-gray-50">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        <span id="account-name" class="text-sm font-medium truncate max-w-24"></span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 flex-shrink-0" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div id="account-menu" class="dropdown-panel hidden">
+                        <div class="user-info">
+                            <p class="user-email" id="account-email"></p>
+                            <p class="user-role" id="account-role"></p>
+                        </div>
+                        <a id="dashboard-link" href="#" class="dropdown-item">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M8 5a2 2 0 012-2h4a2 2 0 012 2v2H8V5z"></path>
+                            </svg>
+                            <span>Dashboard</span>
+                        </a>
+                        <a href="track.html" class="dropdown-item">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
+                                </path>
+                            </svg>
+                            <span>My Orders</span>
+                        </a>
+                        <button id="logout-btn" class="dropdown-item w-full text-left">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
+                                </path>
+                            </svg>
+                            <span>Logout</span>
+                        </button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="mx-auto container-max px-4 py-8">
+        <!-- Back Button -->
+        <div class="mb-6">
+            <a href="categories.html"
+                class="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-700 font-medium">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+                Back to Categories
+            </a>
+        </div>
+
+        <div id="product-container" class="max-w-4xl mx-auto">
+            <!-- Product will be loaded here -->
+        </div>
+    </main>
+
+    <!-- Mobile bottom navigation -->
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t">
+        <div class="flex items-center justify-around py-2">
+            <a href="./" class="flex flex-col items-center gap-1 p-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                <span class="text-xs text-gray-600">Home</span>
+            </a>
+            <a href="categories.html" class="flex flex-col items-center gap-1 p-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-600" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                </svg>
+                <span class="text-xs text-emerald-600">Categories</span>
+            </a>
+            <a href="track.html" class="flex flex-col items-center gap-1 p-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                </svg>
+                <span class="text-xs text-gray-600">Track</span>
+            </a>
+            <a href="cart.html" class="flex flex-col items-center gap-1 p-2 relative">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m6-5v6a2 2 0 01-2 2H9a2 2 0 01-2-2v-6m8 0V9a2 2 0 00-2-2H9a2 2 0 00-2 2v4.01" />
+                </svg>
+                <span class="text-xs text-gray-600">Cart</span>
+                <span id="mobile-cart-count"
+                    class="absolute -top-1 -right-1 inline-flex items-center justify-center w-4 h-4 rounded-full bg-emerald-600 text-white text-xs">0</span>
+            </a>
+        </div>
+    </nav>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+        import { firebaseConfig, COLLECTIONS, formatCurrency } from './js/firebase.js';
+        import { fetchUserRole, logout } from './js/auth.js';
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentProduct = null;
+
+        // Get product ID from URL
+        function getProductIdFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('id');
+        }
+
+        // Load product data
+        async function loadProduct(productId) {
+            try {
+                const productRef = doc(db, COLLECTIONS.products, productId);
+                const productSnap = await getDoc(productRef);
+
+                if (!productSnap.exists()) {
+                    showError('Product not found');
+                    return;
+                }
+
+                currentProduct = { id: productId, ...productSnap.data() };
+                displayProduct();
+
+            } catch (error) {
+                console.error('Error loading product:', error);
+                showError('Failed to load product');
+            }
+        }
+
+        // Display product
+        function displayProduct() {
+            const container = document.getElementById('product-container');
+            const isOutOfStock = (currentProduct.stock || 0) === 0 || currentProduct.disabled === true;
+            const stockText = currentProduct.disabled ? 'Currently unavailable' :
+                currentProduct.stock !== undefined ? (currentProduct.stock === 0 ? 'Out of stock' : `${currentProduct.stock} in stock`) : 'Stock info unavailable';
+
+            container.innerHTML = `
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Product Image -->
+                    <div class="space-y-4">
+                        <div class="relative">
+                            <img src="${currentProduct.imageURL || 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=800&auto=format&fit=crop'}" 
+                                 alt="${currentProduct.name}" 
+                                 class="w-full h-96 object-cover rounded-xl border" />
+                            ${isOutOfStock ? '<div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-xl"><span class="text-white font-bold text-2xl">SOLD OUT</span></div>' : ''}
+                            ${currentProduct.featured ? '<div class="absolute top-4 right-4 bg-yellow-500 text-white text-sm px-3 py-1 rounded-full">Featured</div>' : ''}
+                        </div>
+                    </div>
+
+                    <!-- Product Details -->
+                    <div class="space-y-6">
+                        <div>
+                            <div class="text-sm text-emerald-600 font-medium mb-2">${currentProduct.category || 'OTC'}</div>
+                            <h1 class="text-3xl font-bold text-gray-900 mb-4">${currentProduct.name}</h1>
+                            <div class="mb-4">
+                                ${currentProduct.discount > 0 ? `
+                                    <div class="flex items-center gap-3">
+                                        <div class="text-3xl font-bold text-emerald-600">${formatCurrency((currentProduct.price || 0) * (1 - (currentProduct.discount || 0) / 100))}</div>
+                                        <div class="text-xl text-gray-500 line-through">${formatCurrency(currentProduct.price || 0)}</div>
+                                        <div class="bg-red-100 text-red-800 text-sm px-3 py-1 rounded-full font-medium">${currentProduct.discount}% OFF</div>
+                                    </div>
+                                ` : `
+                                    <div class="text-3xl font-bold text-emerald-600">${formatCurrency(currentProduct.price || 0)}</div>
+                                `}
+                            </div>
+                            
+                            <!-- Stock Status -->
+                            <div class="flex items-center gap-2 mb-4">
+                                <div class="w-3 h-3 rounded-full ${isOutOfStock ? 'bg-red-500' : 'bg-green-500'}"></div>
+                                <span class="text-sm ${isOutOfStock ? 'text-red-600' : 'text-green-600'}">${stockText}</span>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        ${currentProduct.description ? `
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900 mb-2">Description</h3>
+                                <p class="text-gray-600">${currentProduct.description}</p>
+                            </div>
+                        ` : ''}
+
+                        <!-- Quantity Selector -->
+                        <div class="space-y-3">
+                            <label class="block text-sm font-medium text-gray-700">Quantity</label>
+                            <div class="flex items-center gap-3">
+                                <button id="decrease-qty" ${isOutOfStock ? 'disabled' : ''} 
+                                    class="w-10 h-10 rounded-lg border flex items-center justify-center ${isOutOfStock ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'hover:bg-gray-50'}">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>
+                                    </svg>
+                                </button>
+                                <input type="number" id="quantity" value="1" min="1" max="${currentProduct.stock || 1}" 
+                                    ${isOutOfStock ? 'disabled' : ''} 
+                                    class="w-20 text-center border rounded-lg py-2 ${isOutOfStock ? 'bg-gray-100 text-gray-400' : ''}" />
+                                <button id="increase-qty" ${isOutOfStock ? 'disabled' : ''} 
+                                    class="w-10 h-10 rounded-lg border flex items-center justify-center ${isOutOfStock ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'hover:bg-gray-50'}">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Add to Cart Button -->
+                        <button id="add-to-cart" ${isOutOfStock ? 'disabled' : ''} 
+                            class="w-full py-4 px-6 rounded-lg font-semibold text-lg ${isOutOfStock ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-emerald-600 text-white hover:bg-emerald-700'}">
+                            ${isOutOfStock ? 'Sold Out' : 'Add to Cart'}
+                        </button>
+
+                        <!-- Back to Categories -->
+                        <a href="categories.html" class="block text-center text-emerald-600 hover:text-emerald-700 font-medium">
+                            ← Back to Categories
+                        </a>
+                    </div>
+                </div>
+            `;
+
+            // Add event listeners
+            setupEventListeners();
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            const quantityInput = document.getElementById('quantity');
+            const decreaseBtn = document.getElementById('decrease-qty');
+            const increaseBtn = document.getElementById('increase-qty');
+            const addToCartBtn = document.getElementById('add-to-cart');
+
+            // Quantity controls
+            decreaseBtn?.addEventListener('click', () => {
+                const currentQty = parseInt(quantityInput.value);
+                if (currentQty > 1) {
+                    quantityInput.value = currentQty - 1;
+                }
+            });
+
+            increaseBtn?.addEventListener('click', () => {
+                const currentQty = parseInt(quantityInput.value);
+                const maxQty = currentProduct.stock || 1;
+                if (currentQty < maxQty) {
+                    quantityInput.value = currentQty + 1;
+                }
+            });
+
+            // Add to cart
+            addToCartBtn?.addEventListener('click', () => {
+                const quantity = parseInt(quantityInput.value);
+                addToCart(currentProduct, quantity);
+            });
+        }
+
+        // Add to cart function
+        function addToCart(product, quantity) {
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const existingItem = cart.find(item => item.id === product.id);
+
+            if (existingItem) {
+                existingItem.quantity += quantity;
+            } else {
+                const discountedPrice = product.discount > 0 ? product.price * (1 - product.discount / 100) : product.price;
+                cart.push({
+                    id: product.id,
+                    name: product.name,
+                    price: discountedPrice,
+                    originalPrice: product.price,
+                    discount: product.discount || 0,
+                    imageURL: product.imageURL,
+                    quantity: quantity
+                });
+            }
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+
+            // Show success message
+            const btn = document.getElementById('add-to-cart');
+            const originalText = btn.textContent;
+            btn.textContent = 'Added to Cart!';
+            btn.classList.add('bg-green-600');
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.classList.remove('bg-green-600');
+            }, 2000);
+        }
+
+        // Update cart count
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+            document.getElementById('cart-count').textContent = count;
+            document.getElementById('mobile-cart-count').textContent = count;
+        }
+
+        // Show error message
+        function showError(message) {
+            const container = document.getElementById('product-container');
+            container.innerHTML = `
+                <div class="text-center py-12">
+                    <div class="text-red-600 text-lg font-medium mb-2">Error</div>
+                    <div class="text-gray-600 mb-4">${message}</div>
+                    <a href="categories.html" class="inline-block bg-emerald-600 text-white px-6 py-2 rounded-lg hover:bg-emerald-700">
+                        Back to Categories
+                    </a>
+                </div>
+            `;
+        }
+
+        // Initialize and header account dropdown behavior
+        onAuthStateChanged(auth, async (user) => {
+            updateCartCount();
+
+            const loginLink = document.getElementById('login-link');
+            const accountArea = document.getElementById('account-area');
+            const accountName = document.getElementById('account-name');
+            const accountEmail = document.getElementById('account-email');
+            const accountRole = document.getElementById('account-role');
+            const dashboardLink = document.getElementById('dashboard-link');
+            const accountBtn = document.getElementById('account-btn');
+            const accountMenu = document.getElementById('account-menu');
+            const logoutBtn = document.getElementById('logout-btn');
+
+            if (user) {
+                if (loginLink) loginLink.classList.add('hidden');
+                if (accountArea) accountArea.classList.remove('hidden');
+                if (accountName) accountName.textContent = user.displayName || 'Account';
+                if (accountEmail) accountEmail.textContent = user.email || '';
+                let role = 'user';
+                try { role = await fetchUserRole(user.uid); } catch { }
+                if (accountRole) accountRole.textContent = role.charAt(0).toUpperCase() + role.slice(1);
+                if (dashboardLink) dashboardLink.href = role === 'admin' ? 'admin.html' : role === 'pharmacy' ? 'pharmacy.html' : 'user-dashboard.html';
+                if (accountBtn && accountMenu) {
+                    accountBtn.onclick = (e) => { e.stopPropagation(); accountMenu.classList.toggle('hidden'); };
+                    document.addEventListener('click', (e) => {
+                        if (!accountArea.contains(e.target)) accountMenu.classList.add('hidden');
+                    });
+                }
+                if (logoutBtn && accountMenu) logoutBtn.onclick = async () => { await logout(); accountMenu.classList.add('hidden'); };
+            } else {
+                if (loginLink) loginLink.classList.remove('hidden');
+                if (accountArea) accountArea.classList.add('hidden');
+            }
+
+            const productId = getProductIdFromUrl();
+            if (!productId) {
+                showError('Invalid product link');
+                return;
+            }
+
+            await loadProduct(productId);
+        });
+    </script>
+</body>
+
+</html>

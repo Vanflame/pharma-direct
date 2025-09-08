@@ -1,0 +1,1296 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pharmacy Dashboard — PHARMA DIRECT</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body class="min-h-screen bg-gray-50">
+    <div class="grid md:grid-cols-[260px_1fr] min-h-screen">
+        <aside class="bg-white border-r p-4">
+            <div class="font-semibold text-lg">Pharmacy</div>
+            <nav class="mt-4 space-y-2">
+                <button data-tab="products"
+                    class="w-full text-left rounded-lg px-3 py-2 bg-emerald-50 text-emerald-700">Products</button>
+                <button data-tab="orders" class="w-full text-left rounded-lg px-3 py-2">Orders</button>
+                <button data-tab="wallet" class="w-full text-left rounded-lg px-3 py-2">Wallet</button>
+            </nav>
+            <button id="logout" class="mt-6 w-full rounded-lg border px-3 py-2">Logout</button>
+        </aside>
+        <main class="p-4">
+            <div id="tab-products" class="space-y-4">
+                <h1 class="text-xl font-semibold">Your Products</h1>
+                <form id="product-form" class="grid md:grid-cols-2 gap-4 bg-white rounded-xl border p-6">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
+                            <input name="name" required class="w-full rounded-lg border px-3 py-2"
+                                placeholder="Enter product name" />
+                        </div>
+                        <div class="grid grid-cols-3 gap-3">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Price (₱)</label>
+                                <input name="price" type="number" min="0" step="0.01" required
+                                    class="w-full rounded-lg border px-3 py-2" placeholder="0.00" />
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Discount (%)</label>
+                                <input name="discount" type="number" min="0" max="100" step="1"
+                                    class="w-full rounded-lg border px-3 py-2" placeholder="0" />
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Stock Quantity</label>
+                                <input name="stock" type="number" min="0" required
+                                    class="w-full rounded-lg border px-3 py-2" placeholder="0" />
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                            <select name="category" class="w-full rounded-lg border px-3 py-2">
+                                <option value="">Select Category</option>
+                                <option value="Pain Relief">Pain Relief</option>
+                                <option value="Cold & Flu">Cold & Flu</option>
+                                <option value="Digestive Health">Digestive Health</option>
+                                <option value="Vitamins & Supplements">Vitamins & Supplements</option>
+                                <option value="First Aid">First Aid</option>
+                                <option value="Personal Care">Personal Care</option>
+                                <option value="Baby Care">Baby Care</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Image URL</label>
+                            <input name="imageURL" class="w-full rounded-lg border px-3 py-2"
+                                placeholder="https://example.com/image.jpg" />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                            <textarea name="description" class="w-full rounded-lg border px-3 py-2" rows="3"
+                                placeholder="Product description..."></textarea>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <label class="inline-flex items-center gap-2 text-sm">
+                                <input name="featured" type="checkbox" class="rounded" />
+                                Featured Product
+                            </label>
+                            <label class="inline-flex items-center gap-2 text-sm">
+                                <input name="prescription" type="checkbox" class="rounded" />
+                                Requires Prescription
+                            </label>
+                        </div>
+                    </div>
+                    <div class="md:col-span-2 flex justify-end space-x-3">
+                        <button type="button" id="cancel-edit"
+                            class="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 hidden">Cancel</button>
+                        <button type="submit"
+                            class="px-6 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700">
+                            <span id="submit-text">Add Product</span>
+                        </button>
+                    </div>
+                </form>
+                <div id="products-list" class="bg-white rounded-xl border"></div>
+            </div>
+            <div id="tab-orders" class="hidden">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-semibold">Orders</h2>
+                </div>
+
+                <!-- Order Status Tabs -->
+                <div class="bg-white rounded-xl border mb-6">
+                    <div class="border-b">
+                        <nav class="flex" id="order-status-tabs">
+                            <button id="tab-all"
+                                class="pharmacy-tab-button active flex-1 py-4 px-6 text-center border-b-2 border-emerald-500 text-emerald-600 font-medium relative">
+                                All Orders
+                                <span
+                                    class="pharmacy-order-count-badge absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"
+                                    style="display: none;">0</span>
+                            </button>
+                            <button id="tab-pending"
+                                class="pharmacy-tab-button flex-1 py-4 px-6 text-center border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium relative">
+                                Pending
+                                <span
+                                    class="pharmacy-order-count-badge absolute -top-2 -right-2 bg-yellow-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"
+                                    style="display: none;">0</span>
+                            </button>
+                            <button id="tab-confirmed"
+                                class="pharmacy-tab-button flex-1 py-4 px-6 text-center border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium relative">
+                                Confirmed
+                                <span
+                                    class="pharmacy-order-count-badge absolute -top-2 -right-2 bg-blue-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"
+                                    style="display: none;">0</span>
+                            </button>
+                            <button id="tab-to-be-received"
+                                class="pharmacy-tab-button flex-1 py-4 px-6 text-center border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium relative">
+                                To Be Received
+                                <span
+                                    class="pharmacy-order-count-badge absolute -top-2 -right-2 bg-purple-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"
+                                    style="display: none;">0</span>
+                            </button>
+                            <button id="tab-delivered"
+                                class="pharmacy-tab-button flex-1 py-4 px-6 text-center border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium relative">
+                                Delivered
+                                <span
+                                    class="pharmacy-order-count-badge absolute -top-2 -right-2 bg-green-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"
+                                    style="display: none;">0</span>
+                            </button>
+                            <button id="tab-declined"
+                                class="pharmacy-tab-button flex-1 py-4 px-6 text-center border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium relative">
+                                Declined
+                                <span
+                                    class="pharmacy-order-count-badge absolute -top-2 -right-2 bg-gray-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"
+                                    style="display: none;">0</span>
+                            </button>
+                        </nav>
+                    </div>
+                </div>
+
+                <div id="orders-list" class="bg-white rounded-xl border"></div>
+            </div>
+
+            <!-- Wallet Tab -->
+            <div id="tab-wallet" class="hidden">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-semibold">Wallet</h2>
+                </div>
+
+                <!-- Wallet Balance Cards -->
+                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                    <div class="bg-white rounded-xl border p-6">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center">
+                                <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1">
+                                    </path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900">Available Balance</h3>
+                                <p class="text-sm text-gray-600">Ready for withdrawal</p>
+                            </div>
+                        </div>
+                        <div class="text-3xl font-bold text-emerald-600" id="wallet-balance">₱0.00</div>
+                    </div>
+
+                    <div class="bg-white rounded-xl border p-6">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900">Pending Balance</h3>
+                                <p class="text-sm text-gray-600">Awaiting confirmation</p>
+                            </div>
+                        </div>
+                        <div class="text-3xl font-bold text-blue-600" id="pending-balance">₱0.00</div>
+                    </div>
+                </div>
+
+                <!-- Withdrawal Section -->
+                <div class="bg-white rounded-xl border p-6 mb-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Withdrawal Request</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Amount to Withdraw</label>
+                            <input type="number" id="withdrawal-amount" min="100" step="0.01"
+                                class="w-full rounded-lg border px-3 py-2" placeholder="0.00" />
+                            <p class="text-xs text-gray-500 mt-1">Minimum withdrawal: ₱100.00</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Bank Account Details</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <input type="text" id="bank-name" placeholder="Bank Name"
+                                    class="rounded-lg border px-3 py-2" />
+                                <input type="text" id="account-number" placeholder="Account Number"
+                                    class="rounded-lg border px-3 py-2" />
+                            </div>
+                        </div>
+                        <button id="request-withdrawal"
+                            class="w-full bg-emerald-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-emerald-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed">
+                            Request Withdrawal
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Recent Transactions -->
+                <div class="bg-white rounded-xl border p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Recent Transactions</h3>
+                    <div id="transactions-list" class="space-y-3">
+                        <!-- Transactions will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+        import { getFirestore, collection, query, where, getDocs, addDoc, updateDoc, doc, getDoc, orderBy, limit, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+        import { firebaseConfig, COLLECTIONS, formatCurrency } from './js/firebase.js';
+        import { logout } from './js/auth.js';
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        const tabs = document.querySelectorAll('aside [data-tab]');
+        const panels = {
+            products: document.getElementById('tab-products'),
+            orders: document.getElementById('tab-orders'),
+            wallet: document.getElementById('tab-wallet'),
+        };
+        tabs.forEach(btn => btn.addEventListener('click', async () => {
+            tabs.forEach(b => b.classList.remove('bg-emerald-50', 'text-emerald-700'));
+            btn.classList.add('bg-emerald-50', 'text-emerald-700');
+            Object.values(panels).forEach(p => p.classList.add('hidden'));
+            panels[btn.dataset.tab].classList.remove('hidden');
+
+            // Load wallet data when wallet tab is selected
+            if (btn.dataset.tab === 'wallet') {
+                await loadWalletData();
+            }
+        }));
+
+        let pharmacyId = null;
+
+        async function ensurePharmacy(user) {
+            const userDoc = await getDoc(doc(db, COLLECTIONS.users, user.uid));
+            if (!userDoc.exists() || userDoc.data().role !== 'pharmacy') {
+                window.location.href = 'index.html';
+                return;
+            }
+            if (userDoc.data().disabled) {
+                window.location.href = 'disabled.html';
+                return;
+            }
+            // Use user uid as pharmacyId for simplicity
+            pharmacyId = user.uid;
+        }
+
+        let editingProductId = null;
+
+        async function loadProducts() {
+            const qRef = query(collection(db, COLLECTIONS.products), where('pharmacyId', '==', pharmacyId));
+            const snap = await getDocs(qRef);
+            const el = document.getElementById('products-list');
+
+            if (snap.empty) {
+                el.innerHTML = `
+                    <div class="p-8 text-center">
+                        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                        </svg>
+                        <h3 class="mt-2 text-sm font-medium text-gray-900">No products</h3>
+                        <p class="mt-1 text-sm text-gray-500">Get started by adding your first product.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            el.innerHTML = `
+                <div class="p-4 border-b bg-gray-50">
+                    <h3 class="font-medium text-gray-900">Your Products (${snap.docs.length})</h3>
+                </div>
+                <div class="divide-y">
+                    ${Array.from(snap.docs).map(d => {
+                const p = d.data();
+                const isOutOfStock = p.stock === 0;
+                return `
+                            <div class="p-4 hover:bg-gray-50 ${isOutOfStock ? 'opacity-60' : ''}">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex items-start gap-4">
+                                        <img src="${p.imageURL || 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=100&auto=format&fit=crop'}" 
+                                             class="w-16 h-16 rounded-lg border object-cover" />
+                                        <div class="flex-1">
+                                            <div class="flex items-center gap-2">
+                                                <h4 class="font-medium text-gray-900">${p.name}</h4>
+                                                ${p.featured ? '<span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">Featured</span>' : ''}
+                                                ${p.prescription ? '<span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">Prescription</span>' : ''}
+                                                ${isOutOfStock ? '<span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">Sold Out</span>' : ''}
+                                            </div>
+                                            <p class="text-sm text-gray-600 mt-1">${p.category || 'Uncategorized'}</p>
+                                            ${p.description ? `<p class="text-sm text-gray-500 mt-1">${p.description}</p>` : ''}
+                                            <div class="flex items-center gap-4 mt-2">
+                                                ${p.discount > 0 ? `
+                                                    <div class="flex items-center gap-2">
+                                                        <span class="text-lg font-semibold text-emerald-600">₱${(p.price * (1 - p.discount / 100)).toFixed(2)}</span>
+                                                        <span class="text-sm text-gray-500 line-through">₱${p.price.toFixed(2)}</span>
+                                                        <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">${p.discount}% OFF</span>
+                                                    </div>
+                                                ` : `
+                                                    <span class="text-lg font-semibold text-emerald-600">₱${p.price.toFixed(2)}</span>
+                                                `}
+                                                <span class="text-sm text-gray-600">Stock: <span class="font-medium ${isOutOfStock ? 'text-red-600' : 'text-gray-900'}">${p.stock}</span></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <button onclick="editProduct('${d.id}')" class="text-blue-600 hover:text-blue-700 text-sm font-medium">Edit</button>
+                                        <button onclick="deleteProduct('${d.id}')" class="text-red-600 hover:text-red-700 text-sm font-medium">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+            }).join('')}
+                </div>
+            `;
+        }
+
+        let currentOrderStatus = 'all';
+        let allOrders = [];
+        let orderCounts = { all: 0, pending: 0, confirmed: 0, 'to-be-received': 0, delivered: 0, declined: 0 };
+
+        function updateOrderCounts() {
+            // Reset counts
+            orderCounts = { all: 0, pending: 0, confirmed: 0, 'to-be-received': 0, delivered: 0, declined: 0 };
+
+            // Count orders by status (only orders containing pharmacy's products)
+            allOrders.forEach(({ order }) => {
+                const status = order.stage.toLowerCase().replace(/\s+/g, '-');
+                if (status in orderCounts) {
+                    orderCounts[status]++;
+                }
+                orderCounts.all++;
+            });
+
+            // Update tab badges (simple approach like user track.html)
+            document.querySelectorAll('.pharmacy-tab-button').forEach(tab => {
+                const tabId = tab.id.replace('tab-', '');
+                const badge = tab.querySelector('.pharmacy-order-count-badge');
+
+                if (badge) {
+                    const count = orderCounts[tabId] || 0;
+                    badge.textContent = count;
+                    badge.style.display = count > 0 ? 'inline-flex' : 'none';
+                }
+            });
+
+            console.log('Pharmacy order counts:', orderCounts);
+        }
+
+        function renderFilteredOrders() {
+            const filteredOrders = currentOrderStatus === 'all'
+                ? allOrders
+                : allOrders.filter(({ order }) => {
+                    const stage = order.stage.toLowerCase().replace(/\s+/g, '-');
+                    // Handle special case for declined tab (matches both 'declined' and 'cancelled')
+                    if (currentOrderStatus === 'declined') {
+                        return stage === 'declined' || stage === 'cancelled';
+                    }
+                    return stage === currentOrderStatus;
+                });
+
+            const el = document.getElementById('orders-list');
+            el.innerHTML = '';
+
+            if (filteredOrders.length === 0) {
+                el.innerHTML = `
+                    <div class="p-8 text-center">
+                        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                        </svg>
+                        <h3 class="mt-2 text-sm font-medium text-gray-900">No orders</h3>
+                        <p class="mt-1 text-sm text-gray-500">Orders will appear here when customers place them.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            el.innerHTML = `
+                <div class="p-4 border-b bg-gray-50">
+                    <h3 class="font-medium text-gray-900">Recent Orders (${filteredOrders.length})</h3>
+                </div>
+                <div class="divide-y">
+                    ${filteredOrders.map(({ doc, order }) => {
+                const o = order;
+
+                // Handle Firestore Timestamp objects properly
+                let orderDate = 'Invalid Date';
+                try {
+                    if (o.createdAt) {
+                        // Handle both Firestore Timestamp and regular Date
+                        if (o.createdAt.toDate) {
+                            // Firestore Timestamp
+                            orderDate = o.createdAt.toDate().toLocaleString();
+                        } else if (typeof o.createdAt === 'number') {
+                            // Unix timestamp
+                            orderDate = new Date(o.createdAt).toLocaleString();
+                        } else {
+                            // Regular date string
+                            orderDate = new Date(o.createdAt).toLocaleString();
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error parsing order date:', error);
+                    orderDate = 'Date unavailable';
+                }
+
+                const items = o.items.map(i => `${i.name} x${i.quantity}`).join(', ');
+
+                // Handle new customer info structure
+                const customerName = o.customerInfo ? o.customerInfo.name : (o.userName || 'Unknown');
+                const customerPhone = o.customerInfo ? o.customerInfo.phone : 'Not provided';
+                const customerEmail = o.customerInfo ? o.customerInfo.email : 'Not provided';
+
+                return `
+                            <div class="p-4 hover:bg-gray-50">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex-1">
+                                        <div class="flex items-center gap-3 mb-2">
+                                            <h4 class="font-medium text-gray-900">Order #${doc.id.slice(-6)}</h4>
+                                            <span class="badge stage-${o.stage.replaceAll(' ', '\\ ')}">${o.stage}</span>
+                                        </div>
+                                        <div class="text-sm text-gray-600 mb-2">
+                                            <p><strong>Items:</strong> ${items}</p>
+                                            <p><strong>Total:</strong> ₱${o.total.toFixed(2)} • <strong>Payment:</strong> ${o.paymentMethod}</p>
+                                            <p><strong>Customer:</strong> ${customerName} • <strong>Date:</strong> ${orderDate}</p>
+                                            ${customerPhone !== 'Not provided' ? `<p><strong>Phone:</strong> ${customerPhone}</p>` : ''}
+                                            ${o.deliveryAddress ? `<p><strong>Delivery:</strong> ${o.deliveryAddress}</p>` : ''}
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col gap-2">
+                                        ${o.stage === 'Pending' ? `
+                                            <button onclick="confirmOrder('${doc.id}')" class="bg-emerald-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-emerald-600 transition-colors">
+                                                Confirm & Deduct Stock
+                                            </button>
+                                            <button onclick="declineOrder('${doc.id}')" class="bg-red-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-red-600 transition-colors">
+                                                Decline Order
+                                            </button>
+                                        ` : ''}
+                                        ${getNextActionText(o.stage) ? `
+                                            <button onclick="advanceOrder('${doc.id}')" class="bg-blue-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-blue-600 transition-colors">
+                                                ${getNextActionText(o.stage)}
+                                            </button>
+                                        ` : ''}
+                                        <button onclick="viewOrderDetails('${doc.id}')" class="bg-slate-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-slate-600 transition-colors">
+                                            View Details
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+            }).join('')}
+                </div>
+            `;
+        }
+
+        function loadOrders(status = 'all') {
+            currentOrderStatus = status;
+
+            // Update tab styling
+            document.querySelectorAll('.pharmacy-tab-button').forEach(tab => {
+                if (tab.id === `tab-${status}`) {
+                    tab.classList.add('active', 'border-emerald-500', 'text-emerald-600');
+                    tab.classList.remove('border-transparent', 'text-gray-500');
+                } else {
+                    tab.classList.remove('active', 'border-emerald-500', 'text-emerald-600');
+                    tab.classList.add('border-transparent', 'text-gray-500');
+                }
+            });
+
+            // Render filtered orders (client-side filtering)
+            renderFilteredOrders();
+        }
+
+        // Load all orders and set up real-time updates
+        function loadAllOrders() {
+            const ordersQuery = query(collection(db, COLLECTIONS.orders), orderBy('createdAt', 'desc'));
+
+            onSnapshot(ordersQuery, async (snap) => {
+                allOrders = [];
+
+                // Process all orders and filter for pharmacy's products
+                for (const doc of snap.docs) {
+                    const order = doc.data();
+
+                    // Check if this pharmacy owns any products in this order
+                    const ownsItems = await pharmacyOwnsOrderItems(order);
+                    if (ownsItems) {
+                        allOrders.push({ doc, order });
+                    }
+                }
+
+                // Update counts and render
+                updateOrderCounts();
+                renderFilteredOrders();
+            });
+        }
+
+        // Helper function to check if pharmacy owns products in the order
+        async function pharmacyOwnsOrderItems(order) {
+            for (const item of order.items) {
+                // Check if item has productId and if pharmacy owns it
+                if (item.productId) {
+                    const productRef = doc(db, COLLECTIONS.products, item.productId);
+                    const productSnap = await getDoc(productRef);
+
+                    if (productSnap.exists()) {
+                        const product = productSnap.data();
+                        if (product.pharmacyId === pharmacyId) {
+                            return true; // Pharmacy owns at least one product in this order
+                        }
+                    }
+                } else if (item.name) {
+                    // Fallback: find product by name
+                    const productsQuery = query(
+                        collection(db, COLLECTIONS.products),
+                        where('name', '==', item.name),
+                        where('pharmacyId', '==', pharmacyId)
+                    );
+                    const productsSnap = await getDocs(productsQuery);
+                    if (!productsSnap.empty) {
+                        return true; // Pharmacy owns at least one product in this order
+                    }
+                }
+            }
+            return false; // Pharmacy doesn't own any products in this order
+        }
+
+        // Make test function globally available
+        window.testPharmacyPermissions = testPharmacyPermissions;
+
+        // Test function for pharmacy permissions
+        async function testPharmacyPermissions() {
+            console.log('🏥 TESTING PHARMACY PERMISSIONS');
+            console.log('Pharmacy ID:', pharmacyId);
+
+            try {
+                // Test 1: Can we read our own products?
+                console.log('📦 Testing product read permissions...');
+                const productsQuery = query(collection(db, COLLECTIONS.products), where('pharmacyId', '==', pharmacyId));
+                const productsSnap = await getDocs(productsQuery);
+                console.log(`✅ Can read ${productsSnap.size} products`);
+
+                // Test 2: Can we update our own products?
+                if (!productsSnap.empty) {
+                    const testProduct = productsSnap.docs[0];
+                    const testProductRef = doc(db, COLLECTIONS.products, testProduct.id);
+                    const originalStock = testProduct.data().stock;
+
+                    console.log('📝 Testing product update permissions...');
+                    await updateDoc(testProductRef, {
+                        stock: originalStock,
+                        updatedAt: Date.now()
+                    });
+                    console.log('✅ Can update products');
+                }
+
+                // Test 3: Can we read orders?
+                console.log('📋 Testing order read permissions...');
+                const ordersQuery = query(collection(db, COLLECTIONS.orders), limit(1));
+                const ordersSnap = await getDocs(ordersQuery);
+                console.log(`✅ Can read ${ordersSnap.size} orders`);
+
+                // Test 4: Can we update orders?
+                if (!ordersSnap.empty) {
+                    const testOrder = ordersSnap.docs[0];
+                    const testOrderRef = doc(db, COLLECTIONS.orders, testOrder.id);
+                    const originalStage = testOrder.data().stage;
+
+                    console.log('📝 Testing order update permissions...');
+                    await updateDoc(testOrderRef, {
+                        stage: originalStage,
+                        updatedAt: Date.now()
+                    });
+                    console.log('✅ Can update orders');
+                }
+
+                console.log('🎉 ALL PHARMACY PERMISSIONS WORKING!');
+
+            } catch (error) {
+                console.error('❌ PERMISSION TEST FAILED:', error);
+                console.error('Error code:', error.code);
+                console.error('Error message:', error.message);
+
+                if (error.code === 'permission-denied') {
+                    console.log('🔧 SOLUTION: Update Firebase security rules');
+                    console.log('   Deploy the updated firestore.rules to Firebase Console');
+                }
+            }
+            console.log('=====================================');
+        };
+
+        // Global functions for order management
+        window.declineOrder = async (orderId) => {
+            console.log('❌ Declining order:', orderId);
+
+            if (!confirm('Are you sure you want to decline this order? This action cannot be undone.')) {
+                return;
+            }
+
+            try {
+                const orderRef = doc(db, COLLECTIONS.orders, orderId);
+                await updateDoc(orderRef, {
+                    stage: 'Declined',
+                    declinedAt: new Date(),
+                    declinedBy: pharmacyId,
+                    updatedAt: Date.now()
+                });
+
+                console.log('✅ Order declined successfully');
+                alert('Order has been declined.');
+                // Orders will be updated automatically via real-time listener
+
+            } catch (error) {
+                console.error('❌ Error declining order:', error);
+                alert('Failed to decline order. Please try again.');
+            }
+        };
+
+        window.confirmOrder = async (orderId) => {
+            console.log('🛒 Starting order confirmation for:', orderId);
+
+            const orderRef = doc(db, COLLECTIONS.orders, orderId);
+            const orderSnap = await getDoc(orderRef);
+
+            if (orderSnap.exists()) {
+                const order = orderSnap.data();
+
+                // Check if pharmacy owns products in this order
+                const ownsItems = await pharmacyOwnsOrderItems(order);
+                if (!ownsItems) {
+                    alert('You can only confirm orders that contain your products.');
+                    console.warn('❌ Pharmacy does not own any products in this order');
+                    return;
+                }
+
+                console.log('✅ Pharmacy owns products in this order, proceeding with confirmation');
+
+                // Validate stock availability before confirming order
+                console.log('🔍 Validating stock availability for all items...');
+                const insufficientStockItems = [];
+
+                for (const item of order.items) {
+                    let productRef = null;
+                    let productSnap = null;
+
+                    // Try to find product by ID first, then by name as fallback
+                    if (item.productId) {
+                        productRef = doc(db, COLLECTIONS.products, item.productId);
+                        productSnap = await getDoc(productRef);
+                    } else if (item.name) {
+                        const productsQuery = query(
+                            collection(db, COLLECTIONS.products),
+                            where('name', '==', item.name),
+                            where('pharmacyId', '==', pharmacyId)
+                        );
+                        const productsSnap = await getDocs(productsQuery);
+                        if (!productsSnap.empty) {
+                            const productDoc = productsSnap.docs[0];
+                            productRef = doc(db, COLLECTIONS.products, productDoc.id);
+                            productSnap = await getDoc(productRef);
+                        }
+                    }
+
+                    if (productSnap && productSnap.exists()) {
+                        const product = productSnap.data();
+                        const availableStock = product.stock || 0;
+
+                        if (availableStock === 0) {
+                            insufficientStockItems.push(`${product.name} - Out of stock`);
+                        } else if (availableStock < item.quantity) {
+                            insufficientStockItems.push(`${product.name} - Only ${availableStock} available, ordered ${item.quantity}`);
+                        }
+                    } else {
+                        insufficientStockItems.push(`${item.name} - Product not found`);
+                    }
+                }
+
+                // If any items have insufficient stock, block the order confirmation
+                if (insufficientStockItems.length > 0) {
+                    const errorMessage = '❌ Cannot confirm order due to insufficient stock:\n\n' +
+                        insufficientStockItems.join('\n') +
+                        '\n\nPlease restock these items before confirming the order.';
+                    alert(errorMessage);
+                    console.error('❌ Order confirmation blocked due to insufficient stock:', insufficientStockItems);
+                    return;
+                }
+
+                console.log('✅ All items have sufficient stock, proceeding with confirmation');
+
+                // Deduct stock for each item
+                console.log('📦 Starting stock deduction for', order.items.length, 'items');
+                for (const item of order.items) {
+                    let productRef = null;
+                    let productSnap = null;
+
+                    console.log(`🔍 Processing item: ${item.name} (Qty: ${item.quantity})`);
+
+                    // Try to find product by ID first, then by name as fallback
+                    if (item.productId) {
+                        console.log(`📍 Looking for product by ID: ${item.productId}`);
+                        // If productId is available, use it directly
+                        productRef = doc(db, COLLECTIONS.products, item.productId);
+                        productSnap = await getDoc(productRef);
+                    } else if (item.name) {
+                        console.log(`📍 Looking for product by name: ${item.name}`);
+                        // Fallback: find product by name (less reliable but better than nothing)
+                        const productsQuery = query(
+                            collection(db, COLLECTIONS.products),
+                            where('name', '==', item.name),
+                            where('pharmacyId', '==', pharmacyId)
+                        );
+                        const productsSnap = await getDocs(productsQuery);
+                        if (!productsSnap.empty) {
+                            const productDoc = productsSnap.docs[0];
+                            productRef = doc(db, COLLECTIONS.products, productDoc.id);
+                            productSnap = await getDoc(productRef);
+                        }
+                    }
+
+                    if (productSnap && productSnap.exists()) {
+                        const product = productSnap.data();
+                        console.log(`✅ Found product: ${product.name} (Current stock: ${product.stock})`);
+                        console.log(`🔍 Product pharmacyId: ${product.pharmacyId}`);
+                        console.log(`🔍 Current pharmacy userId: ${pharmacyId}`);
+                        console.log(`🔍 Do they match? ${product.pharmacyId === pharmacyId ? 'YES' : 'NO'}`);
+
+                        const newStock = Math.max(0, product.stock - item.quantity); // Prevent negative stock
+                        console.log(`🔄 Updating stock: ${product.stock} → ${newStock}`);
+                        if (product.stock - item.quantity < 0) {
+                            console.warn(`⚠️ Attempted to deduct ${item.quantity} from ${product.stock} stock for ${product.name}, set to 0`);
+                        }
+
+                        try {
+                            await updateDoc(productRef, { stock: newStock, updatedAt: Date.now() });
+                            console.log(`✅ Successfully updated stock for ${product.name}`);
+                        } catch (stockError) {
+                            console.error(`❌ Failed to update stock for ${product.name}:`, stockError);
+                            throw stockError; // Re-throw to stop the process
+                        }
+                    } else {
+                        console.warn(`⚠️ Could not find product for item: ${item.name} (ID: ${item.productId || 'N/A'})`);
+                        // Continue with other items instead of failing completely
+                    }
+                }
+                console.log('✅ Stock deduction completed');
+
+                // Update order status
+                console.log('📝 Updating order status to Confirmed');
+                try {
+                    await updateDoc(orderRef, {
+                        stage: 'Confirmed',
+                        paymentStatus: 'Confirmed',
+                        confirmedAt: Date.now()
+                    });
+                    console.log('✅ Order status updated successfully');
+                } catch (orderError) {
+                    console.error('❌ Failed to update order status:', orderError);
+                    throw orderError; // Re-throw to stop the process
+                }
+
+                // Credit payment to pharmacy wallet for COD orders
+                if (order.cod || order.paymentMethod === 'COD') {
+                    console.log('💰 Crediting COD payment to pharmacy wallet');
+                    await creditCODToPharmacyWallet(order);
+                }
+
+                await loadProducts();
+                console.log('🎉 Order confirmation completed successfully!');
+                alert('Order confirmed and stock deducted successfully!');
+                // Orders will be updated automatically via real-time listener
+            }
+        };
+
+        // Function to get the next action text based on current stage
+        function getNextActionText(currentStage) {
+            const stageActions = {
+                'Pending': 'Confirm Payment',
+                'Confirmed': 'Mark as Shipped',
+                'To Be Received': 'Mark as Delivered',
+                'Delivered': null // No next action
+            };
+            return stageActions[currentStage] || null;
+        }
+
+        window.advanceOrder = async (orderId) => {
+            const orderRef = doc(db, COLLECTIONS.orders, orderId);
+            const orderSnap = await getDoc(orderRef);
+
+            if (orderSnap.exists()) {
+                const order = orderSnap.data();
+                const stages = ['Pending', 'Confirmed', 'To Be Received', 'Delivered'];
+                const currentIndex = stages.indexOf(order.stage);
+                const nextStage = stages[Math.min(currentIndex + 1, stages.length - 1)];
+
+                await updateDoc(orderRef, {
+                    stage: nextStage,
+                    updatedAt: Date.now()
+                });
+
+                // Orders will be updated automatically via real-time listener
+            }
+        };
+
+        // Test function to manually update badges
+        window.testBadges = async () => {
+            console.log('Testing pharmacy badges...');
+            await updateOrderCounts();
+
+            // Force show a badge for testing
+            const testBadge = document.querySelector('.pharmacy-order-count-badge');
+            if (testBadge) {
+                testBadge.textContent = '99';
+                testBadge.style.display = 'inline-flex';
+                console.log('Forced badge to show with count 99');
+            }
+        };
+
+        window.viewOrderDetails = async (orderId) => {
+            const orderRef = doc(db, COLLECTIONS.orders, orderId);
+            const orderSnap = await getDoc(orderRef);
+
+            if (orderSnap.exists()) {
+                const order = orderSnap.data();
+
+                // Handle Firestore Timestamp objects properly
+                let orderDate = 'Date unavailable';
+                try {
+                    if (order.createdAt) {
+                        if (order.createdAt.toDate) {
+                            // Firestore Timestamp
+                            orderDate = order.createdAt.toDate().toLocaleString();
+                        } else if (typeof order.createdAt === 'number') {
+                            // Unix timestamp
+                            orderDate = new Date(order.createdAt).toLocaleString();
+                        } else {
+                            // Regular date string
+                            orderDate = new Date(order.createdAt).toLocaleString();
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error parsing order date:', error);
+                }
+
+                // Handle new customer info structure
+                const customerName = order.customerInfo ? order.customerInfo.name : (order.userName || 'Unknown');
+                const customerPhone = order.customerInfo ? order.customerInfo.phone : 'Not provided';
+                const customerEmail = order.customerInfo ? order.customerInfo.email : 'Not provided';
+
+                const detailsHTML = `
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <h4 class="font-medium text-gray-900">Order Information</h4>
+                                <p class="text-sm text-gray-600">Order #${orderId.slice(-6)}</p>
+                                <p class="text-sm text-gray-600">Date: ${orderDate}</p>
+                                <p class="text-sm text-gray-600">Status: ${order.stage}</p>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-900">Customer Information</h4>
+                                <p class="text-sm text-gray-600">Name: ${customerName}</p>
+                                <p class="text-sm text-gray-600">Phone: ${customerPhone}</p>
+                                <p class="text-sm text-gray-600">Email: ${customerEmail}</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <h4 class="font-medium text-gray-900">Payment Details</h4>
+                                <p class="text-sm text-gray-600">Method: ${order.paymentMethod}</p>
+                                <p class="text-sm text-gray-600">Status: ${order.paymentStatus}</p>
+                                <p class="text-sm text-gray-600">Total: ₱${order.total.toFixed(2)}</p>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-900">Order Summary</h4>
+                                <p class="text-sm text-gray-600">Items: ${order.items.length}</p>
+                                <p class="text-sm text-gray-600">COD: ${order.cod ? 'Yes' : 'No'}</p>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-medium text-gray-900 mb-2">Items Ordered</h4>
+                            <div class="space-y-2">
+                                ${order.items.map(item => `
+                                    <div class="flex justify-between items-center py-2 border-b">
+                                        <div>
+                                            <p class="font-medium">${item.name}</p>
+                                            <p class="text-sm text-gray-600">₱${item.price} each</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="font-medium">Qty: ${item.quantity}</p>
+                                            <p class="text-sm text-gray-600">₱${(item.price * item.quantity).toFixed(2)}</p>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        
+                        ${order.deliveryAddress ? `
+                            <div>
+                                <h4 class="font-medium text-gray-900 mb-2">Delivery Address</h4>
+                                <div class="bg-gray-50 p-3 rounded-lg">
+                                    <p class="text-sm text-gray-700">${order.deliveryAddress}</p>
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+
+                // Create and show modal
+                const modal = document.createElement('div');
+                modal.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4';
+                modal.innerHTML = `
+                    <div class="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                        <div class="p-6 border-b">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-lg font-semibold">Order Details</h3>
+                                <button onclick="this.closest('.fixed').remove()" class="text-gray-400 hover:text-gray-600">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            ${detailsHTML}
+                        </div>
+                    </div>
+                `;
+
+                document.body.appendChild(modal);
+                modal.onclick = (e) => {
+                    if (e.target === modal) modal.remove();
+                };
+            }
+        };
+
+        // Global functions for product management
+        window.editProduct = async (productId) => {
+            const productRef = doc(db, COLLECTIONS.products, productId);
+            const productSnap = await getDoc(productRef);
+
+            if (productSnap.exists()) {
+                const product = productSnap.data();
+                editingProductId = productId;
+
+                // Populate form
+                document.querySelector('input[name="name"]').value = product.name;
+                document.querySelector('input[name="price"]').value = product.price;
+                document.querySelector('input[name="stock"]').value = product.stock;
+                document.querySelector('select[name="category"]').value = product.category || '';
+                document.querySelector('input[name="imageURL"]').value = product.imageURL || '';
+                document.querySelector('textarea[name="description"]').value = product.description || '';
+                document.querySelector('input[name="featured"]').checked = product.featured || false;
+                document.querySelector('input[name="prescription"]').checked = product.prescription || false;
+
+                // Update UI
+                document.getElementById('submit-text').textContent = 'Update Product';
+                document.getElementById('cancel-edit').classList.remove('hidden');
+                document.querySelector('input[name="name"]').focus();
+            }
+        };
+
+        window.deleteProduct = async (productId) => {
+            if (confirm('Are you sure you want to delete this product?')) {
+                await deleteDoc(doc(db, COLLECTIONS.products, productId));
+                await loadProducts();
+            }
+        };
+
+        // Cancel edit
+        document.getElementById('cancel-edit').onclick = () => {
+            editingProductId = null;
+            document.getElementById('product-form').reset();
+            document.getElementById('submit-text').textContent = 'Add Product';
+            document.getElementById('cancel-edit').classList.add('hidden');
+        };
+
+        document.getElementById('product-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = Object.fromEntries(new FormData(e.target).entries());
+
+            const productData = {
+                name: data.name,
+                price: Number(data.price || 0),
+                discount: Number(data.discount || 0),
+                stock: Number(data.stock || 0),
+                category: data.category || 'Other',
+                imageURL: data.imageURL || 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=800&auto=format&fit=crop',
+                description: data.description || '',
+                featured: Boolean(data.featured),
+                prescription: Boolean(data.prescription),
+                pharmacyId,
+                disabled: false, // Products are enabled by default, manually managed
+                updatedAt: Date.now()
+            };
+
+            try {
+                if (editingProductId) {
+                    await updateDoc(doc(db, COLLECTIONS.products, editingProductId), productData);
+                } else {
+                    productData.createdAt = Date.now();
+                    await addDoc(collection(db, COLLECTIONS.products), productData);
+                }
+
+                document.getElementById('product-form').reset();
+                editingProductId = null;
+                document.getElementById('submit-text').textContent = 'Add Product';
+                document.getElementById('cancel-edit').classList.add('hidden');
+                await loadProducts();
+            } catch (error) {
+                console.error('Error saving product:', error);
+                alert('Error saving product. Please try again.');
+            }
+        });
+
+        // Order status tab event listeners
+        document.getElementById('order-status-tabs').addEventListener('click', async (e) => {
+            const tab = e.target.closest('.pharmacy-tab-button');
+            if (tab) {
+                const status = tab.id.replace('tab-', '');
+                await loadOrders(status);
+            }
+        });
+
+        document.getElementById('logout').addEventListener('click', logout);
+
+        // Wallet functionality
+        async function loadWalletData() {
+            if (!pharmacyId) return;
+
+            try {
+                const pharmacyRef = doc(db, COLLECTIONS.pharmacies, pharmacyId);
+                const pharmacySnap = await getDoc(pharmacyRef);
+
+                if (pharmacySnap.exists()) {
+                    const data = pharmacySnap.data();
+                    const walletBalance = data.walletBalance || 0;
+                    const pendingBalance = data.pendingBalance || 0;
+
+                    document.getElementById('wallet-balance').textContent = formatCurrency(walletBalance);
+                    document.getElementById('pending-balance').textContent = formatCurrency(pendingBalance);
+                }
+
+                // Load recent transactions
+                await loadTransactions();
+            } catch (error) {
+                console.error('Error loading wallet data:', error);
+            }
+        }
+
+        async function loadTransactions() {
+            if (!pharmacyId) return;
+
+            try {
+                const transactionsRef = query(
+                    collection(db, 'transactions'),
+                    where('pharmacyId', '==', pharmacyId),
+                    orderBy('createdAt', 'desc'),
+                    limit(10)
+                );
+                const transactionsSnap = await getDocs(transactionsRef);
+
+                const transactionsList = document.getElementById('transactions-list');
+
+                if (transactionsSnap.empty) {
+                    transactionsList.innerHTML = '<p class="text-gray-500 text-center py-4">No transactions yet</p>';
+                    return;
+                }
+
+                const transactions = transactionsSnap.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+
+                transactionsList.innerHTML = transactions.map(transaction => `
+                    <div class="flex items-center justify-between p-3 border rounded-lg">
+                        <div>
+                            <p class="font-medium text-gray-900">${transaction.type === 'payment_credit' ? 'Payment Received' : 'Withdrawal'}</p>
+                            <p class="text-sm text-gray-600">${new Date(transaction.createdAt).toLocaleDateString()}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-medium ${transaction.type === 'payment_credit' ? 'text-emerald-600' : 'text-red-600'}">
+                                ${transaction.type === 'payment_credit' ? '+' : '-'}₱${transaction.amount.toFixed(2)}
+                            </p>
+                            <p class="text-xs text-gray-500">${transaction.status}</p>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading transactions:', error);
+            }
+        }
+
+        async function requestWithdrawal() {
+            const amount = parseFloat(document.getElementById('withdrawal-amount').value);
+            const bankName = document.getElementById('bank-name').value.trim();
+            const accountNumber = document.getElementById('account-number').value.trim();
+
+            if (!amount || amount < 100) {
+                alert('Please enter a valid amount (minimum ₱100)');
+                return;
+            }
+
+            if (!bankName || !accountNumber) {
+                alert('Please enter bank account details');
+                return;
+            }
+
+            try {
+                console.log('=== WITHDRAWAL REQUEST DEBUG ===');
+                console.log('Pharmacy ID:', pharmacyId);
+                console.log('User UID:', auth.currentUser?.uid);
+                console.log('Amount:', amount);
+                console.log('Bank Name:', bankName);
+                console.log('Account Number:', accountNumber);
+
+                // Check if pharmacy has sufficient balance
+                const pharmacyRef = doc(db, COLLECTIONS.pharmacies, pharmacyId);
+                const pharmacySnap = await getDoc(pharmacyRef);
+
+                if (!pharmacySnap.exists()) {
+                    alert('Pharmacy not found');
+                    return;
+                }
+
+                const currentBalance = pharmacySnap.data().walletBalance || 0;
+                if (amount > currentBalance) {
+                    alert('Insufficient balance');
+                    return;
+                }
+
+                console.log('Creating withdrawal request...');
+                // Create withdrawal request
+                const withdrawalData = {
+                    pharmacyId: pharmacyId,
+                    amount: amount,
+                    bankName: bankName,
+                    accountNumber: accountNumber,
+                    status: 'pending',
+                    requestedAt: Date.now()
+                };
+                console.log('Withdrawal data:', withdrawalData);
+
+                await addDoc(collection(db, 'withdrawalRequests'), withdrawalData);
+                console.log('Withdrawal request created successfully');
+
+                console.log('Updating pharmacy balance...');
+                // Update pharmacy balance
+                await updateDoc(pharmacyRef, {
+                    walletBalance: currentBalance - amount,
+                    pendingBalance: (pharmacySnap.data().pendingBalance || 0) + amount
+                });
+                console.log('Pharmacy balance updated successfully');
+
+                alert('Withdrawal request submitted successfully');
+
+                // Clear form
+                document.getElementById('withdrawal-amount').value = '';
+                document.getElementById('bank-name').value = '';
+                document.getElementById('account-number').value = '';
+
+                // Reload wallet data
+                await loadWalletData();
+            } catch (error) {
+                console.error('Error requesting withdrawal:', error);
+                alert('Error submitting withdrawal request');
+            }
+        }
+
+        // Credit COD payment to pharmacy wallet
+        async function creditCODToPharmacyWallet(order) {
+            try {
+                // Calculate total amount for this pharmacy's items
+                let totalAmount = 0;
+                const pharmacyItems = [];
+
+                for (const item of order.items) {
+                    const productId = item.productId || item.id;
+                    if (!productId) continue;
+
+                    const productRef = doc(db, COLLECTIONS.products, productId);
+                    const productSnap = await getDoc(productRef);
+
+                    if (!productSnap.exists()) continue;
+
+                    const product = productSnap.data();
+                    if (product.pharmacyId === pharmacyId) {
+                        pharmacyItems.push(item);
+                        totalAmount += item.price * item.quantity;
+                    }
+                }
+
+                if (totalAmount === 0) {
+                    console.log('No items found for this pharmacy in the order');
+                    return;
+                }
+
+                // Calculate commission (5% platform fee)
+                const commission = totalAmount * 0.05;
+                const pharmacyAmount = totalAmount - commission;
+
+                // Update pharmacy wallet
+                const pharmacyRef = doc(db, COLLECTIONS.pharmacies, pharmacyId);
+                const pharmacySnap = await getDoc(pharmacyRef);
+
+                if (pharmacySnap.exists()) {
+                    const currentBalance = pharmacySnap.data().walletBalance || 0;
+                    const currentPending = pharmacySnap.data().pendingBalance || 0;
+
+                    // For COD payments: Add to Available balance (pharmacy confirmed the payment)
+                    await updateDoc(pharmacyRef, {
+                        walletBalance: currentBalance + pharmacyAmount,
+                        pendingBalance: currentPending, // Don't add to pending for COD
+                        updatedAt: Date.now()
+                    });
+
+                    console.log(`💰 Credited ₱${pharmacyAmount.toFixed(2)} to pharmacy wallet (Commission: ₱${commission.toFixed(2)})`);
+                }
+
+                // Record transaction
+                await addDoc(collection(db, 'transactions'), {
+                    orderId: order.id || 'unknown',
+                    pharmacyId: pharmacyId,
+                    amount: pharmacyAmount,
+                    commission: commission,
+                    type: 'cod_payment_credit',
+                    status: 'completed',
+                    createdAt: Date.now()
+                });
+
+            } catch (error) {
+                console.error('Error crediting COD payment:', error);
+                throw error;
+            }
+        }
+
+        // Wallet event listeners
+        document.getElementById('request-withdrawal').addEventListener('click', requestWithdrawal);
+
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) { window.location.href = 'login.html'; return; }
+            await ensurePharmacy(user);
+            const pharmDoc = await getDoc(doc(db, COLLECTIONS.pharmacies, user.uid));
+            if (!pharmDoc.exists() || pharmDoc.data().disabled) {
+                window.location.href = 'disabled.html';
+                return;
+            }
+            if (!pharmDoc.data().approved) {
+                const banner = document.createElement('div');
+                banner.className = 'mb-4 rounded-xl border bg-yellow-50 text-yellow-800 p-3';
+                banner.textContent = 'Your pharmacy is pending approval. Please contact support.';
+                document.querySelector('main').prepend(banner);
+                document.querySelectorAll('#product-form input, #product-form button, #orders-list button').forEach(el => el.disabled = true);
+                return;
+            }
+            await loadProducts();
+            loadAllOrders();
+        });
+    </script>
+</body>
+
+</html>

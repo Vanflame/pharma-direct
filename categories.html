@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PHARMA DIRECT — Categories</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body class="min-h-screen bg-white text-gray-900"
+    style="font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Arial, sans-serif;">
+    <header class="sticky top-0 z-40 bg-white/80 backdrop-blur border-b">
+        <div class="mx-auto container-max px-4 py-3 flex items-center justify-between">
+            <a href="./" class="flex items-center gap-2">
+                <img src="img/icon.png" alt="logo" class="w-6 h-6" />
+                <span class="font-semibold text-lg">PHARMA DIRECT</span>
+            </a>
+            <nav class="hidden md:flex items-center gap-6">
+                <a href="categories.html" class="text-emerald-700 font-medium">Categories</a>
+                <a href="track.html" class="text-gray-600 hover:text-gray-900">Track Order</a>
+                <a href="cart.html"
+                    class="inline-flex items-center gap-2 rounded-lg bg-emerald-600 text-white px-4 py-2 shadow hover:bg-emerald-700">Cart
+                    <span id="cart-count"
+                        class="ml-1 inline-flex items-center justify-center w-5 h-5 rounded-full bg-white text-emerald-700 text-xs">0</span>
+                </a>
+                <a id="login-link" href="login.html" class="text-gray-600 hover:text-gray-900">Login</a>
+                <div id="account-area" class="relative hidden">
+                    <button id="account-btn"
+                        class="inline-flex items-center gap-2 rounded-lg border px-3 py-2 hover:bg-gray-50">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        <span id="account-name" class="text-sm font-medium truncate max-w-24"></span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 flex-shrink-0" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div id="account-menu" class="dropdown-panel hidden">
+                        <div class="user-info">
+                            <p class="user-email" id="account-email"></p>
+                            <p class="user-role" id="account-role"></p>
+                        </div>
+                        <a id="dashboard-link" href="#" class="dropdown-item">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M8 5a2 2 0 012-2h4a2 2 0 012 2v2H8V5z"></path>
+                            </svg>
+                            <span>Dashboard</span>
+                        </a>
+                        <a href="track.html" class="dropdown-item">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
+                                </path>
+                            </svg>
+                            <span>My Orders</span>
+                        </a>
+                        <button id="logout-btn" class="dropdown-item w-full text-left">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
+                                </path>
+                            </svg>
+                            <span>Logout</span>
+                        </button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="mx-auto container-max px-4 py-6">
+        <!-- Category Filter Tabs -->
+        <div class="mb-6">
+            <div class="flex items-center gap-4 mb-4">
+                <h1 class="text-2xl font-bold">Categories</h1>
+                <span class="text-sm text-gray-500" id="total-products">Loading...</span>
+            </div>
+
+            <div class="flex flex-wrap gap-2" id="category-tabs">
+                <button class="category-tab px-4 py-2 rounded-lg border bg-emerald-600 text-white" data-category="all">
+                    All Products
+                </button>
+                <!-- Dynamic category tabs will be inserted here -->
+            </div>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="mb-6">
+            <div class="relative">
+                <input type="text" id="search-input" placeholder="Search products..."
+                    class="w-full px-4 py-3 pl-10 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+                <button id="clear-search"
+                    class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 hidden">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div class="col-span-full text-center py-12">
+                <div class="text-gray-500">Loading products...</div>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="hidden col-span-full text-center py-12">
+            <div class="text-gray-500 text-lg">No products found in this category</div>
+            <button class="mt-4 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700"
+                onclick="showAllProducts()">
+                Show All Products
+            </button>
+        </div>
+    </main>
+
+    <!-- Mobile bottom nav -->
+    <nav class="fixed bottom-0 inset-x-0 md:hidden bg-white border-t">
+        <div class="mx-auto container-max px-6 py-2 grid grid-cols-4 text-sm">
+            <a href="./" class="flex flex-col items-center text-gray-600">
+                <span>Home</span>
+            </a>
+            <a href="categories.html" class="flex flex-col items-center text-emerald-700">
+                <span>Categories</span>
+            </a>
+            <a href="track.html" class="flex flex-col items-center text-gray-600">
+                <span>Track</span>
+            </a>
+            <a href="cart.html" class="flex flex-col items-center text-gray-600">
+                <span>Cart</span>
+            </a>
+        </div>
+    </nav>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+        import { getFirestore, collection, getDocs, query, where, orderBy } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+        import { firebaseConfig, COLLECTIONS, formatCurrency } from "./js/firebase.js";
+        import { fetchUserRole, logout } from "./js/auth.js";
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let allProducts = [];
+        let currentCategory = 'all';
+        let currentSearchTerm = '';
+
+        // Update cart count from localStorage
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+            const count = cart.reduce((sum, i) => sum + i.quantity, 0);
+            const el = document.getElementById("cart-count");
+            if (el) el.textContent = String(count);
+        }
+        updateCartCount();
+
+        // Load all products and extract unique categories
+        async function loadProducts() {
+            try {
+                const grid = document.getElementById("product-grid");
+                const totalEl = document.getElementById("total-products");
+
+                grid.innerHTML = '<div class="col-span-full text-center py-12"><div class="text-gray-500">Loading products...</div></div>';
+
+                const productsRef = collection(db, COLLECTIONS.products);
+                const q = query(productsRef, orderBy('name', 'asc'));
+                const snap = await getDocs(q);
+
+                allProducts = [];
+                const categories = new Set();
+
+                snap.forEach(doc => {
+                    const product = { id: doc.id, ...doc.data() };
+                    allProducts.push(product);
+                    if (product.category) {
+                        categories.add(product.category);
+                    }
+                });
+
+                // Create category tabs
+                const categoryTabsEl = document.getElementById("category-tabs");
+                const allTab = categoryTabsEl.querySelector('[data-category="all"]');
+
+                // Clear existing tabs except "All Products"
+                categoryTabsEl.innerHTML = '';
+                categoryTabsEl.appendChild(allTab);
+
+                // Add category tabs
+                Array.from(categories).sort().forEach(category => {
+                    const tab = document.createElement('button');
+                    tab.className = 'category-tab px-4 py-2 rounded-lg border hover:bg-gray-50';
+                    tab.dataset.category = category;
+                    tab.textContent = category;
+                    categoryTabsEl.appendChild(tab);
+                });
+
+                totalEl.textContent = `${allProducts.length} products`;
+
+                // Load products for current category
+                filterProducts(currentCategory);
+
+            } catch (error) {
+                console.error('Error loading products:', error);
+                const grid = document.getElementById("product-grid");
+                grid.innerHTML = '<div class="col-span-full text-center py-12"><div class="text-red-500">Error loading products</div></div>';
+            }
+        }
+
+        // Filter products by category and search term
+        function filterProducts(category = currentCategory, searchTerm = currentSearchTerm) {
+            currentCategory = category;
+            currentSearchTerm = searchTerm;
+
+            // Update tab styling
+            document.querySelectorAll('.category-tab').forEach(tab => {
+                if (tab.dataset.category === category) {
+                    tab.className = 'category-tab px-4 py-2 rounded-lg border bg-emerald-600 text-white';
+                } else {
+                    tab.className = 'category-tab px-4 py-2 rounded-lg border hover:bg-gray-50';
+                }
+            });
+
+            let filteredProducts = allProducts;
+
+            // Filter by category
+            if (category !== 'all') {
+                filteredProducts = filteredProducts.filter(product => product.category === category);
+            }
+
+            // Filter by search term
+            if (searchTerm && searchTerm.trim() !== '') {
+                const searchLower = searchTerm.toLowerCase().trim();
+                filteredProducts = filteredProducts.filter(product =>
+                    product.name.toLowerCase().includes(searchLower) ||
+                    product.category.toLowerCase().includes(searchLower) ||
+                    (product.description && product.description.toLowerCase().includes(searchLower))
+                );
+            }
+
+            renderProducts(filteredProducts);
+        }
+
+        // Search functionality
+        function setupSearch() {
+            const searchInput = document.getElementById('search-input');
+            const clearSearchBtn = document.getElementById('clear-search');
+
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value;
+                currentSearchTerm = searchTerm;
+
+                // Show/hide clear button
+                if (searchTerm.trim() !== '') {
+                    clearSearchBtn.classList.remove('hidden');
+                } else {
+                    clearSearchBtn.classList.add('hidden');
+                }
+
+                // Filter products with current search term
+                filterProducts(currentCategory, searchTerm);
+            });
+
+            clearSearchBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                currentSearchTerm = '';
+                clearSearchBtn.classList.add('hidden');
+                filterProducts(currentCategory, '');
+            });
+        }
+
+        // Render products grid
+        function renderProducts(products) {
+            const grid = document.getElementById("product-grid");
+            const emptyState = document.getElementById("empty-state");
+
+            if (products.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+
+            grid.innerHTML = '';
+
+            products.forEach(product => {
+                const isOutOfStock = (product.stock || 0) === 0 || product.disabled === true;
+                const stockText = product.disabled ? 'Currently unavailable' :
+                    product.stock !== undefined ? (product.stock === 0 ? 'Out of stock' : `Stock: ${product.stock}`) : 'Stock info unavailable';
+
+                const card = document.createElement("a");
+                card.href = `product.html?id=${product.id}`;
+                card.className = `block rounded-xl border hover:shadow transition overflow-hidden ${isOutOfStock ? 'opacity-60 grayscale' : ''}`;
+
+                card.innerHTML = `
+              <div class="relative">
+                <img src="${product.imageURL || 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=800&auto=format&fit=crop'}" alt="${product.name}" class="w-full h-40 object-cover" />
+                ${isOutOfStock ? '<div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center"><span class="text-white font-bold text-lg">SOLD OUT</span></div>' : ''}
+                ${product.featured ? '<div class="absolute top-2 right-2 bg-yellow-500 text-white text-xs px-2 py-1 rounded-full">Featured</div>' : ''}
+              </div>
+              <div class="p-3">
+                <div class="text-sm text-gray-500">${product.category || 'OTC'}</div>
+                <div class="font-semibold ${isOutOfStock ? 'text-gray-500' : ''}">${product.name}</div>
+                <div class="mt-1 ${isOutOfStock ? 'text-gray-500' : 'text-emerald-700'}" data-price="${product.price || 0}">
+                    ${product.discount > 0 ? `
+                        <div class="flex items-center gap-2">
+                            <span class="font-semibold">${formatCurrency((product.price || 0) * (1 - (product.discount || 0) / 100))}</span>
+                            <span class="text-sm text-gray-500 line-through">${formatCurrency(product.price || 0)}</span>
+                            <span class="bg-red-100 text-red-800 text-xs px-1 py-0.5 rounded">${product.discount}% OFF</span>
+                        </div>
+                    ` : `
+                        ${formatCurrency(product.price || 0)}
+                    `}
+                </div>
+                <div class="mt-2 text-xs ${isOutOfStock ? 'text-red-500' : 'text-gray-600'}">${isOutOfStock ? 'Out of Stock' : stockText}</div>
+                <button data-id="${product.id}"
+                        ${isOutOfStock ? 'disabled' : ''}
+                        class="mt-3 w-full inline-flex justify-center items-center rounded-lg px-3 py-2 ${isOutOfStock ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-emerald-600 text-white hover:bg-emerald-700'}">
+                  ${isOutOfStock ? 'Sold Out' : 'Add to Cart'}
+                </button>
+              </div>`;
+
+                grid.appendChild(card);
+            });
+
+            // Add to cart functionality
+            grid.addEventListener("click", (e) => {
+                const target = e.target;
+                if (target.tagName === "BUTTON" && target.dataset.id) {
+                    e.preventDefault();
+
+                    // Check if button is disabled (out of stock)
+                    if (target.disabled) {
+                        console.log('Cannot add out-of-stock item to cart');
+                        return;
+                    }
+
+                    const id = target.dataset.id;
+                    const product = products.find(p => p.id === id);
+                    if (!product) return;
+
+                    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+                    const existing = cart.find(i => i.id === id);
+                    const discountedPrice = product.discount > 0 ? product.price * (1 - product.discount / 100) : product.price;
+                    if (existing) existing.quantity += 1; else cart.push({
+                        id,
+                        name: product.name,
+                        price: discountedPrice,
+                        originalPrice: product.price,
+                        discount: product.discount || 0,
+                        imageURL: product.imageURL,
+                        quantity: 1
+                    });
+                    localStorage.setItem("cart", JSON.stringify(cart));
+                    updateCartCount();
+
+                    // Optional: Show feedback to user
+                    target.textContent = 'Added!';
+                    setTimeout(() => {
+                        target.textContent = 'Add to Cart';
+                    }, 1000);
+                }
+            });
+        }
+
+        // Show all products when empty state button is clicked
+        window.showAllProducts = function () {
+            filterProducts('all');
+        };
+
+        // Category tab click handlers
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('category-tab')) {
+                const category = e.target.dataset.category;
+                filterProducts(category);
+            }
+        });
+
+        // Load products on page load
+        loadProducts().catch(console.error);
+
+        // Toggle login/account UI based on auth
+        onAuthStateChanged(auth, async (user) => {
+            const loginLink = document.getElementById('login-link');
+            const heroSignin = document.getElementById('hero-signin');
+            const accountArea = document.getElementById('account-area');
+            const accountName = document.getElementById('account-name');
+            const accountEmail = document.getElementById('account-email');
+            const accountRole = document.getElementById('account-role');
+            const dashboardLink = document.getElementById('dashboard-link');
+            const accountBtn = document.getElementById('account-btn');
+            const accountMenu = document.getElementById('account-menu');
+            const logoutBtn = document.getElementById('logout-btn');
+            if (!loginLink || !accountArea) return;
+            if (user) {
+                loginLink.classList.add('hidden');
+                accountArea.classList.remove('hidden');
+                accountName.textContent = user.displayName || 'Account';
+                accountEmail.textContent = user.email || '';
+                let role = 'user';
+                try { role = await fetchUserRole(user.uid); } catch { }
+                accountRole.textContent = role.charAt(0).toUpperCase() + role.slice(1);
+                dashboardLink.href = role === 'admin' ? 'admin.html' : role === 'pharmacy' ? 'pharmacy.html' : 'user-dashboard.html';
+                accountBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    accountMenu.classList.toggle('hidden');
+                };
+                logoutBtn.onclick = async () => { await logout(); accountMenu.classList.add('hidden'); };
+                // Close dropdown when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (!accountArea.contains(e.target)) {
+                        accountMenu.classList.add('hidden');
+                    }
+                });
+            } else {
+                loginLink.classList.remove('hidden');
+                accountArea.classList.add('hidden');
+            }
+        });
+
+        // Initialize search functionality
+        setupSearch();
+    </script>
+</body>
+
+</html>

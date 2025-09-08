@@ -1,0 +1,956 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel — PHARMA DIRECT</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body class="min-h-screen bg-gray-50">
+    <div class="grid md:grid-cols-[240px_1fr] min-h-screen">
+        <aside class="bg-white border-r p-4">
+            <div class="font-semibold text-lg">Admin</div>
+            <nav class="mt-4 space-y-2">
+                <button data-tab="overview"
+                    class="w-full text-left rounded-lg px-3 py-2 bg-emerald-50 text-emerald-700">Overview</button>
+                <button data-tab="users" class="w-full text-left rounded-lg px-3 py-2">Users</button>
+                <button data-tab="pharmacies" class="w-full text-left rounded-lg px-3 py-2">Pharmacies</button>
+                <button data-tab="orders" class="w-full text-left rounded-lg px-3 py-2">Orders</button>
+                <button data-tab="wallet" class="w-full text-left rounded-lg px-3 py-2">Wallet Management</button>
+                <button data-tab="cod" class="w-full text-left rounded-lg px-3 py-2">COD Settings</button>
+            </nav>
+            <button id="logout" class="mt-6 w-full rounded-lg border px-3 py-2">Logout</button>
+        </aside>
+        <main class="p-4">
+            <div id="tab-overview" class="space-y-4">
+                <h1 class="text-xl font-semibold">Dashboard</h1>
+                <div id="overview-cards" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4"></div>
+            </div>
+            <div id="tab-users" class="hidden">
+                <h2 class="text-lg font-semibold">Users</h2>
+                <div id="users-list" class="mt-3 bg-white rounded-xl border"></div>
+            </div>
+            <div id="tab-pharmacies" class="hidden">
+                <h2 class="text-lg font-semibold">Pharmacies</h2>
+                <div id="pharmacies-list" class="mt-3 bg-white rounded-xl border"></div>
+            </div>
+            <div id="tab-orders" class="hidden">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-semibold">Orders</h2>
+                </div>
+
+                <!-- Order Status Tabs -->
+                <div class="bg-white rounded-xl border mb-6">
+                    <div class="border-b">
+                        <nav class="flex" id="admin-order-status-tabs">
+                            <button id="tab-all"
+                                class="admin-tab-button active flex-1 py-4 px-6 text-center border-b-2 border-emerald-500 text-emerald-600 font-medium relative">
+                                All Orders
+                                <span
+                                    class="admin-order-count-badge absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"
+                                    style="display: none;">0</span>
+                            </button>
+                            <button id="tab-pending"
+                                class="admin-tab-button flex-1 py-4 px-6 text-center border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium relative">
+                                Pending
+                                <span
+                                    class="admin-order-count-badge absolute -top-2 -right-2 bg-yellow-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"
+                                    style="display: none;">0</span>
+                            </button>
+                            <button id="tab-confirmed"
+                                class="admin-tab-button flex-1 py-4 px-6 text-center border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium relative">
+                                Confirmed
+                                <span
+                                    class="admin-order-count-badge absolute -top-2 -right-2 bg-blue-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"
+                                    style="display: none;">0</span>
+                            </button>
+                            <button id="tab-to-be-received"
+                                class="admin-tab-button flex-1 py-4 px-6 text-center border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium relative">
+                                To Be Received
+                                <span
+                                    class="admin-order-count-badge absolute -top-2 -right-2 bg-purple-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"
+                                    style="display: none;">0</span>
+                            </button>
+                            <button id="tab-delivered"
+                                class="admin-tab-button flex-1 py-4 px-6 text-center border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium relative">
+                                Delivered
+                                <span
+                                    class="admin-order-count-badge absolute -top-2 -right-2 bg-green-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"
+                                    style="display: none;">0</span>
+                            </button>
+                            <button id="tab-declined"
+                                class="admin-tab-button flex-1 py-4 px-6 text-center border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium relative">
+                                Declined
+                                <span
+                                    class="admin-order-count-badge absolute -top-2 -right-2 bg-gray-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"
+                                    style="display: none;">0</span>
+                            </button>
+                        </nav>
+                    </div>
+                </div>
+
+                <div id="orders-list" class="bg-white rounded-xl border"></div>
+            </div>
+
+            <!-- Wallet Management Tab -->
+            <div id="tab-wallet" class="hidden">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-semibold">Wallet Management</h2>
+                </div>
+
+                <!-- Withdrawal Requests -->
+                <div class="bg-white rounded-xl border p-6 mb-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Pending Withdrawal Requests</h3>
+                    <div id="withdrawal-requests-list" class="space-y-3">
+                        <!-- Withdrawal requests will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Pharmacy Wallet Balances -->
+                <div class="bg-white rounded-xl border p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Pharmacy Wallet Balances</h3>
+                    <div id="pharmacy-wallets-list" class="space-y-3">
+                        <!-- Pharmacy wallets will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-cod" class="hidden">
+                <h2 class="text-lg font-semibold">COD Thresholds</h2>
+                <form id="cod-form" class="mt-3 grid md:grid-cols-3 gap-3 bg-white rounded-xl border p-3">
+                    <input name="codMinOrders" type="number" min="0" class="rounded-lg border px-3 py-2"
+                        placeholder="Min successful orders" />
+                    <input name="codMinSpend" type="number" min="0" class="rounded-lg border px-3 py-2"
+                        placeholder="Min total spend (PHP)" />
+                    <input name="codMaxLimit" type="number" min="0" class="rounded-lg border px-3 py-2"
+                        placeholder="Max COD amount (PHP)" />
+                    <button class="md:col-span-3 rounded-lg bg-emerald-600 text-white px-4 py-2">Save</button>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+        import { getFirestore, collection, getDocs, doc, updateDoc, setDoc, getDoc, query, where, orderBy, limit, onSnapshot } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+        import { firebaseConfig, COLLECTIONS } from './js/firebase.js';
+        import { logout } from './js/auth.js';
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        const tabs = document.querySelectorAll('aside [data-tab]');
+        const panels = {
+            overview: document.getElementById('tab-overview'),
+            users: document.getElementById('tab-users'),
+            pharmacies: document.getElementById('tab-pharmacies'),
+            orders: document.getElementById('tab-orders'),
+            wallet: document.getElementById('tab-wallet'),
+            cod: document.getElementById('tab-cod'),
+        };
+
+        async function ensureAdmin(user) {
+            const snap = await getDoc(doc(db, COLLECTIONS.users, user.uid));
+            if (!snap.exists() || snap.data().role !== 'admin') {
+                window.location.href = 'index.html';
+            }
+        }
+
+        function showOrderDetails(orderId, order) {
+            const customerName = order.customerInfo ? order.customerInfo.name : (order.userName || 'Unknown');
+            const customerPhone = order.customerInfo ? order.customerInfo.phone : 'Not provided';
+            const customerEmail = order.customerInfo ? order.customerInfo.email : 'Not provided';
+
+            const items = order.items ? order.items.map(item =>
+                `${item.name} x${item.quantity} - ₱${(item.price * item.quantity).toFixed(2)}`
+            ).join('<br>') : 'No items';
+
+            const details = `
+                <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div class="bg-white rounded-lg p-6 max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-semibold">Order Details - #${orderId.slice(-6)}</h3>
+                            <button onclick="this.closest('.fixed').remove()" class="text-gray-500 hover:text-gray-700">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <h4 class="font-medium text-gray-900 mb-2">Order Information</h4>
+                                <p><strong>Status:</strong> ${order.stage}</p>
+                                <p><strong>Payment:</strong> ${order.paymentMethod} (${order.paymentStatus})</p>
+                                <p><strong>Total:</strong> ₱${order.total ? order.total.toLocaleString() : '0'}</p>
+                                <p><strong>Order Date:</strong> ${order.createdAt ? new Date(order.createdAt.seconds * 1000).toLocaleString() : 'Unknown'}</p>
+                            </div>
+
+                            <div>
+                                <h4 class="font-medium text-gray-900 mb-2">Customer Information</h4>
+                                <p><strong>Name:</strong> ${customerName}</p>
+                                <p><strong>Phone:</strong> ${customerPhone}</p>
+                                <p><strong>Email:</strong> ${customerEmail}</p>
+                                <p><strong>User ID:</strong> ${order.userId || 'Unknown'}</p>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <h4 class="font-medium text-gray-900 mb-2">Items Ordered</h4>
+                            <div class="bg-gray-50 p-3 rounded">
+                                ${items}
+                            </div>
+                        </div>
+
+                        ${order.deliveryAddress ? `
+                        <div class="mb-4">
+                            <h4 class="font-medium text-gray-900 mb-2">Delivery Address</h4>
+                            <div class="bg-gray-50 p-3 rounded">
+                                ${order.deliveryAddress}
+                            </div>
+                        </div>
+                        ` : ''}
+
+                        <div class="flex gap-2">
+                            <button onclick="this.closest('.fixed').remove()" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.body.insertAdjacentHTML('beforeend', details);
+        }
+
+        async function showUserDetails(userId, user) {
+            // Get user's orders
+            const ordersQuery = query(collection(db, COLLECTIONS.orders), where('userId', '==', userId));
+            const ordersSnap = await getDocs(ordersQuery);
+            const orders = Array.from(ordersSnap.docs);
+
+            const totalOrders = orders.length;
+            const completedOrders = orders.filter(o => o.data().stage === 'Delivered').length;
+            const totalSpent = orders.reduce((sum, o) => sum + (o.data().total || 0), 0);
+
+            const recentOrders = orders.slice(0, 5).map(o => {
+                const data = o.data();
+                return `
+                    <div class="flex justify-between items-center py-2 border-b last:border-0">
+                        <div>
+                            <div class="font-medium">#${o.id.slice(-6)}</div>
+                            <div class="text-sm text-gray-600">${data.stage} • ₱${data.total?.toLocaleString() || '0'}</div>
+                        </div>
+                        <div class="text-sm text-gray-500">
+                            ${data.createdAt ? new Date(data.createdAt.seconds * 1000).toLocaleDateString() : 'Unknown'}
+                        </div>
+                    </div>
+                `;
+            }).join('') || '<div class="text-gray-500">No orders yet</div>';
+
+            const details = `
+                <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div class="bg-white rounded-lg p-6 max-w-4xl w-full mx-4 max-h-[80vh] overflow-y-auto">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-semibold">User Details - ${user.name || 'Unnamed'}</h3>
+                            <button onclick="this.closest('.fixed').remove()" class="text-gray-500 hover:text-gray-700">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <h4 class="font-medium text-gray-900 mb-3">User Information</h4>
+                                <div class="space-y-2">
+                                    <p><strong>Name:</strong> ${user.name || 'Not provided'}</p>
+                                    <p><strong>Email:</strong> ${user.email || 'Not provided'}</p>
+                                    <p><strong>Role:</strong> ${user.role || 'user'}</p>
+                                    <p><strong>COD Status:</strong> ${user.codUnlocked ? 'Enabled' : 'Disabled'}</p>
+                                    <p><strong>Account Status:</strong> ${user.disabled ? 'Disabled' : 'Active'}</p>
+                                    <p><strong>User ID:</strong> ${userId}</p>
+                                    <p><strong>Joined:</strong> ${user.createdAt ? new Date(user.createdAt.seconds * 1000).toLocaleString() : 'Unknown'}</p>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 class="font-medium text-gray-900 mb-3">Order Statistics</h4>
+                                <div class="space-y-2">
+                                    <p><strong>Total Orders:</strong> ${totalOrders}</p>
+                                    <p><strong>Completed Orders:</strong> ${completedOrders}</p>
+                                    <p><strong>Total Spent:</strong> ₱${totalSpent.toLocaleString()}</p>
+                                    <p><strong>Average Order:</strong> ₱${totalOrders > 0 ? (totalSpent / totalOrders).toFixed(2) : '0'}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="font-medium text-gray-900 mb-3">Recent Orders</h4>
+                            <div class="bg-gray-50 rounded p-3 max-h-60 overflow-y-auto">
+                                ${recentOrders}
+                            </div>
+                        </div>
+
+                        <div class="flex gap-2 mt-6">
+                            <button onclick="this.closest('.fixed').remove()" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.body.insertAdjacentHTML('beforeend', details);
+        }
+
+        async function showPharmacyProducts(pharmacyId, pharmacy) {
+            // Get pharmacy's products
+            const productsQuery = query(collection(db, COLLECTIONS.products), where('pharmacyId', '==', pharmacyId));
+            const productsSnap = await getDocs(productsQuery);
+            const products = Array.from(productsSnap.docs);
+
+            const totalProducts = products.length;
+            const activeProducts = products.filter(p => !p.data().disabled).length;
+            const outOfStock = products.filter(p => (p.data().stock || 0) === 0).length;
+
+            const productsList = products.map(p => {
+                const data = p.data();
+                const isOutOfStock = (data.stock || 0) === 0;
+                const isDisabled = data.disabled;
+
+                return `
+                    <div class="flex items-center justify-between py-3 border-b last:border-0 ${isDisabled ? 'opacity-60' : ''}">
+                        <div class="flex items-center gap-3">
+                            <img src="${data.imageURL || 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=100&auto=format&fit=crop'}" class="w-12 h-12 rounded object-cover" alt="${data.name}">
+                            <div>
+                                <div class="font-medium ${isDisabled ? 'text-gray-500' : ''}">${data.name}</div>
+                                <div class="text-sm text-gray-600">
+                                    ₱${data.price?.toLocaleString() || '0'} • Stock: ${data.stock || 0}
+                                    ${isOutOfStock ? ' • <span class="text-red-500">Out of Stock</span>' : ''}
+                                    ${isDisabled ? ' • <span class="text-orange-500">Disabled</span>' : ''}
+                                </div>
+                            </div>
+                        </div>
+                        <button data-product-id="${p.id}" data-action="toggle-product-status" class="px-3 py-1 text-sm rounded border ${isDisabled ? 'bg-green-50 text-green-700 hover:bg-green-100' : 'bg-orange-50 text-orange-700 hover:bg-orange-100'}">
+                            ${isDisabled ? 'Enable' : 'Disable'}
+                        </button>
+                    </div>
+                `;
+            }).join('') || '<div class="text-gray-500 text-center py-4">No products found</div>';
+
+            const details = `
+                <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div class="bg-white rounded-lg p-6 max-w-4xl w-full mx-4 max-h-[80vh] overflow-y-auto">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-semibold">Products - ${pharmacy.name}</h3>
+                            <button onclick="this.closest('.fixed').remove()" class="text-gray-500 hover:text-gray-700">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div class="grid md:grid-cols-3 gap-4 mb-6">
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <div class="text-2xl font-bold text-blue-600">${totalProducts}</div>
+                                <div class="text-sm text-blue-600">Total Products</div>
+                            </div>
+                            <div class="bg-green-50 p-4 rounded-lg">
+                                <div class="text-2xl font-bold text-green-600">${activeProducts}</div>
+                                <div class="text-sm text-green-600">Active Products</div>
+                            </div>
+                            <div class="bg-red-50 p-4 rounded-lg">
+                                <div class="text-2xl font-bold text-red-600">${outOfStock}</div>
+                                <div class="text-sm text-red-600">Out of Stock</div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <h4 class="font-medium text-gray-900 mb-3">Product List</h4>
+                            <div class="bg-gray-50 rounded p-3 max-h-96 overflow-y-auto" id="pharmacy-products-list">
+                                ${productsList}
+                            </div>
+                        </div>
+
+                        <div class="flex gap-2">
+                            <button onclick="hideAllPharmacyProducts('${pharmacyId}')" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
+                                Disable All Products
+                            </button>
+                            <button onclick="showAllPharmacyProducts('${pharmacyId}')" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
+                                Enable All Products
+                            </button>
+                            <button onclick="this.closest('.fixed').remove()" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.body.insertAdjacentHTML('beforeend', details);
+
+            // Add event listener for individual product toggles
+            setTimeout(() => {
+                const productsList = document.getElementById('pharmacy-products-list');
+                if (productsList) {
+                    productsList.addEventListener('click', async (e) => {
+                        const btn = e.target.closest('button[data-product-id]');
+                        if (!btn) return;
+
+                        const productRef = doc(db, COLLECTIONS.products, btn.dataset.productId);
+                        const productSnap = await getDoc(productRef);
+                        const productData = productSnap.data();
+
+                        if (btn.dataset.action === 'toggle-product-status') {
+                            await updateDoc(productRef, {
+                                disabled: !productData.disabled,
+                                updatedAt: new Date()
+                            });
+
+                            // Refresh the modal
+                            const modal = btn.closest('.fixed');
+                            if (modal) {
+                                modal.remove();
+                                showPharmacyProducts(pharmacyId, pharmacy);
+                            }
+                        }
+                    });
+                }
+            }, 100);
+        }
+
+        async function hidePharmacyProducts(pharmacyId) {
+            const productsQuery = query(collection(db, COLLECTIONS.products), where('pharmacyId', '==', pharmacyId));
+            const productsSnap = await getDocs(productsQuery);
+
+            const updatePromises = productsSnap.docs.map(docSnap =>
+                updateDoc(doc(db, COLLECTIONS.products, docSnap.id), {
+                    disabled: true,
+                    updatedAt: new Date()
+                })
+            );
+
+            await Promise.all(updatePromises);
+            alert('All products have been disabled.');
+        }
+
+        async function showAllPharmacyProducts(pharmacyId) {
+            const productsQuery = query(collection(db, COLLECTIONS.products), where('pharmacyId', '==', pharmacyId));
+            const productsSnap = await getDocs(productsQuery);
+
+            const updatePromises = productsSnap.docs.map(docSnap =>
+                updateDoc(doc(db, COLLECTIONS.products, docSnap.id), {
+                    disabled: false,
+                    updatedAt: new Date()
+                })
+            );
+
+            await Promise.all(updatePromises);
+            alert('All products have been enabled.');
+        }
+
+        // Make functions globally available for onclick handlers
+        window.hideAllPharmacyProducts = hidePharmacyProducts;
+        window.showAllPharmacyProducts = showAllPharmacyProducts;
+
+        // Test function to manually update badges
+        window.testAdminBadges = async () => {
+            console.log('Testing admin badges...');
+            await updateAdminOrderCounts();
+
+            // Force show a badge for testing
+            const testBadge = document.querySelector('.admin-order-count-badge');
+            if (testBadge) {
+                testBadge.textContent = '99';
+                testBadge.style.display = 'inline-flex';
+                console.log('Forced admin badge to show with count 99');
+            }
+        };
+
+        async function loadOverview() {
+            const [users, pharmacies, orders, products] = await Promise.all([
+                getDocs(collection(db, COLLECTIONS.users)),
+                getDocs(collection(db, COLLECTIONS.pharmacies)),
+                getDocs(collection(db, COLLECTIONS.orders)),
+                getDocs(collection(db, COLLECTIONS.products))
+            ]);
+
+            const usersWithRoleUser = Array.from(users.docs).filter(d => (d.data().role || 'user') === 'user').length;
+            const activePharmacies = Array.from(pharmacies.docs).filter(d => d.data().approved && !d.data().disabled).length;
+
+            // Only count revenue from delivered orders
+            const deliveredOrders = Array.from(orders.docs).filter(d => d.data().stage === 'Delivered');
+            const revenue = deliveredOrders.reduce((s, d) => s + (d.data().total || 0), 0);
+
+            // Additional statistics
+            const totalOrders = orders.size;
+            const pendingOrders = Array.from(orders.docs).filter(d => d.data().stage === 'Pending').length;
+            const activeProducts = Array.from(products.docs).filter(d => !d.data().disabled).length;
+            const outOfStockProducts = Array.from(products.docs).filter(d => (d.data().stock || 0) === 0).length;
+
+            const cards = [
+                { label: 'Active Users', value: usersWithRoleUser, color: 'text-blue-600' },
+                { label: 'Active Pharmacies', value: activePharmacies, color: 'text-green-600' },
+                { label: 'Total Orders', value: totalOrders, color: 'text-purple-600' },
+                { label: 'Pending Orders', value: pendingOrders, color: 'text-orange-600' },
+                { label: 'Revenue (Delivered)', value: '₱' + revenue.toLocaleString(), color: 'text-emerald-600' },
+                { label: 'Active Products', value: activeProducts, color: 'text-indigo-600' },
+                { label: 'Out of Stock', value: outOfStockProducts, color: 'text-red-600' },
+                { label: 'Total Products', value: products.size, color: 'text-gray-600' },
+            ];
+
+            const wrap = document.getElementById('overview-cards');
+            wrap.innerHTML = cards.map(c => `<div class='bg-white rounded-xl p-4 border'>
+        <div class='text-sm text-gray-500'>${c.label}</div>
+        <div class='text-2xl font-semibold mt-1 ${c.color || 'text-gray-900'}'>${c.value}</div>
+      </div>`).join('');
+        }
+
+        async function loadUsers() {
+            const snap = await getDocs(collection(db, COLLECTIONS.users));
+            const el = document.getElementById('users-list');
+            const currentUid = auth.currentUser ? auth.currentUser.uid : null;
+            el.innerHTML = Array.from(snap.docs)
+                .filter(d => {
+                    const u = d.data();
+                    return (u.role === 'user') && d.id !== currentUid;
+                })
+                .map(d => {
+                    const u = d.data();
+                    const codLabel = u.codUnlocked ? 'COD: On' : 'COD: Off';
+                    const codBtn = `<button data-uid='${d.id}' data-action='toggle-cod' class='rounded border px-3 py-1 text-sm'>Toggle COD</button>`;
+                    const disBtn = `<button data-uid='${d.id}' data-action='toggle-disabled' class='rounded border px-3 py-1 text-sm'>${u.disabled ? 'Enable' : 'Disable'}</button>`;
+                    const viewBtn = `<button data-uid='${d.id}' data-action='view-details' class='rounded border px-3 py-1 text-sm bg-blue-50 text-blue-700 hover:bg-blue-100'>View Details</button>`;
+                    return `<div class='p-3 flex items-center justify-between border-b last:border-0'>
+          <div>
+            <div class='font-medium'>${u.name || 'Unnamed'}</div>
+            <div class='text-sm text-gray-600'>${u.email} • ${u.role} • ${codLabel} • ${u.disabled ? 'Disabled' : 'Active'}</div>
+          </div>
+          <div class='flex gap-2'>${viewBtn}${codBtn}${disBtn}</div>
+        </div>`;
+                }).join('') || "<div class='p-3 text-gray-500'>No standard users to display.</div>";
+            el.addEventListener('click', async (e) => {
+                const btn = e.target.closest('button[data-uid]');
+                if (!btn) return;
+                const ref = doc(db, COLLECTIONS.users, btn.dataset.uid);
+                const s = await getDoc(ref);
+                const data = s.data();
+                if (btn.dataset.action === 'view-details') {
+                    showUserDetails(btn.dataset.uid, data);
+                } else if (btn.dataset.action === 'toggle-cod') {
+                    await updateDoc(ref, { codUnlocked: !data.codUnlocked });
+                } else if (btn.dataset.action === 'toggle-disabled') {
+                    await updateDoc(ref, { disabled: !data.disabled });
+                }
+                loadUsers();
+            });
+        }
+
+        async function loadPharmacies() {
+            const snap = await getDocs(collection(db, COLLECTIONS.pharmacies));
+            const el = document.getElementById('pharmacies-list');
+            el.innerHTML = Array.from(snap.docs).map(d => {
+                const p = d.data();
+                return `<div class='p-3 flex items-center justify-between border-b last:border-0'>
+          <div>
+            <div class='font-medium'>${p.name}</div>
+            <div class='text-sm text-gray-600'>${p.email} • ${p.approved ? 'Approved' : 'Pending'} • ${p.disabled ? 'Disabled' : 'Active'}</div>
+          </div>
+          <div class='flex gap-2'>
+            <button data-id='${d.id}' data-action='view-products' class='rounded border px-3 py-1 text-sm bg-blue-50 text-blue-700 hover:bg-blue-100'>View Products</button>
+            <button data-id='${d.id}' data-action='toggle-approve' class='rounded border px-3 py-1 text-sm'>${p.approved ? 'Revoke' : 'Approve'}</button>
+            <button data-id='${d.id}' data-action='toggle-disabled' class='rounded border px-3 py-1 text-sm'>${p.disabled ? 'Enable' : 'Disable'}</button>
+          </div>
+        </div>`;
+            }).join('');
+            el.addEventListener('click', async (e) => {
+                const btn = e.target.closest('button[data-id]');
+                if (!btn) return;
+                const ref = doc(db, COLLECTIONS.pharmacies, btn.dataset.id);
+                const s = await getDoc(ref);
+                const data = s.data();
+                if (btn.dataset.action === 'view-products') {
+                    showPharmacyProducts(btn.dataset.id, data);
+                } else if (btn.dataset.action === 'toggle-approve') {
+                    await updateDoc(ref, { approved: !data.approved });
+                } else if (btn.dataset.action === 'toggle-disabled') {
+                    const newDisabledStatus = !data.disabled;
+                    await updateDoc(ref, { disabled: newDisabledStatus });
+
+                    // When disabling a pharmacy, hide all their products
+                    if (newDisabledStatus) {
+                        await hidePharmacyProducts(btn.dataset.id);
+                    }
+                }
+                loadPharmacies();
+            });
+        }
+
+        let currentAdminOrderStatus = 'all';
+        let allAdminOrders = [];
+        let adminOrderCounts = { all: 0, pending: 0, confirmed: 0, 'to-be-received': 0, delivered: 0, declined: 0 };
+
+        function updateAdminOrderCounts() {
+            // Reset counts
+            adminOrderCounts = { all: 0, pending: 0, confirmed: 0, 'to-be-received': 0, delivered: 0, declined: 0 };
+
+            // Count orders by status
+            allAdminOrders.forEach(({ order }) => {
+                const status = order.stage.toLowerCase().replace(/\s+/g, '-');
+                if (status in adminOrderCounts) {
+                    adminOrderCounts[status]++;
+                }
+                adminOrderCounts.all++;
+            });
+
+            // Update tab badges
+            document.querySelectorAll('.admin-tab-button').forEach(tab => {
+                const tabId = tab.id.replace('tab-', '');
+                const badge = tab.querySelector('.admin-order-count-badge');
+
+                if (badge) {
+                    const count = adminOrderCounts[tabId] || 0;
+                    badge.textContent = count;
+                    badge.style.display = count > 0 ? 'inline-flex' : 'none';
+                }
+            });
+
+            console.log('Admin order counts:', adminOrderCounts);
+        }
+
+        function renderFilteredAdminOrders() {
+            const filteredOrders = currentAdminOrderStatus === 'all'
+                ? allAdminOrders
+                : allAdminOrders.filter(({ order }) => {
+                    const stage = order.stage.toLowerCase().replace(/\s+/g, '-');
+                    // Handle special case for declined tab (matches both 'declined' and 'cancelled')
+                    if (currentAdminOrderStatus === 'declined') {
+                        return stage === 'declined' || stage === 'cancelled';
+                    }
+                    return stage === currentAdminOrderStatus;
+                });
+
+            const el = document.getElementById('orders-list');
+            el.innerHTML = '';
+
+            if (filteredOrders.length === 0) {
+                el.innerHTML = `
+                    <div class="p-8 text-center">
+                        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                        </svg>
+                        <h3 class="mt-2 text-sm font-medium text-gray-900">No orders</h3>
+                        <p class="mt-1 text-sm text-gray-500">Orders will appear here when customers place them.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            el.innerHTML = filteredOrders.map(({ doc, order }) => {
+                const o = order;
+                const customerName = o.customerInfo ? o.customerInfo.name : (o.userName || 'Unknown');
+                return `<div class='p-3 flex items-center justify-between border-b last:border-0'>
+          <div>
+            <div class='font-medium'>#${doc.id.slice(-6)} — ${o.paymentMethod}</div>
+            <div class='text-sm text-gray-600'>${o.paymentStatus} • ${o.stage} • ${customerName}</div>
+            <div class='text-sm text-gray-500'>Total: ₱${o.total ? o.total.toLocaleString() : '0'}</div>
+          </div>
+          <div class='flex flex-col gap-2'>
+            ${o.stage === 'Pending' ? `
+              <button data-id='${doc.id}' data-action='confirm' class='bg-emerald-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-emerald-600 transition-colors'>Confirm Payment</button>
+            ` : ''}
+            ${getNextActionText(o.stage) ? `
+              <button data-id='${doc.id}' data-action='advance' class='bg-blue-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-blue-600 transition-colors'>${getNextActionText(o.stage)}</button>
+            ` : ''}
+            <button data-id='${doc.id}' data-action='view-details' class='bg-slate-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-slate-600 transition-colors'>View Details</button>
+          </div>
+        </div>`;
+            }).join('');
+
+            el.addEventListener('click', async (e) => {
+                const btn = e.target.closest('button[data-id]');
+                if (!btn) return;
+                const ref = doc(db, COLLECTIONS.orders, btn.dataset.id);
+                const s = await getDoc(ref);
+                const o = s.data();
+                if (btn.dataset.action === 'view-details') {
+                    showOrderDetails(btn.dataset.id, o);
+                } else if (btn.dataset.action === 'confirm') {
+                    await updateDoc(ref, { paymentStatus: 'Confirmed', stage: 'Confirmed' });
+                } else if (btn.dataset.action === 'advance') {
+                    const stages = ['Pending', 'Confirmed', 'To Be Received', 'Delivered'];
+                    const idx = Math.max(0, stages.indexOf(o.stage));
+                    const next = stages[Math.min(idx + 1, stages.length - 1)];
+                    await updateDoc(ref, { stage: next });
+                }
+                // Orders will be updated automatically via real-time listener
+            });
+        }
+
+        // Function to get the next action text based on current stage
+        function getNextActionText(currentStage) {
+            const stageActions = {
+                'Pending': 'Confirm Payment',
+                'Confirmed': 'Mark as Shipped',
+                'To Be Received': 'Mark as Delivered',
+                'Delivered': null // No next action
+            };
+            return stageActions[currentStage] || null;
+        }
+
+        function loadOrders(status = 'all') {
+            currentAdminOrderStatus = status;
+
+            // Update tab styling
+            document.querySelectorAll('.admin-tab-button').forEach(tab => {
+                if (tab.id === `tab-${status}`) {
+                    tab.classList.add('active', 'border-emerald-500', 'text-emerald-600');
+                    tab.classList.remove('border-transparent', 'text-gray-500');
+                } else {
+                    tab.classList.remove('active', 'border-emerald-500', 'text-emerald-600');
+                    tab.classList.add('border-transparent', 'text-gray-500');
+                }
+            });
+
+            // Render filtered orders (client-side filtering)
+            renderFilteredAdminOrders();
+        }
+
+        // Load all orders and set up real-time updates
+        function loadAllAdminOrders() {
+            const ordersQuery = query(collection(db, COLLECTIONS.orders), orderBy('createdAt', 'desc'));
+
+            onSnapshot(ordersQuery, (snap) => {
+                allAdminOrders = [];
+
+                // Process all orders
+                snap.docs.forEach(doc => {
+                    const order = doc.data();
+                    allAdminOrders.push({ doc, order });
+                });
+
+                // Update counts and render
+                updateAdminOrderCounts();
+                renderFilteredAdminOrders();
+            });
+        }
+
+        async function loadCodSettings() {
+            const ref = doc(db, COLLECTIONS.settings, 'global');
+            const s = await getDoc(ref);
+            const form = document.getElementById('cod-form');
+            if (s.exists()) {
+                const v = s.data();
+                form.codMinOrders.value = v.codMinOrders ?? '';
+                form.codMinSpend.value = v.codMinSpend ?? '';
+                form.codMaxLimit.value = v.codMaxLimit ?? '';
+            }
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const data = Object.fromEntries(new FormData(form).entries());
+                await setDoc(ref, {
+                    codMinOrders: Number(data.codMinOrders || 0),
+                    codMinSpend: Number(data.codMinSpend || 0),
+                    codMaxLimit: Number(data.codMaxLimit || 0)
+                }, { merge: true });
+            });
+        }
+
+        // Admin order status tab event listeners
+        document.getElementById('admin-order-status-tabs').addEventListener('click', async (e) => {
+            const tab = e.target.closest('.admin-tab-button');
+            if (tab) {
+                const status = tab.id.replace('tab-', '');
+                await loadOrders(status);
+            }
+        });
+
+        document.getElementById('logout').addEventListener('click', logout);
+
+        // Wallet management functionality
+        async function loadWithdrawalRequests() {
+            try {
+                const requestsRef = query(
+                    collection(db, 'withdrawalRequests'),
+                    where('status', '==', 'pending'),
+                    orderBy('requestedAt', 'desc')
+                );
+                const requestsSnap = await getDocs(requestsRef);
+
+                const requestsList = document.getElementById('withdrawal-requests-list');
+
+                if (requestsSnap.empty) {
+                    requestsList.innerHTML = '<p class="text-gray-500 text-center py-4">No pending withdrawal requests</p>';
+                    return;
+                }
+
+                const requests = requestsSnap.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+
+                requestsList.innerHTML = requests.map(request => `
+                    <div class="flex items-center justify-between p-4 border rounded-lg">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-3 mb-2">
+                                <h4 class="font-medium text-gray-900">Pharmacy ID: ${request.pharmacyId.slice(-8)}</h4>
+                                <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">Pending</span>
+                            </div>
+                            <div class="text-sm text-gray-600 space-y-1">
+                                <p><strong>Amount:</strong> ₱${request.amount.toFixed(2)}</p>
+                                <p><strong>Bank:</strong> ${request.bankName}</p>
+                                <p><strong>Account:</strong> ${request.accountNumber}</p>
+                                <p><strong>Requested:</strong> ${new Date(request.requestedAt).toLocaleDateString()}</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="approveWithdrawal('${request.id}', '${request.pharmacyId}', ${request.amount})" 
+                                class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors">
+                                Approve
+                            </button>
+                            <button onclick="rejectWithdrawal('${request.id}', '${request.pharmacyId}', ${request.amount})" 
+                                class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+                                Reject
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading withdrawal requests:', error);
+            }
+        }
+
+        async function loadPharmacyWallets() {
+            try {
+                const pharmaciesRef = collection(db, COLLECTIONS.pharmacies);
+                const pharmaciesSnap = await getDocs(pharmaciesRef);
+
+                const walletsList = document.getElementById('pharmacy-wallets-list');
+
+                if (pharmaciesSnap.empty) {
+                    walletsList.innerHTML = '<p class="text-gray-500 text-center py-4">No pharmacies found</p>';
+                    return;
+                }
+
+                const pharmacies = pharmaciesSnap.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+
+                walletsList.innerHTML = pharmacies.map(pharmacy => `
+                    <div class="flex items-center justify-between p-4 border rounded-lg">
+                        <div class="flex-1">
+                            <h4 class="font-medium text-gray-900">${pharmacy.name}</h4>
+                            <p class="text-sm text-gray-600">${pharmacy.email}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-medium text-emerald-600">₱${(pharmacy.walletBalance || 0).toFixed(2)}</p>
+                            <p class="text-sm text-gray-500">Available</p>
+                        </div>
+                        <div class="text-right ml-4">
+                            <p class="font-medium text-blue-600">₱${(pharmacy.pendingBalance || 0).toFixed(2)}</p>
+                            <p class="text-sm text-gray-500">Pending</p>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading pharmacy wallets:', error);
+            }
+        }
+
+        async function approveWithdrawal(requestId, pharmacyId, amount) {
+            if (!confirm(`Approve withdrawal of ₱${amount.toFixed(2)}?`)) return;
+
+            try {
+                // Update withdrawal request status
+                await updateDoc(doc(db, 'withdrawalRequests', requestId), {
+                    status: 'approved',
+                    approvedAt: Date.now()
+                });
+
+                // Update pharmacy balance
+                const pharmacyRef = doc(db, COLLECTIONS.pharmacies, pharmacyId);
+                const pharmacySnap = await getDoc(pharmacyRef);
+
+                if (pharmacySnap.exists()) {
+                    const currentPending = pharmacySnap.data().pendingBalance || 0;
+                    await updateDoc(pharmacyRef, {
+                        pendingBalance: Math.max(0, currentPending - amount)
+                    });
+                }
+
+                alert('Withdrawal approved successfully');
+                await loadWithdrawalRequests();
+                await loadPharmacyWallets();
+            } catch (error) {
+                console.error('Error approving withdrawal:', error);
+                alert('Error approving withdrawal');
+            }
+        }
+
+        async function rejectWithdrawal(requestId, pharmacyId, amount) {
+            if (!confirm(`Reject withdrawal of ₱${amount.toFixed(2)}?`)) return;
+
+            try {
+                // Update withdrawal request status
+                await updateDoc(doc(db, 'withdrawalRequests', requestId), {
+                    status: 'rejected',
+                    rejectedAt: Date.now()
+                });
+
+                // Return amount to pharmacy wallet
+                const pharmacyRef = doc(db, COLLECTIONS.pharmacies, pharmacyId);
+                const pharmacySnap = await getDoc(pharmacyRef);
+
+                if (pharmacySnap.exists()) {
+                    const currentWallet = pharmacySnap.data().walletBalance || 0;
+                    const currentPending = pharmacySnap.data().pendingBalance || 0;
+
+                    await updateDoc(pharmacyRef, {
+                        walletBalance: currentWallet + amount,
+                        pendingBalance: Math.max(0, currentPending - amount)
+                    });
+                }
+
+                alert('Withdrawal rejected and amount returned to wallet');
+                await loadWithdrawalRequests();
+                await loadPharmacyWallets();
+            } catch (error) {
+                console.error('Error rejecting withdrawal:', error);
+                alert('Error rejecting withdrawal');
+            }
+        }
+
+        // Make functions global for onclick handlers
+        window.approveWithdrawal = approveWithdrawal;
+        window.rejectWithdrawal = rejectWithdrawal;
+
+        // Update tab switching to load wallet data
+        tabs.forEach(btn => btn.addEventListener('click', async () => {
+            tabs.forEach(b => b.classList.remove('bg-emerald-50', 'text-emerald-700'));
+            btn.classList.add('bg-emerald-50', 'text-emerald-700');
+            Object.values(panels).forEach(p => p.classList.add('hidden'));
+            panels[btn.dataset.tab].classList.remove('hidden');
+
+            // Load wallet data when wallet tab is selected
+            if (btn.dataset.tab === 'wallet') {
+                await Promise.all([loadWithdrawalRequests(), loadPharmacyWallets()]);
+            }
+        }));
+
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) { window.location.href = 'login.html'; return; }
+            await ensureAdmin(user);
+            await Promise.all([loadOverview(), loadUsers(), loadPharmacies(), loadCodSettings()]);
+            loadAllAdminOrders();
+        });
+    </script>
+</body>
+
+</html>

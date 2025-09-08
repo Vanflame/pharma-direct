@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PHARMA DIRECT — OTC Medicine Delivery</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body class="min-h-screen bg-white text-gray-900"
+    style="font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Arial, sans-serif;">
+    <header class="sticky top-0 z-40 bg-white/80 backdrop-blur border-b">
+        <div class="mx-auto container-max px-4 py-3 flex items-center justify-between">
+            <a href="./" class="flex items-center gap-2">
+                <img src="img/icon.png" alt="logo" class="w-6 h-6" />
+                <span class="font-semibold text-lg">PHARMA DIRECT</span>
+            </a>
+            <nav class="hidden md:flex items-center gap-6">
+                <a href="categories.html" class="text-gray-600 hover:text-gray-900">Categories</a>
+                <a href="track.html" class="text-gray-600 hover:text-gray-900">Track Order</a>
+                <a href="cart.html"
+                    class="inline-flex items-center gap-2 rounded-lg bg-emerald-600 text-white px-4 py-2 shadow hover:bg-emerald-700">Cart
+                    <span id="cart-count"
+                        class="ml-1 inline-flex items-center justify-center w-5 h-5 rounded-full bg-white text-emerald-700 text-xs">0</span>
+                </a>
+                <a id="login-link" href="login.html" class="text-gray-600 hover:text-gray-900">Login</a>
+                <div id="account-area" class="relative hidden">
+                    <button id="account-btn"
+                        class="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 shadow-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        <span id="account-name" class="text-sm font-medium truncate max-w-24"></span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 flex-shrink-0" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div id="account-menu" class="dropdown-panel hidden">
+                        <div class="user-info">
+                            <p class="user-email" id="account-email"></p>
+                            <p class="user-role" id="account-role"></p>
+                        </div>
+                        <a id="dashboard-link" href="#" class="dropdown-item">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M8 5a2 2 0 012-2h4a2 2 0 012 2v2H8V5z"></path>
+                            </svg>
+                            <span>Dashboard</span>
+                        </a>
+                        <a href="track.html" class="dropdown-item">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
+                                </path>
+                            </svg>
+                            <span>My Orders</span>
+                        </a>
+                        <button id="logout-btn" class="dropdown-item w-full text-left">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
+                                </path>
+                            </svg>
+                            <span>Logout</span>
+                        </button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Banner -->
+        <section class="bg-gradient-to-r from-emerald-50 to-blue-50 border-b">
+            <div class="mx-auto container-max px-4 py-10 grid md:grid-cols-2 gap-8 items-center">
+                <div>
+                    <h1 class="text-3xl md:text-4xl font-bold leading-tight">Fast, safe, and reliable OTC medicine
+                        delivery</h1>
+                    <p class="mt-3 text-gray-600">Order from trusted pharmacies. Pay via COD, Card, GCash, or PayMaya.
+                        Track your order in real-time.</p>
+                    <div class="mt-6 flex items-center gap-3">
+                        <a href="categories.html"
+                            class="inline-flex items-center rounded-lg bg-emerald-600 text-white px-5 py-3 shadow hover:bg-emerald-700">Shop
+                            now</a>
+                        <a id="hero-signin" href="login.html"
+                            class="inline-flex items-center rounded-lg border px-5 py-3 hover:bg-gray-50">Sign in</a>
+                    </div>
+                </div>
+                <img src="img/1cf63f73-f703-4870-a01d-4d6db2b74a07.png" alt="Pharmacy banner"
+                    class="w-full rounded-xl shadow" />
+            </div>
+        </section>
+
+        <!-- Product grid -->
+        <section id="products" class="mx-auto container-max px-4 py-10">
+            <div class="flex items-end justify-between">
+                <h2 class="text-2xl font-semibold">Featured products</h2>
+                <a href="categories.html" class="text-emerald-700 hover:underline">Browse all</a>
+            </div>
+            <div id="product-grid" class="mt-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
+        </section>
+    </main>
+
+    <!-- Mobile bottom nav -->
+    <nav class="fixed bottom-0 inset-x-0 md:hidden bg-white border-t">
+        <div class="mx-auto container-max px-6 py-2 grid grid-cols-4 text-sm">
+            <a href="./" class="flex flex-col items-center text-emerald-700">
+                <span>Home</span>
+            </a>
+            <a href="categories.html" class="flex flex-col items-center text-gray-600">
+                <span>Categories</span>
+            </a>
+            <a href="track.html" class="flex flex-col items-center text-gray-600">
+                <span>Track</span>
+            </a>
+            <a href="cart.html" class="flex flex-col items-center text-gray-600">
+                <span>Cart</span>
+            </a>
+        </div>
+    </nav>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+        import { getFirestore, collection, getDocs, query, where, limit } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+        import { firebaseConfig, COLLECTIONS, formatCurrency } from "./js/firebase.js";
+        import { fetchUserRole, logout } from "./js/auth.js";
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Update cart count from localStorage
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+            const count = cart.reduce((sum, i) => sum + i.quantity, 0);
+            const el = document.getElementById("cart-count");
+            if (el) el.textContent = String(count);
+        }
+        updateCartCount();
+
+        // Load featured products
+        async function loadProducts() {
+            const grid = document.getElementById("product-grid");
+            grid.innerHTML = "";
+            const qRef = query(collection(db, COLLECTIONS.products), where("featured", "==", true), limit(8));
+            const snap = await getDocs(qRef);
+            if (snap.empty) {
+                grid.innerHTML = `<div class='col-span-full text-gray-500'>No featured products yet.</div>`;
+                return;
+            }
+            snap.forEach(doc => {
+                const p = doc.data();
+                const isOutOfStock = (p.stock || 0) === 0 || p.disabled === true;
+                const stockText = p.disabled ? 'Currently unavailable' :
+                    p.stock !== undefined ? (p.stock === 0 ? 'Out of stock' : `Stock: ${p.stock}`) : 'Stock info unavailable';
+
+                const card = document.createElement("a");
+                card.href = `product.html?id=${doc.id}`;
+                card.className = `block rounded-xl border hover:shadow transition overflow-hidden ${isOutOfStock ? 'opacity-60 grayscale' : ''}`;
+
+                card.innerHTML = `
+              <div class="relative">
+                <img src="${p.imageURL || 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=800&auto=format&fit=crop'}" alt="${p.name}" class="w-full h-40 object-cover" />
+                ${isOutOfStock ? '<div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center"><span class="text-white font-bold text-lg">SOLD OUT</span></div>' : ''}
+                ${p.featured ? '<div class="absolute top-2 right-2 bg-yellow-500 text-white text-xs px-2 py-1 rounded-full">Featured</div>' : ''}
+              </div>
+              <div class="p-3">
+                <div class="text-sm text-gray-500">${p.category || 'OTC'}</div>
+                <div class="font-semibold ${isOutOfStock ? 'text-gray-500' : ''}">${p.name}</div>
+                <div class="mt-1 ${isOutOfStock ? 'text-gray-500' : 'text-emerald-700'}" data-price="${p.price || 0}">
+                    ${p.discount > 0 ? `
+                        <div class="flex items-center gap-2">
+                            <span class="font-semibold">${formatCurrency((p.price || 0) * (1 - (p.discount || 0) / 100))}</span>
+                            <span class="text-sm text-gray-500 line-through">${formatCurrency(p.price || 0)}</span>
+                            <span class="bg-red-100 text-red-800 text-xs px-1 py-0.5 rounded">${p.discount}% OFF</span>
+                        </div>
+                    ` : `
+                        ${formatCurrency(p.price || 0)}
+                    `}
+                </div>
+                <div class="mt-2 text-xs ${isOutOfStock ? 'text-red-500' : 'text-gray-600'}">${isOutOfStock ? 'Out of Stock' : stockText}</div>
+                <button data-id="${doc.id}"
+                        ${isOutOfStock ? 'disabled' : ''}
+                        class="mt-3 w-full inline-flex justify-center items-center rounded-lg px-3 py-2 ${isOutOfStock ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-emerald-600 text-white hover:bg-emerald-700'}">
+                  ${isOutOfStock ? 'Sold Out' : 'Add to Cart'}
+                </button>
+              </div>`;
+
+                grid.appendChild(card);
+            });
+
+            grid.addEventListener("click", (e) => {
+                const target = e.target;
+                if (target.tagName === "BUTTON" && target.dataset.id) {
+                    e.preventDefault();
+
+                    // Check if button is disabled (out of stock)
+                    if (target.disabled) {
+                        console.log('Cannot add out-of-stock item to cart');
+                        return;
+                    }
+
+                    const id = target.dataset.id;
+
+                    // Find the product data from the loaded products
+                    const product = Array.from(snap.docs).find(doc => doc.id === id)?.data();
+                    if (!product) {
+                        console.error('Product not found');
+                        return;
+                    }
+
+                    const name = product.name;
+                    const discountedPrice = product.discount > 0 ? product.price * (1 - product.discount / 100) : product.price;
+                    const imageURL = product.imageURL || 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=800&auto=format&fit=crop';
+
+                    console.log(`Adding to cart: ${name}, Original Price: ${product.price}, Discount: ${product.discount}%, Final Price: ${discountedPrice}, ID: ${id}`);
+
+                    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+                    const existing = cart.find(i => i.id === id);
+                    if (existing) {
+                        existing.quantity += 1;
+                    } else {
+                        cart.push({
+                            id,
+                            name,
+                            price: discountedPrice,
+                            originalPrice: product.price,
+                            discount: product.discount || 0,
+                            imageURL,
+                            quantity: 1
+                        });
+                    }
+                    localStorage.setItem("cart", JSON.stringify(cart));
+                    updateCartCount();
+
+                    // Optional: Show feedback to user
+                    target.textContent = 'Added!';
+                    setTimeout(() => {
+                        target.textContent = 'Add to Cart';
+                    }, 1000);
+                }
+            });
+        }
+
+        loadProducts().catch(console.error);
+
+        // Toggle login/account UI based on auth
+        onAuthStateChanged(auth, async (user) => {
+            const loginLink = document.getElementById('login-link');
+            const heroSignin = document.getElementById('hero-signin');
+            const accountArea = document.getElementById('account-area');
+            const accountName = document.getElementById('account-name');
+            const accountEmail = document.getElementById('account-email');
+            const accountRole = document.getElementById('account-role');
+            const dashboardLink = document.getElementById('dashboard-link');
+            const accountBtn = document.getElementById('account-btn');
+            const accountMenu = document.getElementById('account-menu');
+            const logoutBtn = document.getElementById('logout-btn');
+            if (!loginLink || !accountArea) return;
+            if (user) {
+                loginLink.classList.add('hidden');
+                if (heroSignin) heroSignin.classList.add('hidden');
+                accountArea.classList.remove('hidden');
+                accountName.textContent = user.displayName || 'Account';
+                accountEmail.textContent = user.email || '';
+                let role = 'user';
+                try { role = await fetchUserRole(user.uid); } catch { }
+                accountRole.textContent = role.charAt(0).toUpperCase() + role.slice(1);
+                dashboardLink.href = role === 'admin' ? 'admin.html' : role === 'pharmacy' ? 'pharmacy.html' : 'user-dashboard.html';
+                accountBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    accountMenu.classList.toggle('hidden');
+                };
+                logoutBtn.onclick = async () => { await logout(); accountMenu.classList.add('hidden'); };
+                // Close dropdown when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (!accountArea.contains(e.target)) {
+                        accountMenu.classList.add('hidden');
+                    }
+                });
+            } else {
+                loginLink.classList.remove('hidden');
+                if (heroSignin) heroSignin.classList.remove('hidden');
+                accountArea.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+
+</html>
