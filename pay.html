@@ -216,7 +216,7 @@
 
         // Generate QR code
         function generateQRCode() {
-            const paymentUrl = `${window.location.origin}/pay.html?orderId=${currentOrderId}`;
+            const paymentUrl = `${window.location.origin}/pharma-direct/pay.html?orderId=${currentOrderId}`;
             document.getElementById('payment-url').textContent = paymentUrl;
 
             const qrContainer = document.getElementById('qr-code');
