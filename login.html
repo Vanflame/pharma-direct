@@ -25,7 +25,7 @@
                     <input name="password" type="password" required minlength="6"
                         class="mt-1 w-full rounded-lg border px-3 py-2" />
                 </div>
-                <button class="w-full rounded-lg bg-emerald-600 text-white px-4 py-2">Sign in</button>
+                <button type="submit" class="w-full rounded-lg bg-emerald-600 text-white px-4 py-2">Sign in</button>
             </form>
             <p class="mt-4 text-sm text-gray-600">No account? <a href="register.html"
                     class="text-emerald-700">Register</a></p>
@@ -36,7 +36,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
-        import { firebaseConfig } from './js/firebase.js';
+        import { firebaseConfig, showError, showSuccess, setButtonLoading } from './js/firebase.js';
         import { loginUser, fetchUserRole, redirectByRole } from './js/auth.js';
 
         // Redirect if already authenticated (auth or persisted)
@@ -56,17 +56,43 @@
 
         const form = document.getElementById('login-form');
         const err = document.getElementById('error');
+        const submitBtn = form.querySelector('button[type="submit"]');
+        
+        console.log('Form found:', form);
+        console.log('Submit button found:', submitBtn);
+        
+        // Test button click
+        submitBtn.addEventListener('click', () => {
+            console.log('Button clicked!');
+        });
+        
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             err.classList.add('hidden');
+            
+            console.log('Submit button found:', submitBtn);
+            console.log('Button element:', submitBtn);
+            console.log('Button text before:', submitBtn?.textContent);
+            
+            // Set loading state
+            setButtonLoading(submitBtn, true, 'Signing in...');
+            
+            console.log('Button text after:', submitBtn?.textContent);
+            console.log('Button disabled:', submitBtn?.disabled);
+            
             const data = Object.fromEntries(new FormData(form).entries());
             try {
                 const user = await loginUser({ email: data.email, password: data.password });
                 const role = await fetchUserRole(user.uid);
+                
+                // Show success state briefly before redirect
+                setButtonLoading(submitBtn, true, 'Success! Redirecting...');
+                await new Promise(resolve => setTimeout(resolve, 1000)); // 1 second delay
+                
                 redirectByRole(role);
-            } catch (e) {
-                err.textContent = e.message;
-                err.classList.remove('hidden');
+            } catch (error) {
+                showError(error, 'error');
+                setButtonLoading(submitBtn, false);
             }
         });
     </script>

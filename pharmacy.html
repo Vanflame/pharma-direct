@@ -11,46 +11,82 @@
 
 <body class="min-h-screen bg-gray-50">
     <div class="grid md:grid-cols-[260px_1fr] min-h-screen">
-        <aside class="bg-white border-r p-4">
-            <div class="font-semibold text-lg">Pharmacy</div>
-            <nav class="mt-4 space-y-2">
-                <button data-tab="products"
-                    class="w-full text-left rounded-lg px-3 py-2 bg-emerald-50 text-emerald-700">Products</button>
-                <button data-tab="orders" class="w-full text-left rounded-lg px-3 py-2">Orders</button>
-                <button data-tab="wallet" class="w-full text-left rounded-lg px-3 py-2">Wallet</button>
+        <aside class="bg-white border-r border-gray-200 shadow-sm">
+            <!-- Header -->
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-emerald-500 to-blue-600 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">Pharmacy Panel</h1>
+                        <p class="text-sm text-gray-500">Business Management</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="p-4 space-y-2">
+                <button data-tab="products" class="w-full flex items-center gap-3 px-4 py-3 text-left rounded-xl bg-gradient-to-r from-emerald-500 to-blue-600 text-white shadow-sm transition-all duration-200 hover:shadow-md">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                    </svg>
+                    <span class="font-medium">Products</span>
+                </button>
+                
+                <button data-tab="orders" class="w-full flex items-center gap-3 px-4 py-3 text-left rounded-xl text-gray-700 hover:bg-gray-100 transition-all duration-200 hover:shadow-sm">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                    </svg>
+                    <span class="font-medium">Orders</span>
+                </button>
+                
+                <button data-tab="wallet" class="w-full flex items-center gap-3 px-4 py-3 text-left rounded-xl text-gray-700 hover:bg-gray-100 transition-all duration-200 hover:shadow-sm">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                    </svg>
+                    <span class="font-medium">Wallet</span>
+                </button>
             </nav>
-            <button id="logout" class="mt-6 w-full rounded-lg border px-3 py-2">Logout</button>
+
+            <!-- Logout Section -->
+            <div class="p-4 border-t border-gray-200 mt-auto">
+                <button id="logout" class="w-full flex items-center gap-3 px-4 py-3 text-left rounded-xl text-red-600 hover:bg-red-50 transition-all duration-200 hover:shadow-sm">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                    </svg>
+                    <span class="font-medium">Logout</span>
+                </button>
+            </div>
         </aside>
         <main class="p-4">
-            <div id="tab-products" class="space-y-4">
-                <h1 class="text-xl font-semibold">Your Products</h1>
-                <form id="product-form" class="grid md:grid-cols-2 gap-4 bg-white rounded-xl border p-6">
+            <div id="tab-products" class="space-y-6">
+                <div class="bg-gradient-to-r from-emerald-500 to-blue-600 rounded-xl p-6 text-white">
+                    <h1 class="text-2xl font-bold">Product Management</h1>
+                    <p class="text-emerald-100 mt-1">Add and manage your pharmacy products</p>
+                </div>
+                <form id="product-form" class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <!-- Left Column -->
+                        <div class="space-y-5">
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                                    <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    Basic Information
+                                </h3>
                     <div class="space-y-4">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
-                            <input name="name" required class="w-full rounded-lg border px-3 py-2"
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Product Name *</label>
+                                        <input name="name" required class="w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
                                 placeholder="Enter product name" />
                         </div>
-                        <div class="grid grid-cols-3 gap-3">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Price (₱)</label>
-                                <input name="price" type="number" min="0" step="0.01" required
-                                    class="w-full rounded-lg border px-3 py-2" placeholder="0.00" />
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Discount (%)</label>
-                                <input name="discount" type="number" min="0" max="100" step="1"
-                                    class="w-full rounded-lg border px-3 py-2" placeholder="0" />
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Stock Quantity</label>
-                                <input name="stock" type="number" min="0" required
-                                    class="w-full rounded-lg border px-3 py-2" placeholder="0" />
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
-                            <select name="category" class="w-full rounded-lg border px-3 py-2">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Category *</label>
+                                        <select name="category" class="w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors">
                                 <option value="">Select Category</option>
                                 <option value="Pain Relief">Pain Relief</option>
                                 <option value="Cold & Flu">Cold & Flu</option>
@@ -62,34 +98,80 @@
                                 <option value="Other">Other</option>
                             </select>
                         </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                                        <textarea name="description" class="w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors" rows="3"
+                                            placeholder="Product description..."></textarea>
                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Right Column -->
+                        <div class="space-y-5">
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                                    <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                                    </svg>
+                                    Pricing & Inventory
+                                </h3>
                     <div class="space-y-4">
+                                    <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Image URL</label>
-                            <input name="imageURL" class="w-full rounded-lg border px-3 py-2"
-                                placeholder="https://example.com/image.jpg" />
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Price (₱) *</label>
+                                            <input name="price" type="number" min="0" step="0.01" required
+                                                class="w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors" placeholder="0.00" />
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                            <textarea name="description" class="w-full rounded-lg border px-3 py-2" rows="3"
-                                placeholder="Product description..."></textarea>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Discount (%)</label>
+                                            <input name="discount" type="number" min="0" max="100" step="1"
+                                                class="w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors" placeholder="0" />
                         </div>
-                        <div class="flex items-center gap-4">
-                            <label class="inline-flex items-center gap-2 text-sm">
-                                <input name="featured" type="checkbox" class="rounded" />
-                                Featured Product
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Stock Quantity *</label>
+                                        <input name="stock" type="number" min="0" required
+                                            class="w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors" placeholder="0" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Image URL</label>
+                                        <input name="imageURL" class="w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                                            placeholder="https://example.com/image.jpg" />
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                                    <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    Product Settings
+                                </h3>
+                                <div class="space-y-3">
+                                    <label class="inline-flex items-center gap-3 text-sm font-medium text-gray-700">
+                                        <input name="featured" type="checkbox" class="w-4 h-4 text-emerald-600 bg-gray-100 border-gray-300 rounded focus:ring-emerald-500 focus:ring-2" />
+                                        <span>Featured Product</span>
                             </label>
-                            <label class="inline-flex items-center gap-2 text-sm">
-                                <input name="prescription" type="checkbox" class="rounded" />
-                                Requires Prescription
+                                    <label class="inline-flex items-center gap-3 text-sm font-medium text-gray-700">
+                                        <input name="prescription" type="checkbox" class="w-4 h-4 text-emerald-600 bg-gray-100 border-gray-300 rounded focus:ring-emerald-500 focus:ring-2" />
+                                        <span>Requires Prescription</span>
                             </label>
                         </div>
                     </div>
-                    <div class="md:col-span-2 flex justify-end space-x-3">
+                        </div>
+                    </div>
+                    <div class="mt-8 pt-6 border-t border-gray-200 flex justify-end space-x-4">
                         <button type="button" id="cancel-edit"
-                            class="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 hidden">Cancel</button>
+                            class="px-6 py-3 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors font-medium hidden">
+                            Cancel
+                        </button>
                         <button type="submit"
-                            class="px-6 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700">
+                            class="px-8 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors font-medium flex items-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
                             <span id="submit-text">Add Product</span>
                         </button>
                     </div>
@@ -155,78 +237,175 @@
             </div>
 
             <!-- Wallet Tab -->
-            <div id="tab-wallet" class="hidden">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-lg font-semibold">Wallet</h2>
+            <div id="tab-wallet" class="hidden space-y-6">
+                <div class="bg-gradient-to-r from-emerald-500 to-blue-600 rounded-xl p-6 text-white">
+                    <h2 class="text-2xl font-bold">Wallet Management</h2>
+                    <p class="text-emerald-100 mt-1">Manage your earnings and withdrawal requests</p>
                 </div>
 
                 <!-- Wallet Balance Cards -->
-                <div class="grid md:grid-cols-2 gap-6 mb-6">
-                    <div class="bg-white rounded-xl border p-6">
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center">
-                                <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1">
-                                    </path>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-14 h-14 bg-emerald-100 rounded-full flex items-center justify-center">
+                                <svg class="w-7 h-7 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
                                 </svg>
                             </div>
                             <div>
-                                <h3 class="text-lg font-semibold text-gray-900">Available Balance</h3>
+                                <h3 class="text-xl font-bold text-gray-900">Available Balance</h3>
                                 <p class="text-sm text-gray-600">Ready for withdrawal</p>
                             </div>
                         </div>
-                        <div class="text-3xl font-bold text-emerald-600" id="wallet-balance">₱0.00</div>
+                        <div class="text-4xl font-bold text-emerald-600" id="wallet-balance">₱0.00</div>
                     </div>
 
-                    <div class="bg-white rounded-xl border p-6">
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center">
+                                <svg class="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                             </div>
                             <div>
-                                <h3 class="text-lg font-semibold text-gray-900">Pending Balance</h3>
+                                <h3 class="text-xl font-bold text-gray-900">Pending Balance</h3>
                                 <p class="text-sm text-gray-600">Awaiting confirmation</p>
                             </div>
                         </div>
-                        <div class="text-3xl font-bold text-blue-600" id="pending-balance">₱0.00</div>
+                        <div class="text-4xl font-bold text-blue-600" id="pending-balance">₱0.00</div>
                     </div>
                 </div>
 
                 <!-- Withdrawal Section -->
-                <div class="bg-white rounded-xl border p-6 mb-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Withdrawal Request</h3>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Amount to Withdraw</label>
-                            <input type="number" id="withdrawal-amount" min="100" step="0.01"
-                                class="w-full rounded-lg border px-3 py-2" placeholder="0.00" />
-                            <p class="text-xs text-gray-500 mt-1">Minimum withdrawal: ₱100.00</p>
+                <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center">
+                            <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                            </svg>
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Bank Account Details</label>
-                            <div class="grid grid-cols-2 gap-3">
-                                <input type="text" id="bank-name" placeholder="Bank Name"
-                                    class="rounded-lg border px-3 py-2" />
-                                <input type="text" id="account-number" placeholder="Account Number"
-                                    class="rounded-lg border px-3 py-2" />
+                        <h3 class="text-xl font-bold text-gray-900">Withdrawal Request</h3>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <!-- Amount Section -->
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Amount to Withdraw *</label>
+                            <input type="number" id="withdrawal-amount" min="100" step="0.01"
+                                class="w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors" placeholder="0.00" />
+                            <p class="text-sm text-gray-500 mt-2">Minimum withdrawal: ₱100.00</p>
+                        </div>
+
+                        <!-- Payment Method Section -->
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Payment Method *</label>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                <label class="relative cursor-pointer">
+                                    <input type="radio" name="payment-method" value="gcash" class="sr-only peer" />
+                                    <div class="flex items-center gap-3 p-4 border-2 border-gray-200 rounded-lg peer-checked:border-emerald-500 peer-checked:bg-emerald-50 transition-colors">
+                                        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                                            <span class="text-green-600 font-bold text-sm">G</span>
+                                        </div>
+                                        <span class="font-medium text-gray-700">GCash</span>
+                                    </div>
+                                </label>
+                                
+                                <label class="relative cursor-pointer">
+                                    <input type="radio" name="payment-method" value="maya" class="sr-only peer" />
+                                    <div class="flex items-center gap-3 p-4 border-2 border-gray-200 rounded-lg peer-checked:border-emerald-500 peer-checked:bg-emerald-50 transition-colors">
+                                        <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                                            <span class="text-purple-600 font-bold text-sm">M</span>
+                                        </div>
+                                        <span class="font-medium text-gray-700">Maya</span>
+                                    </div>
+                                </label>
+                                
+                                <label class="relative cursor-pointer">
+                                    <input type="radio" name="payment-method" value="bank" class="sr-only peer" />
+                                    <div class="flex items-center gap-3 p-4 border-2 border-gray-200 rounded-lg peer-checked:border-emerald-500 peer-checked:bg-emerald-50 transition-colors">
+                                        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                                            <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                                            </svg>
+                                        </div>
+                                        <span class="font-medium text-gray-700">Bank Transfer</span>
+                                    </div>
+                                </label>
                             </div>
                         </div>
+
+                        <!-- Account Details Section -->
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-4">Account Details</h4>
+                            
+                            <!-- GCash/Maya Details -->
+                            <div id="digital-wallet-details" class="hidden space-y-4">
+                        <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Mobile Number *</label>
+                                    <input type="tel" id="mobile-number" placeholder="09XX XXX XXXX"
+                                        class="w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors" />
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Account Name *</label>
+                                    <input type="text" id="account-name" placeholder="Full Name"
+                                        class="w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors" />
+                                </div>
+                            </div>
+
+                            <!-- Bank Details -->
+                            <div id="bank-details" class="hidden space-y-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Bank Name *</label>
+                                        <select id="bank-name" class="w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors">
+                                            <option value="">Select Bank</option>
+                                            <option value="BDO">BDO (Banco de Oro)</option>
+                                            <option value="BPI">BPI (Bank of the Philippine Islands)</option>
+                                            <option value="Metrobank">Metrobank</option>
+                                            <option value="Landbank">Landbank</option>
+                                            <option value="PNB">PNB (Philippine National Bank)</option>
+                                            <option value="Security Bank">Security Bank</option>
+                                            <option value="Union Bank">Union Bank</option>
+                                            <option value="RCBC">RCBC</option>
+                                            <option value="EastWest Bank">EastWest Bank</option>
+                                            <option value="Chinabank">Chinabank</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Account Number *</label>
+                                <input type="text" id="account-number" placeholder="Account Number"
+                                            class="w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors" />
+                            </div>
+                        </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Account Name *</label>
+                                    <input type="text" id="bank-account-name" placeholder="Full Name as it appears on bank account"
+                                        class="w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors" />
+                                </div>
+                            </div>
+                        </div>
+
                         <button id="request-withdrawal"
-                            class="w-full bg-emerald-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-emerald-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed">
+                            class="w-full bg-emerald-600 text-white py-4 px-6 rounded-lg font-semibold hover:bg-emerald-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                            </svg>
                             Request Withdrawal
                         </button>
                     </div>
                 </div>
 
                 <!-- Recent Transactions -->
-                <div class="bg-white rounded-xl border p-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Recent Transactions</h3>
+                <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">Recent Transactions</h3>
+                    </div>
                     <div id="transactions-list" class="space-y-3">
                         <!-- Transactions will be loaded here -->
                     </div>
@@ -239,7 +418,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
         import { getFirestore, collection, query, where, getDocs, addDoc, updateDoc, doc, getDoc, orderBy, limit, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
-        import { firebaseConfig, COLLECTIONS, formatCurrency } from './js/firebase.js';
+        import { firebaseConfig, COLLECTIONS, formatCurrency, safeDateConversion, formatDate, formatRelativeTime, showError, showSuccess, getProfessionalErrorMessage, setButtonLoading, showLoadingModal, hideLoadingModal } from './js/firebase.js';
         import { logout } from './js/auth.js';
 
         const app = initializeApp(firebaseConfig);
@@ -253,14 +432,24 @@
             wallet: document.getElementById('tab-wallet'),
         };
         tabs.forEach(btn => btn.addEventListener('click', async () => {
-            tabs.forEach(b => b.classList.remove('bg-emerald-50', 'text-emerald-700'));
-            btn.classList.add('bg-emerald-50', 'text-emerald-700');
+            // Remove active styling from all tabs
+            tabs.forEach(b => {
+                b.classList.remove('bg-gradient-to-r', 'from-emerald-500', 'to-blue-600', 'text-white', 'shadow-sm');
+                b.classList.add('text-gray-700');
+            });
+            
+            // Add active styling to clicked tab
+            btn.classList.remove('text-gray-700');
+            btn.classList.add('bg-gradient-to-r', 'from-emerald-500', 'to-blue-600', 'text-white', 'shadow-sm');
+            
+            // Show/hide panels
             Object.values(panels).forEach(p => p.classList.add('hidden'));
             panels[btn.dataset.tab].classList.remove('hidden');
 
             // Load wallet data when wallet tab is selected
             if (btn.dataset.tab === 'wallet') {
                 await loadWalletData();
+                setupPaymentMethodHandlers();
             }
         }));
 
@@ -301,45 +490,85 @@
             }
 
             el.innerHTML = `
-                <div class="p-4 border-b bg-gray-50">
-                    <h3 class="font-medium text-gray-900">Your Products (${snap.docs.length})</h3>
+                <div class="bg-gradient-to-r from-emerald-500 to-blue-600 rounded-t-xl p-6 text-white">
+                    <h3 class="text-xl font-bold">Your Products</h3>
+                    <p class="text-emerald-100 mt-1">${snap.docs.length} product${snap.docs.length !== 1 ? 's' : ''} in your inventory</p>
                 </div>
-                <div class="divide-y">
+                <div class="p-6 space-y-4 bg-gray-50">
                     ${Array.from(snap.docs).map(d => {
                 const p = d.data();
                 const isOutOfStock = p.stock === 0;
+                const discountPrice = p.discount > 0 ? (p.price * (1 - p.discount / 100)).toFixed(2) : null;
+                
                 return `
-                            <div class="p-4 hover:bg-gray-50 ${isOutOfStock ? 'opacity-60' : ''}">
+                            <div class="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-lg transition-shadow duration-200 ${isOutOfStock ? 'opacity-75' : ''}">
                                 <div class="flex items-start justify-between">
-                                    <div class="flex items-start gap-4">
+                                    <!-- Product Image & Info -->
+                                    <div class="flex items-start gap-4 flex-1">
+                                        <div class="relative">
                                         <img src="${p.imageURL || 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=100&auto=format&fit=crop'}" 
-                                             class="w-16 h-16 rounded-lg border object-cover" />
+                                                 class="w-20 h-20 rounded-lg border object-cover" />
+                                            ${isOutOfStock ? `
+                                                <div class="absolute inset-0 bg-red-500 bg-opacity-20 rounded-lg flex items-center justify-center">
+                                                    <span class="bg-red-500 text-white text-xs px-2 py-1 rounded-full font-medium">Sold Out</span>
+                                                </div>
+                                            ` : ''}
+                                        </div>
+                                        
                                         <div class="flex-1">
-                                            <div class="flex items-center gap-2">
-                                                <h4 class="font-medium text-gray-900">${p.name}</h4>
-                                                ${p.featured ? '<span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">Featured</span>' : ''}
-                                                ${p.prescription ? '<span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">Prescription</span>' : ''}
-                                                ${isOutOfStock ? '<span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">Sold Out</span>' : ''}
+                                            <div class="flex items-start justify-between mb-2">
+                                                <div>
+                                                    <h4 class="text-lg font-semibold text-gray-900 mb-1">${p.name}</h4>
+                                                    <p class="text-sm text-gray-600">${p.category || 'Uncategorized'}</p>
                                             </div>
-                                            <p class="text-sm text-gray-600 mt-1">${p.category || 'Uncategorized'}</p>
-                                            ${p.description ? `<p class="text-sm text-gray-500 mt-1">${p.description}</p>` : ''}
-                                            <div class="flex items-center gap-4 mt-2">
-                                                ${p.discount > 0 ? `
+                                                
+                                                <!-- Status Badges -->
+                                                <div class="flex flex-wrap gap-1">
+                                                    ${p.featured ? '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">Featured</span>' : ''}
+                                                    ${p.prescription ? '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">Prescription</span>' : ''}
+                                                </div>
+                                            </div>
+                                            
+                                            ${p.description ? `<p class="text-sm text-gray-600 mb-3 line-clamp-2">${p.description}</p>` : ''}
+                                            
+                                            <!-- Pricing & Stock -->
+                                            <div class="flex items-center justify-between">
+                                                <div class="flex items-center gap-3">
+                                                    ${discountPrice ? `
                                                     <div class="flex items-center gap-2">
-                                                        <span class="text-lg font-semibold text-emerald-600">₱${(p.price * (1 - p.discount / 100)).toFixed(2)}</span>
+                                                            <span class="text-xl font-bold text-emerald-600">₱${discountPrice}</span>
                                                         <span class="text-sm text-gray-500 line-through">₱${p.price.toFixed(2)}</span>
-                                                        <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">${p.discount}% OFF</span>
+                                                            <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full font-medium">${p.discount}% OFF</span>
                                                     </div>
                                                 ` : `
-                                                    <span class="text-lg font-semibold text-emerald-600">₱${p.price.toFixed(2)}</span>
+                                                        <span class="text-xl font-bold text-emerald-600">₱${p.price.toFixed(2)}</span>
                                                 `}
-                                                <span class="text-sm text-gray-600">Stock: <span class="font-medium ${isOutOfStock ? 'text-red-600' : 'text-gray-900'}">${p.stock}</span></span>
+                                            </div>
+                                                
+                                                <div class="flex items-center gap-4">
+                                                    <div class="text-right">
+                                                        <div class="text-sm text-gray-500">Stock</div>
+                                                        <div class="text-lg font-semibold ${isOutOfStock ? 'text-red-600' : 'text-gray-900'}">${p.stock}</div>
+                                        </div>
+                                    </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="flex items-center gap-2">
-                                        <button onclick="editProduct('${d.id}')" class="text-blue-600 hover:text-blue-700 text-sm font-medium">Edit</button>
-                                        <button onclick="deleteProduct('${d.id}')" class="text-red-600 hover:text-red-700 text-sm font-medium">Delete</button>
+                                    
+                                    <!-- Action Buttons -->
+                                    <div class="flex flex-col gap-2 ml-4">
+                                        <button onclick="editProduct('${d.id}')" class="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 transition-colors">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                            </svg>
+                                            Edit
+                                        </button>
+                                        <button onclick="deleteProduct('${d.id}')" class="flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-lg text-sm font-medium hover:bg-red-600 transition-colors">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                            </svg>
+                                            Delete
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -410,33 +639,16 @@
             }
 
             el.innerHTML = `
-                <div class="p-4 border-b bg-gray-50">
-                    <h3 class="font-medium text-gray-900">Recent Orders (${filteredOrders.length})</h3>
+                <div class="bg-gradient-to-r from-emerald-500 to-blue-600 rounded-t-xl p-6 text-white">
+                    <h3 class="text-xl font-bold">Recent Orders</h3>
+                    <p class="text-emerald-100 mt-1">${filteredOrders.length} order${filteredOrders.length !== 1 ? 's' : ''} found</p>
                 </div>
-                <div class="divide-y">
+                <div class="p-6 space-y-6 bg-gray-50">
                     ${filteredOrders.map(({ doc, order }) => {
                 const o = order;
 
                 // Handle Firestore Timestamp objects properly
-                let orderDate = 'Invalid Date';
-                try {
-                    if (o.createdAt) {
-                        // Handle both Firestore Timestamp and regular Date
-                        if (o.createdAt.toDate) {
-                            // Firestore Timestamp
-                            orderDate = o.createdAt.toDate().toLocaleString();
-                        } else if (typeof o.createdAt === 'number') {
-                            // Unix timestamp
-                            orderDate = new Date(o.createdAt).toLocaleString();
-                        } else {
-                            // Regular date string
-                            orderDate = new Date(o.createdAt).toLocaleString();
-                        }
-                    }
-                } catch (error) {
-                    console.error('Error parsing order date:', error);
-                    orderDate = 'Date unavailable';
-                }
+                const orderDate = safeDateConversion(o.createdAt).toLocaleString();
 
                 const items = o.items.map(i => `${i.name} x${i.quantity}`).join(', ');
 
@@ -446,39 +658,104 @@
                 const customerEmail = o.customerInfo ? o.customerInfo.email : 'Not provided';
 
                 return `
-                            <div class="p-4 hover:bg-gray-50">
-                                <div class="flex items-start justify-between">
-                                    <div class="flex-1">
-                                        <div class="flex items-center gap-3 mb-2">
-                                            <h4 class="font-medium text-gray-900">Order #${doc.id.slice(-6)}</h4>
-                                            <span class="badge stage-${o.stage.replaceAll(' ', '\\ ')}">${o.stage}</span>
+                            <div class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-shadow duration-200">
+                                <!-- Order Header -->
+                                <div class="flex items-center justify-between mb-6">
+                                    <div class="flex items-center gap-4">
+                                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                                            </svg>
                                         </div>
-                                        <div class="text-sm text-gray-600 mb-2">
-                                            <p><strong>Items:</strong> ${items}</p>
-                                            <p><strong>Total:</strong> ₱${o.total.toFixed(2)} • <strong>Payment:</strong> ${o.paymentMethod}</p>
-                                            <p><strong>Customer:</strong> ${customerName} • <strong>Date:</strong> ${orderDate}</p>
-                                            ${customerPhone !== 'Not provided' ? `<p><strong>Phone:</strong> ${customerPhone}</p>` : ''}
-                                            ${o.deliveryAddress ? `<p><strong>Delivery:</strong> ${o.deliveryAddress}</p>` : ''}
+                                        <div>
+                                            <h4 class="text-xl font-bold text-gray-900">Order #${doc.id.slice(-6)}</h4>
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStageColor(o.stage)}">
+                                                ${o.stage}
+                                            </span>
                                         </div>
                                     </div>
-                                    <div class="flex flex-col gap-2">
+                                    <div class="text-right">
+                                        <div class="text-sm text-gray-500">Order Date</div>
+                                        <div class="text-sm font-medium text-gray-900">${orderDate}</div>
+                                    </div>
+                                </div>
+
+                                <!-- Order Content -->
+                                <div class="grid md:grid-cols-2 gap-6 mb-4">
+                                    <!-- Left Column: Items & Payment -->
+                                    <div class="space-y-4">
+                                        <div>
+                                            <h5 class="font-medium text-gray-900 mb-2">Items Ordered</h5>
+                                            <div class="bg-gray-50 rounded-lg p-3">
+                                                <p class="text-sm text-gray-700">${items}</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="grid grid-cols-2 gap-4">
+                                            <div class="bg-blue-50 rounded-lg p-3">
+                                                <p class="text-xs font-medium text-blue-600 uppercase tracking-wide">Total Amount</p>
+                                                <p class="text-lg font-semibold text-blue-900">₱${o.total.toFixed(2)}</p>
+                                            </div>
+                                            <div class="bg-green-50 rounded-lg p-3">
+                                                <p class="text-xs font-medium text-green-600 uppercase tracking-wide">Payment</p>
+                                                <p class="text-sm font-semibold text-green-900">${o.paymentMethod}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Right Column: Customer & Delivery -->
+                                    <div class="space-y-4">
+                                        <div>
+                                            <h5 class="font-medium text-gray-900 mb-2">Customer Information</h5>
+                                            <div class="bg-gray-50 rounded-lg p-3 space-y-1">
+                                                <p class="text-sm"><span class="font-medium">Name:</span> ${customerName}</p>
+                                                ${customerPhone !== 'Not provided' ? `<p class="text-sm"><span class="font-medium">Phone:</span> ${customerPhone}</p>` : ''}
+                                                ${customerEmail !== 'Not provided' ? `<p class="text-sm"><span class="font-medium">Email:</span> ${customerEmail}</p>` : ''}
+                                            </div>
+                                        </div>
+                                        
+                                        ${o.deliveryAddress ? `
+                                        <div>
+                                            <h5 class="font-medium text-gray-900 mb-2">Delivery Address</h5>
+                                            <div class="bg-gray-50 rounded-lg p-3">
+                                                <p class="text-sm text-gray-700">${o.deliveryAddress}</p>
+                                            </div>
+                                        </div>
+                                        ` : ''}
+                                    </div>
+                                </div>
+
+                                <!-- Action Buttons -->
+                                <div class="flex flex-wrap gap-2 pt-4 border-t border-gray-200">
+                                    <button onclick="viewOrderDetails('${doc.id}')" class="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 transition-colors">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                        </svg>
+                                        View Details
+                                    </button>
                                         ${o.stage === 'Pending' ? `
-                                            <button onclick="confirmOrder('${doc.id}')" class="bg-emerald-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-emerald-600 transition-colors">
+                                        <button onclick="confirmOrder('${doc.id}')" class="flex items-center gap-2 px-4 py-2 bg-emerald-500 text-white rounded-lg text-sm font-medium hover:bg-emerald-600 transition-colors">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                            </svg>
                                                 Confirm & Deduct Stock
                                             </button>
-                                            <button onclick="declineOrder('${doc.id}')" class="bg-red-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-red-600 transition-colors">
+                                        <button onclick="declineOrder('${doc.id}')" class="flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-lg text-sm font-medium hover:bg-red-600 transition-colors">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                            </svg>
                                                 Decline Order
                                             </button>
                                         ` : ''}
                                         ${getNextActionText(o.stage) ? `
-                                            <button onclick="advanceOrder('${doc.id}')" class="bg-blue-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-blue-600 transition-colors">
+                                        <button onclick="advanceOrder('${doc.id}')" class="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 transition-colors">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                                            </svg>
                                                 ${getNextActionText(o.stage)}
                                             </button>
                                         ` : ''}
-                                        <button onclick="viewOrderDetails('${doc.id}')" class="bg-slate-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-slate-600 transition-colors">
-                                            View Details
-                                        </button>
-                                    </div>
                                 </div>
                             </div>
                         `;
@@ -507,6 +784,22 @@
 
         // Load all orders and set up real-time updates
         function loadAllOrders() {
+            // Show initial loading state
+            const el = document.getElementById('orders-list');
+            el.innerHTML = `
+                <div class="flex items-center justify-center p-12">
+                    <div class="text-center">
+                        <div class="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-emerald-500 hover:bg-emerald-400 transition ease-in-out duration-150 cursor-not-allowed">
+                            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Loading orders...
+                        </div>
+                    </div>
+                </div>
+            `;
+
             const ordersQuery = query(collection(db, COLLECTIONS.orders), orderBy('createdAt', 'desc'));
 
             onSnapshot(ordersQuery, async (snap) => {
@@ -631,6 +924,10 @@
                 return;
             }
 
+            // Find the decline button and set loading state
+            const declineButton = document.querySelector(`button[onclick="declineOrder('${orderId}')"]`);
+            setButtonLoading(declineButton, true, 'Declining...');
+
             try {
                 const orderRef = doc(db, COLLECTIONS.orders, orderId);
                 await updateDoc(orderRef, {
@@ -646,13 +943,20 @@
 
             } catch (error) {
                 console.error('❌ Error declining order:', error);
-                alert('Failed to decline order. Please try again.');
+                alert(getProfessionalErrorMessage(error));
+            } finally {
+                setButtonLoading(declineButton, false);
             }
         };
 
         window.confirmOrder = async (orderId) => {
             console.log('🛒 Starting order confirmation for:', orderId);
 
+            // Find the confirm button and set loading state
+            const confirmButton = document.querySelector(`button[onclick="confirmOrder('${orderId}')"]`);
+            setButtonLoading(confirmButton, true, 'Confirming...');
+
+            try {
             const orderRef = doc(db, COLLECTIONS.orders, orderId);
             const orderSnap = await getDoc(orderRef);
 
@@ -803,6 +1107,12 @@
                 alert('Order confirmed and stock deducted successfully!');
                 // Orders will be updated automatically via real-time listener
             }
+            } catch (error) {
+                console.error('❌ Error confirming order:', error);
+                alert(getProfessionalErrorMessage(error));
+            } finally {
+                setButtonLoading(confirmButton, false);
+            }
         };
 
         // Function to get the next action text based on current stage
@@ -816,7 +1126,25 @@
             return stageActions[currentStage] || null;
         }
 
+        // Function to get color classes for order stages
+        function getStageColor(stage) {
+            const stageColors = {
+                'Pending': 'text-yellow-600 bg-yellow-50',
+                'Confirmed': 'text-blue-600 bg-blue-50',
+                'To Be Received': 'text-purple-600 bg-purple-50',
+                'Delivered': 'text-green-600 bg-green-50',
+                'Declined': 'text-red-600 bg-red-50',
+                'Cancelled': 'text-gray-600 bg-gray-50'
+            };
+            return stageColors[stage] || 'text-gray-600 bg-gray-50';
+        }
+
         window.advanceOrder = async (orderId) => {
+            // Find the advance button and set loading state
+            const advanceButton = document.querySelector(`button[onclick="advanceOrder('${orderId}')"]`);
+            setButtonLoading(advanceButton, true, 'Processing...');
+
+            try {
             const orderRef = doc(db, COLLECTIONS.orders, orderId);
             const orderSnap = await getDoc(orderRef);
 
@@ -832,6 +1160,12 @@
                 });
 
                 // Orders will be updated automatically via real-time listener
+                }
+            } catch (error) {
+                console.error('❌ Error advancing order:', error);
+                alert(getProfessionalErrorMessage(error));
+            } finally {
+                setButtonLoading(advanceButton, false);
             }
         };
 
@@ -857,23 +1191,7 @@
                 const order = orderSnap.data();
 
                 // Handle Firestore Timestamp objects properly
-                let orderDate = 'Date unavailable';
-                try {
-                    if (order.createdAt) {
-                        if (order.createdAt.toDate) {
-                            // Firestore Timestamp
-                            orderDate = order.createdAt.toDate().toLocaleString();
-                        } else if (typeof order.createdAt === 'number') {
-                            // Unix timestamp
-                            orderDate = new Date(order.createdAt).toLocaleString();
-                        } else {
-                            // Regular date string
-                            orderDate = new Date(order.createdAt).toLocaleString();
-                        }
-                    }
-                } catch (error) {
-                    console.error('Error parsing order date:', error);
-                }
+                const orderDate = safeDateConversion(order.createdAt).toLocaleString();
 
                 // Handle new customer info structure
                 const customerName = order.customerInfo ? order.customerInfo.name : (order.userName || 'Unknown');
@@ -881,47 +1199,142 @@
                 const customerEmail = order.customerInfo ? order.customerInfo.email : 'Not provided';
 
                 const detailsHTML = `
+                    <div class="space-y-8">
+                        <div class="grid lg:grid-cols-2 gap-8">
+                            <!-- Order Information Card -->
+                            <div class="bg-gray-50 rounded-xl p-6">
+                                <div class="flex items-center gap-3 mb-6">
+                                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                    </div>
+                                    <h4 class="text-xl font-bold text-gray-900">Order Information</h4>
+                                </div>
                     <div class="space-y-4">
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <h4 class="font-medium text-gray-900">Order Information</h4>
-                                <p class="text-sm text-gray-600">Order #${orderId.slice(-6)}</p>
-                                <p class="text-sm text-gray-600">Date: ${orderDate}</p>
-                                <p class="text-sm text-gray-600">Status: ${order.stage}</p>
+                                    <div class="flex justify-between items-center py-2 border-b border-gray-200">
+                                        <span class="font-medium text-gray-600">Order #</span>
+                                        <span class="text-gray-900 font-mono">${orderId.slice(-6)}</span>
                             </div>
-                            <div>
-                                <h4 class="font-medium text-gray-900">Customer Information</h4>
-                                <p class="text-sm text-gray-600">Name: ${customerName}</p>
-                                <p class="text-sm text-gray-600">Phone: ${customerPhone}</p>
-                                <p class="text-sm text-gray-600">Email: ${customerEmail}</p>
+                                    <div class="flex justify-between items-center py-2 border-b border-gray-200">
+                                        <span class="font-medium text-gray-600">Status</span>
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStageColor(order.stage)}">
+                                            ${order.stage}
+                                        </span>
+                                    </div>
+                                    <div class="flex justify-between items-center py-2 border-b border-gray-200">
+                                        <span class="font-medium text-gray-600">Date</span>
+                                        <span class="text-gray-900">${orderDate}</span>
+                                    </div>
+                                    <div class="flex justify-between items-center py-2">
+                                        <span class="font-medium text-gray-600">Total</span>
+                                        <span class="text-gray-900 font-semibold">₱${order.total.toFixed(2)}</span>
+                                    </div>
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <h4 class="font-medium text-gray-900">Payment Details</h4>
-                                <p class="text-sm text-gray-600">Method: ${order.paymentMethod}</p>
-                                <p class="text-sm text-gray-600">Status: ${order.paymentStatus}</p>
-                                <p class="text-sm text-gray-600">Total: ₱${order.total.toFixed(2)}</p>
+                            <!-- Customer Information Card -->
+                            <div class="bg-gray-50 rounded-xl p-6">
+                                <div class="flex items-center gap-3 mb-6">
+                                    <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                        </svg>
                             </div>
-                            <div>
-                                <h4 class="font-medium text-gray-900">Order Summary</h4>
-                                <p class="text-sm text-gray-600">Items: ${order.items.length}</p>
-                                <p class="text-sm text-gray-600">COD: ${order.cod ? 'Yes' : 'No'}</p>
+                                    <h4 class="text-xl font-bold text-gray-900">Customer Information</h4>
+                                </div>
+                                <div class="space-y-4">
+                                    <div class="flex justify-between items-center py-2 border-b border-gray-200">
+                                        <span class="font-medium text-gray-600">Name</span>
+                                        <span class="text-gray-900">${customerName}</span>
+                                    </div>
+                                    <div class="flex justify-between items-center py-2 border-b border-gray-200">
+                                        <span class="font-medium text-gray-600">Phone</span>
+                                        <span class="text-gray-900">${customerPhone}</span>
+                                    </div>
+                                    <div class="flex justify-between items-center py-2">
+                                        <span class="font-medium text-gray-600">Email</span>
+                                        <span class="text-gray-900">${customerEmail}</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         
-                        <div>
-                            <h4 class="font-medium text-gray-900 mb-2">Items Ordered</h4>
-                            <div class="space-y-2">
+                        <div class="grid lg:grid-cols-2 gap-8">
+                            <!-- Payment Details Card -->
+                            <div class="bg-gray-50 rounded-xl p-6">
+                                <div class="flex items-center gap-3 mb-6">
+                                    <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                                        </svg>
+                                    </div>
+                                    <h4 class="text-xl font-bold text-gray-900">Payment Details</h4>
+                                </div>
+                                <div class="space-y-4">
+                                    <div class="flex justify-between items-center py-2 border-b border-gray-200">
+                                        <span class="font-medium text-gray-600">Method</span>
+                                        <span class="text-gray-900">${order.paymentMethod}</span>
+                                    </div>
+                                    <div class="flex justify-between items-center py-2 border-b border-gray-200">
+                                        <span class="font-medium text-gray-600">Status</span>
+                                        <span class="text-gray-900">${order.paymentStatus}</span>
+                                    </div>
+                                    <div class="flex justify-between items-center py-2">
+                                        <span class="font-medium text-gray-600">COD</span>
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${order.cod ? 'bg-orange-100 text-orange-800' : 'bg-gray-100 text-gray-800'}">
+                                            ${order.cod ? 'Yes' : 'No'}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Order Summary Card -->
+                            <div class="bg-gray-50 rounded-xl p-6">
+                                <div class="flex items-center gap-3 mb-6">
+                                    <div class="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                        </svg>
+                                    </div>
+                                    <h4 class="text-xl font-bold text-gray-900">Order Summary</h4>
+                                </div>
+                                <div class="space-y-4">
+                                    <div class="flex justify-between items-center py-2 border-b border-gray-200">
+                                        <span class="font-medium text-gray-600">Items</span>
+                                        <span class="text-gray-900 font-semibold">${order.items.length}</span>
+                                    </div>
+                                    <div class="flex justify-between items-center py-2 border-b border-gray-200">
+                                        <span class="font-medium text-gray-600">Total Amount</span>
+                                        <span class="text-gray-900 font-semibold">₱${order.total.toFixed(2)}</span>
+                                    </div>
+                                    <div class="flex justify-between items-center py-2">
+                                        <span class="font-medium text-gray-600">Order Date</span>
+                                        <span class="text-gray-900">${orderDate}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Items Ordered Section -->
+                        <div class="bg-gray-50 rounded-xl p-6">
+                            <div class="flex items-center gap-3 mb-6">
+                                <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                                    </svg>
+                                </div>
+                                <h4 class="text-xl font-bold text-gray-900">Items Ordered</h4>
+                            </div>
+                            <div class="bg-white rounded-lg p-4 space-y-3">
                                 ${order.items.map(item => `
-                                    <div class="flex justify-between items-center py-2 border-b">
-                                        <div>
-                                            <p class="font-medium">${item.name}</p>
+                                    <div class="flex justify-between items-center py-3 border-b border-gray-200 last:border-0">
+                                        <div class="flex-1">
+                                            <p class="font-medium text-gray-900">${item.name}</p>
                                             <p class="text-sm text-gray-600">₱${item.price} each</p>
                                         </div>
                                         <div class="text-right">
-                                            <p class="font-medium">Qty: ${item.quantity}</p>
+                                            <p class="font-medium text-gray-900">Qty: ${item.quantity}</p>
                                             <p class="text-sm text-gray-600">₱${(item.price * item.quantity).toFixed(2)}</p>
                                         </div>
                                     </div>
@@ -930,10 +1343,19 @@
                         </div>
                         
                         ${order.deliveryAddress ? `
-                            <div>
-                                <h4 class="font-medium text-gray-900 mb-2">Delivery Address</h4>
-                                <div class="bg-gray-50 p-3 rounded-lg">
-                                    <p class="text-sm text-gray-700">${order.deliveryAddress}</p>
+                        <!-- Delivery Address Section -->
+                        <div class="bg-gray-50 rounded-xl p-6">
+                            <div class="flex items-center gap-3 mb-6">
+                                <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    </svg>
+                                </div>
+                                <h4 class="text-xl font-bold text-gray-900">Delivery Address</h4>
+                            </div>
+                            <div class="bg-white rounded-lg p-4">
+                                <p class="text-gray-900">${order.deliveryAddress}</p>
                                 </div>
                             </div>
                         ` : ''}
@@ -944,19 +1366,39 @@
                 const modal = document.createElement('div');
                 modal.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4';
                 modal.innerHTML = `
-                    <div class="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-                        <div class="p-6 border-b">
+                    <div class="bg-white rounded-xl shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden">
+                        <!-- Header -->
+                        <div class="bg-gradient-to-r from-emerald-500 to-blue-600 p-6 text-white">
                             <div class="flex items-center justify-between">
-                                <h3 class="text-lg font-semibold">Order Details</h3>
-                                <button onclick="this.closest('.fixed').remove()" class="text-gray-400 hover:text-gray-600">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-2xl font-bold">Order Details</h3>
+                                        <p class="text-emerald-100">#${orderId.slice(-6)}</p>
+                                    </div>
+                                </div>
+                                <button onclick="this.closest('.fixed').remove()" class="text-white hover:text-emerald-200 transition-colors">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                                     </svg>
                                 </button>
                             </div>
                         </div>
-                        <div class="p-6">
+
+                        <!-- Content -->
+                        <div class="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
                             ${detailsHTML}
+                        </div>
+
+                        <!-- Footer -->
+                        <div class="bg-gray-50 px-6 py-4 flex justify-end">
+                            <button onclick="this.closest('.fixed').remove()" class="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors font-medium">
+                                Close
+                            </button>
                         </div>
                     </div>
                 `;
@@ -988,8 +1430,14 @@
                 document.querySelector('input[name="prescription"]').checked = product.prescription || false;
 
                 // Update UI
-                document.getElementById('submit-text').textContent = 'Update Product';
-                document.getElementById('cancel-edit').classList.remove('hidden');
+                const submitText = document.getElementById('submit-text');
+                if (submitText) {
+                    submitText.textContent = 'Update Product';
+                }
+                const cancelEdit = document.getElementById('cancel-edit');
+                if (cancelEdit) {
+                    cancelEdit.classList.remove('hidden');
+                }
                 document.querySelector('input[name="name"]').focus();
             }
         };
@@ -1002,16 +1450,27 @@
         };
 
         // Cancel edit
-        document.getElementById('cancel-edit').onclick = () => {
-            editingProductId = null;
-            document.getElementById('product-form').reset();
-            document.getElementById('submit-text').textContent = 'Add Product';
-            document.getElementById('cancel-edit').classList.add('hidden');
-        };
+        const cancelEditBtn = document.getElementById('cancel-edit');
+        if (cancelEditBtn) {
+            cancelEditBtn.onclick = () => {
+                editingProductId = null;
+                document.getElementById('product-form').reset();
+                const submitText = document.getElementById('submit-text');
+                if (submitText) {
+                    submitText.textContent = 'Add Product';
+                }
+                cancelEditBtn.classList.add('hidden');
+            };
+        }
 
         document.getElementById('product-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const data = Object.fromEntries(new FormData(e.target).entries());
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            
+            // Set loading state
+            const isEditing = editingProductId !== null;
+            setButtonLoading(submitBtn, true, isEditing ? 'Updating...' : 'Adding...');
 
             const productData = {
                 name: data.name,
@@ -1038,12 +1497,20 @@
 
                 document.getElementById('product-form').reset();
                 editingProductId = null;
-                document.getElementById('submit-text').textContent = 'Add Product';
-                document.getElementById('cancel-edit').classList.add('hidden');
+                const submitText = document.getElementById('submit-text');
+                if (submitText) {
+                    submitText.textContent = 'Add Product';
+                }
+                const cancelEdit = document.getElementById('cancel-edit');
+                if (cancelEdit) {
+                    cancelEdit.classList.add('hidden');
+                }
                 await loadProducts();
             } catch (error) {
                 console.error('Error saving product:', error);
-                alert('Error saving product. Please try again.');
+                alert(getProfessionalErrorMessage(error));
+            } finally {
+                setButtonLoading(submitBtn, false);
             }
         });
 
@@ -1082,6 +1549,28 @@
             }
         }
 
+        // Payment method selection handler
+        function setupPaymentMethodHandlers() {
+            const paymentMethods = document.querySelectorAll('input[name="payment-method"]');
+            const digitalWalletDetails = document.getElementById('digital-wallet-details');
+            const bankDetails = document.getElementById('bank-details');
+
+            paymentMethods.forEach(method => {
+                method.addEventListener('change', function() {
+                    // Hide all detail sections
+                    digitalWalletDetails.classList.add('hidden');
+                    bankDetails.classList.add('hidden');
+
+                    // Show relevant section based on selection
+                    if (this.value === 'gcash' || this.value === 'maya') {
+                        digitalWalletDetails.classList.remove('hidden');
+                    } else if (this.value === 'bank') {
+                        bankDetails.classList.remove('hidden');
+                    }
+                });
+            });
+        }
+
         async function loadTransactions() {
             if (!pharmacyId) return;
 
@@ -1110,7 +1599,7 @@
                     <div class="flex items-center justify-between p-3 border rounded-lg">
                         <div>
                             <p class="font-medium text-gray-900">${transaction.type === 'payment_credit' ? 'Payment Received' : 'Withdrawal'}</p>
-                            <p class="text-sm text-gray-600">${new Date(transaction.createdAt).toLocaleDateString()}</p>
+                            <p class="text-sm text-gray-600">${safeDateConversion(transaction.createdAt).toLocaleDateString()}</p>
                         </div>
                         <div class="text-right">
                             <p class="font-medium ${transaction.type === 'payment_credit' ? 'text-emerald-600' : 'text-red-600'}">
@@ -1127,18 +1616,54 @@
 
         async function requestWithdrawal() {
             const amount = parseFloat(document.getElementById('withdrawal-amount').value);
-            const bankName = document.getElementById('bank-name').value.trim();
-            const accountNumber = document.getElementById('account-number').value.trim();
+            const selectedPaymentMethod = document.querySelector('input[name="payment-method"]:checked');
 
             if (!amount || amount < 100) {
                 alert('Please enter a valid amount (minimum ₱100)');
                 return;
             }
 
-            if (!bankName || !accountNumber) {
-                alert('Please enter bank account details');
+            if (!selectedPaymentMethod) {
+                alert('Please select a payment method');
                 return;
             }
+
+            let accountDetails = {};
+            const paymentMethod = selectedPaymentMethod.value;
+
+            if (paymentMethod === 'gcash' || paymentMethod === 'maya') {
+                const mobileNumber = document.getElementById('mobile-number').value.trim();
+                const accountName = document.getElementById('account-name').value.trim();
+
+                if (!mobileNumber || !accountName) {
+                    alert('Please enter mobile number and account name for digital wallet');
+                    return;
+                }
+
+                accountDetails = {
+                    mobileNumber: mobileNumber,
+                    accountName: accountName
+                };
+            } else if (paymentMethod === 'bank') {
+                const bankName = document.getElementById('bank-name').value.trim();
+                const accountNumber = document.getElementById('account-number').value.trim();
+                const bankAccountName = document.getElementById('bank-account-name').value.trim();
+
+                if (!bankName || !accountNumber || !bankAccountName) {
+                    alert('Please enter all bank account details');
+                    return;
+                }
+
+                accountDetails = {
+                    bankName: bankName,
+                    accountNumber: accountNumber,
+                    accountName: bankAccountName
+                };
+            }
+
+            // Set loading state
+            const withdrawalBtn = document.getElementById('request-withdrawal');
+            setButtonLoading(withdrawalBtn, true, 'Submitting...');
 
             try {
                 console.log('=== WITHDRAWAL REQUEST DEBUG ===');
@@ -1168,8 +1693,8 @@
                 const withdrawalData = {
                     pharmacyId: pharmacyId,
                     amount: amount,
-                    bankName: bankName,
-                    accountNumber: accountNumber,
+                    paymentMethod: paymentMethod,
+                    accountDetails: accountDetails,
                     status: 'pending',
                     requestedAt: Date.now()
                 };
@@ -1190,14 +1715,30 @@
 
                 // Clear form
                 document.getElementById('withdrawal-amount').value = '';
+                
+                // Clear payment method selection
+                document.querySelectorAll('input[name="payment-method"]').forEach(radio => {
+                    radio.checked = false;
+                });
+                
+                // Hide all detail sections
+                document.getElementById('digital-wallet-details').classList.add('hidden');
+                document.getElementById('bank-details').classList.add('hidden');
+                
+                // Clear all input fields
+                document.getElementById('mobile-number').value = '';
+                document.getElementById('account-name').value = '';
                 document.getElementById('bank-name').value = '';
                 document.getElementById('account-number').value = '';
+                document.getElementById('bank-account-name').value = '';
 
                 // Reload wallet data
                 await loadWalletData();
             } catch (error) {
                 console.error('Error requesting withdrawal:', error);
-                alert('Error submitting withdrawal request');
+                alert(getProfessionalErrorMessage(error));
+            } finally {
+                setButtonLoading(withdrawalBtn, false);
             }
         }
 

@@ -40,7 +40,7 @@
                         <option value="pharmacy">Pharmacy</option>
                     </select>
                 </div>
-                <button class="w-full rounded-lg bg-emerald-600 text-white px-4 py-2">Create account</button>
+                <button type="submit" class="w-full rounded-lg bg-emerald-600 text-white px-4 py-2">Create account</button>
             </form>
             <p class="mt-4 text-sm text-gray-600">Have an account? <a href="login.html"
                     class="text-emerald-700">Login</a></p>
@@ -51,7 +51,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
-        import { firebaseConfig } from './js/firebase.js';
+        import { firebaseConfig, showError, showSuccess, setButtonLoading } from './js/firebase.js';
         import { registerUser, redirectByRole } from './js/auth.js';
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
@@ -68,9 +68,15 @@
         });
         const form = document.getElementById('register-form');
         const err = document.getElementById('error');
+        const submitBtn = form.querySelector('button[type="submit"]');
+        
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             err.classList.add('hidden');
+            
+            // Set loading state
+            setButtonLoading(submitBtn, true, 'Creating account...');
+            
             const data = Object.fromEntries(new FormData(form).entries());
             try {
                 const user = await registerUser({
@@ -82,10 +88,15 @@
                 });
                 // Registration success only after Firestore writes. Role is persisted in registerUser.
                 const role = localStorage.getItem('role') || data.role;
+                
+                // Show success state briefly before redirect
+                setButtonLoading(submitBtn, true, 'Account created! Redirecting...');
+                await new Promise(resolve => setTimeout(resolve, 1000)); // 1 second delay
+                
                 redirectByRole(role);
-            } catch (e) {
-                err.textContent = e.message;
-                err.classList.remove('hidden');
+            } catch (error) {
+                showError(error, 'error');
+                setButtonLoading(submitBtn, false);
             }
         });
     </script>
